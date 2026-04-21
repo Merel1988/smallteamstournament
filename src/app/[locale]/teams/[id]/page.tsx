@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -8,9 +9,12 @@ export const dynamic = "force-dynamic";
 export default async function TeamDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }) {
-  const { id } = await params;
+  const { locale, id } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("Teams");
+
   const team = await prisma.team.findUnique({
     where: { id },
     include: { players: { orderBy: { number: "asc" } } },
@@ -21,7 +25,7 @@ export default async function TeamDetailPage({
   return (
     <div className="space-y-6">
       <Link href="/teams" className="text-sm text-derby-ink/60 hover:underline">
-        ← Alle teams
+        {t("backToAll")}
       </Link>
 
       <header
@@ -48,11 +52,9 @@ export default async function TeamDetailPage({
       </header>
 
       <section>
-        <h2 className="font-display text-3xl mb-3">Roster</h2>
+        <h2 className="font-display text-3xl mb-3">{t("roster")}</h2>
         {team.players.length === 0 ? (
-          <p className="text-derby-ink/60">
-            De roster is nog niet bekend.
-          </p>
+          <p className="text-derby-ink/60">{t("rosterEmpty")}</p>
         ) : (
           <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {team.players.map((p) => (

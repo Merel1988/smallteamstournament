@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type Parts = { days: number; hours: number; minutes: number; seconds: number };
 
@@ -14,6 +15,7 @@ function diff(target: Date): Parts {
 }
 
 export default function Countdown({ target }: { target: Date }) {
+  const t = useTranslations("Countdown");
   const [parts, setParts] = useState<Parts>(() => diff(target));
 
   useEffect(() => {
@@ -22,10 +24,10 @@ export default function Countdown({ target }: { target: Date }) {
   }, [target]);
 
   const cells: { value: number; label: string }[] = [
-    { value: parts.days, label: "dagen" },
-    { value: parts.hours, label: "uur" },
-    { value: parts.minutes, label: "min" },
-    { value: parts.seconds, label: "sec" },
+    { value: parts.days, label: t("days") },
+    { value: parts.hours, label: t("hours") },
+    { value: parts.minutes, label: t("minutes") },
+    { value: parts.seconds, label: t("seconds") },
   ];
 
   return (

@@ -1,32 +1,47 @@
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export default async function SchemaPage() {
+export default async function SchemaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("Schema");
+
   const matches = await prisma.match
     .findMany({
       orderBy: { startsAt: "asc" },
       include: { teamA: true, teamB: true },
     })
-    .catch(() => []);
+    .catch(() => [] as Awaited<ReturnType<typeof prisma.match.findMany<{ include: { teamA: true; teamB: true } }>>>);
 
-  const byPoule = matches.reduce<Record<string, typeof matches>>((acc, m) => {
-    const key = m.poule || "Overig";
-    (acc[key] ||= []).push(m);
-    return acc;
-  }, {});
+  type Match = (typeof matches)[number];
+  const otherLabel = t("otherPoule");
+  const byPoule: Record<string, Match[]> = {};
+  for (const m of matches) {
+    const key = m.poule || otherLabel;
+    if (!byPoule[key]) byPoule[key] = [];
+    byPoule[key].push(m);
+  }
+
+  const timeFormatter = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "nl-NL", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="font-display text-5xl">Speelschema</h1>
-        <p className="text-derby-ink/70 mt-1">
-          Bouts van 20 minuten zonder pauze — let op de whistle!
-        </p>
+        <h1 className="font-display text-5xl">{t("title")}</h1>
+        <p className="text-derby-ink/70 mt-1">{t("subtitle")}</p>
       </header>
 
       {matches.length === 0 ? (
-        <p className="text-derby-ink/60">Het schema wordt binnenkort gepubliceerd.</p>
+        <p className="text-derby-ink/60">{t("empty")}</p>
       ) : (
         Object.entries(byPoule).map(([poule, items]) => (
           <section key={poule}>
@@ -43,10 +58,7 @@ export default async function SchemaPage() {
                     }`}
                   >
                     <div className="text-sm text-derby-ink/60 w-16 shrink-0">
-                      {m.startsAt.toLocaleTimeString("nl-NL", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      {timeFormatter.format(m.startsAt)}
                     </div>
                     <div className="flex-1 flex items-center justify-between gap-2">
                       <span className="font-display text-xl truncate">
@@ -57,7 +69,7 @@ export default async function SchemaPage() {
                           {m.scoreA ?? 0} – {m.scoreB ?? 0}
                         </span>
                       ) : (
-                        <span className="text-sm text-derby-ink/40">vs</span>
+                        <span className="text-sm text-derby-ink/40">{t("vs")}</span>
                       )}
                       <span className="font-display text-xl truncate text-right">
                         {m.teamB.name}
@@ -65,7 +77,7 @@ export default async function SchemaPage() {
                     </div>
                     {isLive && (
                       <span className="text-xs font-bold text-derby-accent whitespace-nowrap">
-                        ● LIVE
+                        {t("live")}
                       </span>
                     )}
                   </li>

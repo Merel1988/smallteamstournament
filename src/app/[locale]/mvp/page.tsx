@@ -1,9 +1,18 @@
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import MvpVoter from "@/components/MvpVoter";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export default async function MvpPage() {
+export default async function MvpPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("Mvp");
+
   const matches = await prisma.match
     .findMany({
       orderBy: { startsAt: "asc" },
@@ -27,17 +36,12 @@ export default async function MvpPage() {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="font-display text-5xl">MVP / Best Jammer</h1>
-        <p className="text-derby-ink/70 mt-1">
-          Stem per afgelopen wedstrijd op de speler die jou het meest
-          indrukwekkend was.
-        </p>
+        <h1 className="font-display text-5xl">{t("title")}</h1>
+        <p className="text-derby-ink/70 mt-1">{t("subtitle")}</p>
       </header>
 
       {finished.length === 0 ? (
-        <p className="text-derby-ink/60">
-          Er zijn nog geen afgeronde wedstrijden om op te stemmen.
-        </p>
+        <p className="text-derby-ink/60">{t("noFinished")}</p>
       ) : (
         <div className="space-y-8">
           {finished.map((m) => {
@@ -64,7 +68,7 @@ export default async function MvpPage() {
                 </h2>
                 {pool.length === 0 ? (
                   <p className="text-derby-ink/60 text-sm">
-                    Geen spelers bekend voor deze wedstrijd.
+                    {t("matchWithoutPlayers")}
                   </p>
                 ) : (
                   <MvpVoter matchId={m.id} players={pool} />

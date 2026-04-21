@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 function urlBase64ToUint8Array(base64: string): Uint8Array {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -14,6 +15,7 @@ function urlBase64ToUint8Array(base64: string): Uint8Array {
 type Status = "loading" | "unsupported" | "denied" | "off" | "on";
 
 export default function NotificationsToggle({ vapidKey }: { vapidKey: string }) {
+  const t = useTranslations("Notifications");
   const [status, setStatus] = useState<Status>("loading");
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +45,7 @@ export default function NotificationsToggle({ vapidKey }: { vapidKey: string }) 
       const reg = await navigator.serviceWorker.ready;
       const sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapidKey),
+        applicationServerKey: urlBase64ToUint8Array(vapidKey) as BufferSource,
       });
       const raw = sub.toJSON();
       await fetch("/api/push/subscribe", {
@@ -56,7 +58,7 @@ export default function NotificationsToggle({ vapidKey }: { vapidKey: string }) 
       });
       setStatus("on");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Inschakelen mislukt.");
+      setError(err instanceof Error ? err.message : t("enableError"));
     }
   }
 
@@ -76,25 +78,15 @@ export default function NotificationsToggle({ vapidKey }: { vapidKey: string }) 
       }
       setStatus("off");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Uitschakelen mislukt.");
+      setError(err instanceof Error ? err.message : t("disableError"));
     }
   }
 
-  if (status === "loading") return <p>Bezig met laden…</p>;
+  if (status === "loading") return <p>{t("loading")}</p>;
   if (status === "unsupported")
-    return (
-      <p className="text-derby-ink/70">
-        Je browser ondersteunt geen push notifications. Gebruik Chrome, Firefox
-        of Safari 16+.
-      </p>
-    );
+    return <p className="text-derby-ink/70">{t("unsupported")}</p>;
   if (status === "denied")
-    return (
-      <p className="text-derby-accent">
-        Notificaties zijn geblokkeerd. Zet ze aan in je browserinstellingen en
-        herlaad de pagina.
-      </p>
-    );
+    return <p className="text-derby-accent">{t("denied")}</p>;
 
   return (
     <div className="space-y-3">
@@ -104,7 +96,7 @@ export default function NotificationsToggle({ vapidKey }: { vapidKey: string }) 
           onClick={enable}
           className="bg-derby-ink text-derby-yellow rounded-full px-5 py-3 font-bold"
         >
-          🔔 Zet notificaties aan
+          {t("enable")}
         </button>
       ) : (
         <button
@@ -112,7 +104,7 @@ export default function NotificationsToggle({ vapidKey }: { vapidKey: string }) 
           onClick={disable}
           className="bg-white border border-derby-ink/20 rounded-full px-5 py-3 font-bold"
         >
-          🔕 Zet notificaties uit
+          {t("disable")}
         </button>
       )}
       {error && <p className="text-sm text-derby-accent">{error}</p>}

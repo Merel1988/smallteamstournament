@@ -2,8 +2,10 @@
 
 import { upload } from "@vercel/blob/client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function PhotoUpload({ onUploaded }: { onUploaded?: () => void }) {
+  const t = useTranslations("Photos.upload");
   const [file, setFile] = useState<File | null>(null);
   const [caption, setCaption] = useState("");
   const [name, setName] = useState("");
@@ -30,7 +32,7 @@ export default function PhotoUpload({ onUploaded }: { onUploaded?: () => void })
       setCaption("");
       onUploaded?.();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload mislukt.");
+      setError(err instanceof Error ? err.message : t("error"));
     } finally {
       setBusy(false);
     }
@@ -41,7 +43,7 @@ export default function PhotoUpload({ onUploaded }: { onUploaded?: () => void })
       onSubmit={submit}
       className="bg-white rounded-2xl p-5 shadow space-y-3"
     >
-      <h2 className="font-display text-2xl">Stuur je foto in</h2>
+      <h2 className="font-display text-2xl">{t("heading")}</h2>
 
       <input
         type="file"
@@ -51,28 +53,28 @@ export default function PhotoUpload({ onUploaded }: { onUploaded?: () => void })
       />
       <input
         type="text"
-        placeholder="Jouw (derby-)naam (optioneel)"
+        placeholder={t("namePlaceholder")}
         value={name}
         onChange={(e) => setName(e.target.value)}
         className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
       />
       <input
         type="text"
-        placeholder="Korte caption (optioneel)"
+        placeholder={t("captionPlaceholder")}
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
         className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
       />
 
       {error && <p className="text-sm text-derby-accent">{error}</p>}
-      {done && <p className="text-sm text-green-700">Bedankt, foto staat online!</p>}
+      {done && <p className="text-sm text-green-700">{t("done")}</p>}
 
       <button
         type="submit"
         disabled={!file || busy}
         className="bg-derby-accent text-white rounded-full px-5 py-2 font-bold disabled:opacity-40"
       >
-        {busy ? "Bezig…" : "Upload"}
+        {busy ? t("busy") : t("submit")}
       </button>
     </form>
   );

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import PhotoUpload from "./PhotoUpload";
 
 type Photo = {
@@ -13,6 +14,7 @@ type Photo = {
 };
 
 export default function PhotoGallery({ initial }: { initial: Photo[] }) {
+  const t = useTranslations("Photos");
   const [photos, setPhotos] = useState<Photo[]>(initial);
   const [lightbox, setLightbox] = useState<Photo | null>(null);
 
@@ -37,9 +39,7 @@ export default function PhotoGallery({ initial }: { initial: Photo[] }) {
       <PhotoUpload onUploaded={reload} />
 
       {photos.length === 0 ? (
-        <p className="text-derby-ink/60">
-          Nog geen foto&apos;s — stuur de eerste in!
-        </p>
+        <p className="text-derby-ink/60">{t("empty")}</p>
       ) : (
         <div className="columns-2 sm:columns-3 lg:columns-4 gap-2">
           {photos.map((p) => (
@@ -51,7 +51,7 @@ export default function PhotoGallery({ initial }: { initial: Photo[] }) {
             >
               <Image
                 src={p.url}
-                alt={p.caption || "Derby foto"}
+                alt={p.caption || t("altFallback")}
                 width={400}
                 height={400}
                 unoptimized

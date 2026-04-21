@@ -1,0 +1,155 @@
+{
+  "Nav": {
+    "home": "Home",
+    "teams": "Teams",
+    "schema": "Schedule",
+    "bingo": "Bingo",
+    "photos": "Photos",
+    "mvp": "MVP",
+    "rules": "Rules",
+    "venue": "Venue",
+    "nickname": "Derby name",
+    "notifications": "Notifications",
+    "admin": "Admin"
+  },
+  "Event": {
+    "league": "Roadkill Rollers Nijmegen",
+    "name": "Small Teams Tournament",
+    "description": "Up to 8 teams of 8 skaters (co-ed welcome). Short, intense 20-minute bouts. Smaller leagues get priority — this is a learning tournament.",
+    "dateLine": "Saturday 21 November 2026 · 12:00–18:00",
+    "venueLine": "Sportzaal De Horstacker, Nijmegen"
+  },
+  "Home": {
+    "countdownLabel": "Counting down to first whistle",
+    "tournamentLive": "The tournament is on!",
+    "liveNow": "● Live now",
+    "nextMatch": "Next bout",
+    "vs": "vs",
+    "cards": {
+      "teams": "Teams",
+      "schema": "Schedule",
+      "bingo": "Bingo",
+      "photos": "Photos",
+      "mvpVote": "MVP vote",
+      "nickname": "Derby name"
+    }
+  },
+  "Countdown": {
+    "days": "days",
+    "hours": "hrs",
+    "minutes": "min",
+    "seconds": "sec"
+  },
+  "Teams": {
+    "title": "Teams",
+    "subtitle": "Up to 8 teams of 8 skaters. Tap a team for the full roster.",
+    "empty": "Teams will be announced from July 2026 — check back soon!",
+    "playerCount": "{count, plural, =0 {no skaters} =1 {1 skater} other {# skaters}}",
+    "backToAll": "← All teams",
+    "roster": "Roster",
+    "rosterEmpty": "The roster hasn't been published yet."
+  },
+  "Schema": {
+    "title": "Schedule",
+    "subtitle": "20-minute bouts, no halftime — listen for the whistle!",
+    "empty": "The schedule will be published soon.",
+    "vs": "vs",
+    "live": "● LIVE",
+    "otherPoule": "Other"
+  },
+  "Bingo": {
+    "title": "Derby Bingo",
+    "subtitle": "Check squares while you watch. 5 in a row = BINGO! Your progress stays on this device.",
+    "notEnough": "Not enough bingo prompts to generate a card yet.",
+    "loading": "Loading card…",
+    "celebration": "🎉 BINGO! 🎉",
+    "free": "FREE",
+    "newCard": "New card"
+  },
+  "Photos": {
+    "title": "Photos",
+    "subtitle": "Share your best derby moment. Every photo shows up in the gallery right away.",
+    "empty": "No photos yet — be the first!",
+    "altFallback": "Derby photo",
+    "upload": {
+      "heading": "Submit your photo",
+      "namePlaceholder": "Your (derby) name (optional)",
+      "captionPlaceholder": "Short caption (optional)",
+      "submit": "Upload",
+      "busy": "Uploading…",
+      "done": "Thanks, your photo is live!",
+      "error": "Upload failed."
+    }
+  },
+  "Mvp": {
+    "title": "MVP / Best Jammer",
+    "subtitle": "Vote per finished bout for the skater who impressed you most.",
+    "noFinished": "No finished bouts to vote on yet.",
+    "matchWithoutPlayers": "No skaters registered for this bout.",
+    "submit": "Cast vote",
+    "busy": "Sending…",
+    "thanks": "Thanks for voting! 🎉",
+    "genericError": "Something went wrong."
+  },
+  "Nickname": {
+    "title": "Derby name roller",
+    "subtitle": "No derby name yet? No worries — tap and the roller derby gods decide your fate.",
+    "clickMe": "Tap here for your derby name",
+    "again": "Roll again!",
+    "previousRolls": "Previous rolls"
+  },
+  "Rules": {
+    "title": "Rules & house rules",
+    "quickHeading": "Roller derby in 1 minute",
+    "intro1": "Two teams of 5 skaters race on an oval track. Each jam (max 2 minutes) the <strong>jammer</strong> — marked by a star on the helmet — tries to lap as many opponents as possible. Every opponent passed = 1 point.",
+    "intro2": "The <strong>blockers</strong> stop the opposing jammer and help their own jammer through. The <strong>pivot</strong> (stripe on the helmet) can take over the jammer role mid-jam via a <em>star pass</em>.",
+    "intro3": "Illegal hits, back blocks, trips or out-of-bounds plays → <strong>penalty</strong>: 30 seconds in the penalty box. Four penalties in one jam and the team plays short.",
+    "intro4": "Official ruleset: WFTDA Rules of Flat Track Roller Derby. This tournament runs 20-minute bouts (no halftime) — a shorter format than the regular 60-minute game.",
+    "houseHeading": "House rules",
+    "houseDefault1": "Respect skaters, officials and the audience.",
+    "houseDefault2": "No food or drinks in the hall except water in a closable bottle.",
+    "houseDefault3": "Keep bags out of the track-side area — use the locker rooms.",
+    "houseDefault4": "Photos are fine, no flash.",
+    "houseDefault5": "First aid or questions? Head to the organizer's table by the entrance."
+  },
+  "Venue": {
+    "title": "Venue & info",
+    "openMaps": "Open in Google Maps →",
+    "foodTitle": "🥤 Food & drinks",
+    "foodBody": "The sports hall has a canteen with coffee, soft drinks, snacks and treats. Inside the playing area only water (closable bottle).",
+    "firstAidTitle": "🩹 First aid",
+    "firstAidBody": "The first aid post is marked with a green cross near the entrance. In an emergency head to the organizer's table.",
+    "changingTitle": "🚻 Locker rooms",
+    "changingBody": "There are gendered and gender-neutral locker rooms. Valuables? Lock them up — organizers aren't responsible.",
+    "parkingTitle": "🚲 Parking & public transport",
+    "parkingBody": "Free parking around the venue. From Nijmegen Central Station take bus 6 towards Weezenhof, stop Horstacker.",
+    "sponsorsHeading": "Sponsors",
+    "sponsorsBody": "This tournament is supported by our sponsors. Logos follow closer to the event date."
+  },
+  "Notifications": {
+    "title": "Notifications",
+    "subtitle": "Turn on notifications so you don't miss anything on the day: \"bout starting soon\", results, photo contest winner and more.",
+    "notConfigured": "Notifications aren't configured right now.",
+    "tip": "<strong>Tip:</strong> add this app to your home screen for the best experience. On iPhone: Safari → Share → \"Add to Home Screen\". On Android: Chrome menu → \"Install app\".",
+    "loading": "Loading…",
+    "unsupported": "Your browser doesn't support push notifications. Use Chrome, Firefox or Safari 16+.",
+    "denied": "Notifications are blocked. Enable them in your browser settings and reload this page.",
+    "enable": "🔔 Turn notifications on",
+    "disable": "🔕 Turn notifications off",
+    "enableError": "Couldn't enable notifications.",
+    "disableError": "Couldn't disable notifications."
+  },
+  "Meta": {
+    "title": "Small Teams Tournament — Roadkill Rollers Nijmegen",
+    "description": "Everything about the Roadkill Rollers Nijmegen Small Teams Tournament on November 21, 2026 — teams, schedule, bingo, photos and more."
+  },
+  "Footer": {
+    "line": "Small Teams Tournament · Roadkill Rollers Nijmegen · 21 Nov 2026 · Sportzaal De Horstacker",
+    "admin": "Admin"
+  },
+  "LanguageSwitcher": {
+    "label": "Language",
+    "nl": "Nederlands",
+    "en": "English"
+  }
+}

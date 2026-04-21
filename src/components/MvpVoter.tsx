@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 type Player = {
   id: string;
@@ -17,6 +18,7 @@ export default function MvpVoter({
   matchId: string;
   players: Player[];
 }) {
+  const t = useTranslations("Mvp");
   const [selected, setSelected] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export default function MvpVoter({
     setBusy(false);
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data.error || "Er ging iets mis.");
+      setError(data.error || t("genericError"));
       return;
     }
     setSubmitted(true);
@@ -43,7 +45,7 @@ export default function MvpVoter({
   if (submitted) {
     return (
       <p className="bg-derby-yellow rounded-xl p-4 font-display text-xl text-center">
-        Bedankt voor je stem! 🎉
+        {t("thanks")}
       </p>
     );
   }
@@ -86,7 +88,7 @@ export default function MvpVoter({
         disabled={!selected || busy}
         className="w-full bg-derby-ink text-derby-yellow rounded-full py-3 font-bold disabled:opacity-40"
       >
-        {busy ? "Bezig…" : "Stem uitbrengen"}
+        {busy ? t("busy") : t("submit")}
       </button>
     </div>
   );

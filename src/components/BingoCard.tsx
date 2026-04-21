@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type Prompt = { id: string; text: string };
 type CardState = { promptIds: (string | null)[]; checked: boolean[] };
@@ -43,6 +44,7 @@ function hasBingo(checked: boolean[]): boolean {
 }
 
 export default function BingoCard({ prompts }: { prompts: Prompt[] }) {
+  const t = useTranslations("Bingo");
   const byId = useMemo(
     () => Object.fromEntries(prompts.map((p) => [p.id, p.text])),
     [prompts],
@@ -73,15 +75,10 @@ export default function BingoCard({ prompts }: { prompts: Prompt[] }) {
   }, [card]);
 
   if (prompts.length < 24) {
-    return (
-      <p className="text-derby-ink/60">
-        Er zijn nog niet genoeg bingo-prompts beschikbaar om een kaart te
-        genereren.
-      </p>
-    );
+    return <p className="text-derby-ink/60">{t("notEnough")}</p>;
   }
 
-  if (!card) return <p>Kaart aan het laden…</p>;
+  if (!card) return <p>{t("loading")}</p>;
 
   function toggle(i: number) {
     if (i === FREE_INDEX || !card) return;
@@ -98,7 +95,7 @@ export default function BingoCard({ prompts }: { prompts: Prompt[] }) {
     <div className="space-y-4">
       {bingo && (
         <div className="bingo-banner bg-derby-accent text-white font-display text-5xl text-center rounded-2xl py-6 shadow-xl">
-          🎉 BINGO! 🎉
+          {t("celebration")}
         </div>
       )}
 
@@ -106,7 +103,7 @@ export default function BingoCard({ prompts }: { prompts: Prompt[] }) {
         {card.promptIds.map((id, i) => {
           const isFree = i === FREE_INDEX;
           const checked = card.checked[i];
-          const text = isFree ? "FREE" : id ? byId[id] : "";
+          const text = isFree ? t("free") : id ? byId[id] : "";
           return (
             <button
               key={i}
@@ -131,7 +128,7 @@ export default function BingoCard({ prompts }: { prompts: Prompt[] }) {
           onClick={newCard}
           className="bg-derby-ink text-derby-yellow rounded-full px-5 py-2 font-bold"
         >
-          Nieuwe kaart
+          {t("newCard")}
         </button>
       </div>
     </div>
