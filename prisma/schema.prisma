@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  shortName   String?
+  logoUrl     String?
+  color       String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  players     Player[]
+  matchesA    Match[]  @relation("TeamA")
+  matchesB    Match[]  @relation("TeamB")
+}
+
+model Player {
+  id          String    @id @default(cuid())
+  teamId      String
+  team        Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  name        String
+  derbyName   String?
+  number      String
+  headshotUrl String?
+  position    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  mvpVotes    MvpVote[]
+}
+
+model Match {
+  id        String    @id @default(cuid())
+  startsAt  DateTime
+  poule     String?
+  teamAId   String
+  teamBId   String
+  teamA     Team      @relation("TeamA", fields: [teamAId], references: [id])
+  teamB     Team      @relation("TeamB", fields: [teamBId], references: [id])
+  scoreA    Int?
+  scoreB    Int?
+  status    String    @default("scheduled")
+  notes     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  mvpVotes  MvpVote[]
+}
+
+model Photo {
+  id           String   @id @default(cuid())
+  url          String
+  thumbUrl     String?
+  uploaderName String?
+  caption      String?
+  createdAt    DateTime @default(now())
+}
+
+model MvpVote {
+  id        String   @id @default(cuid())
+  matchId   String?
+  match     Match?   @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  playerId  String
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  voterHash String
+  createdAt DateTime @default(now())
+
+  @@unique([voterHash, matchId])
+}
+
+model BingoPrompt {
+  id       String  @id @default(cuid())
+  text     String
+  category String?
+  active   Boolean @default(true)
+}
+
+model HouseRule {
+  id    String @id @default(cuid())
+  order Int    @default(0)
+  title String
+  body  String
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+}

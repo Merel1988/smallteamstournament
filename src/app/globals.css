@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+  --derby-bg: #f7f1e6;
+  --derby-ink: #0a0a0a;
+  --derby-accent: #e30613;
+  --derby-accent-dark: #8b0000;
+  --derby-yellow: #f4c41f;
+  --derby-purple: #1a1a1a;
+}
+
+@theme inline {
+  --color-derby-bg: var(--derby-bg);
+  --color-derby-ink: var(--derby-ink);
+  --color-derby-accent: var(--derby-accent);
+  --color-derby-accent-dark: var(--derby-accent-dark);
+  --color-derby-yellow: var(--derby-yellow);
+  --color-derby-purple: var(--derby-purple);
+  --font-display: "Bebas Neue", "Impact", system-ui, sans-serif;
+}
+
+html,
+body {
+  background: var(--derby-bg);
+  color: var(--derby-ink);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+}
+
+/* Confetti-vrij BINGO banner */
+@keyframes pop {
+  0% { transform: scale(0.6) rotate(-8deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+.bingo-banner {
+  animation: pop 0.45s cubic-bezier(.17,.84,.44,1) both;
+}
+
+/* Stripe pattern voor accent-elementen */
+.stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--derby-accent) 0 10px,
+    var(--derby-accent-dark) 10px 20px
+  );
+}
