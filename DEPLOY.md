@@ -1,10 +1,16 @@
 # Deploy checklist — Small Teams Tournament app
 
-Laatste update: 2026-04-21 — paused, resumable.
+Laatste update: 2026-05-29 — **🚀 LIVE op https://smallteamstournament.nl**
 
-## 👉 Pick up hier de volgende keer
+## 👉 Wat moet er nog gebeuren
 
-Begin bij **stap 1**. Alles daarboven is al gedaan, alles daaronder wacht op jouw input.
+De app draait in productie. Stappen 1 t/m 5 zijn klaar. Wat nog open staat:
+
+1. **Preview env vars** importeren via het dashboard → zie [stap 4](#4-env-vars-naar-vercel) (alleen nodig voor PR/branch-previews).
+2. **Handmatige smoke tests** die ik niet kan automatiseren → zie [stap 6](#6-smoke-test-na-deploy): admin-login met prod-wachtwoord, foto-upload (Blob), push-notificaties op mobiel, PWA-icons.
+3. **Optioneel** → zie [stap 7](#7-optioneel): demo-data seeden, URL + wachtwoord delen via 1Password.
+
+> ⚠️ **PWA-icons ontbreken nog:** `public/icon-192.png` en `public/icon-512.png` bestaan nog niet in de repo. De manifest verwijst ernaar — deze moeten nog aangemaakt/toegevoegd worden.
 
 ---
 
@@ -20,23 +26,17 @@ Begin bij **stap 1**. Alles daarboven is al gedaan, alles daaronder wacht op jou
 
 ---
 
-## 🔜 Nog te doen
+## Stappen
 
-### 1. Kies een `ADMIN_PASSWORD`
-- [ ] Sterke string bedenken
-- [ ] Opslaan in 1Password (delen met mede-organisatoren kan later)
-- [ ] Invullen in `.env.production.local` (regel: `ADMIN_PASSWORD=""`)
+### 1. Kies een `ADMIN_PASSWORD` ✅
+- [x] Sterke string gekozen en ingevuld in `.env.production.local` + gezet op Vercel Production
+- [ ] Nog doen: opslaan/delen via 1Password (zie stap 7)
 
-### 2. Vercel project aan repo koppelen (interactief)
-```bash
-cd ~/Sites/derbyapp
-vercel login
-vercel link          # answer: link existing? No → create new → name: derby-stt
-```
+### 2. Vercel project aan repo koppelen ✅
+- [x] Gekoppeld als project `derbyapp` (`merel1988s-projects`). Auto-deploy bij push naar `main` actief.
 
-### 3. Vercel Blob store koppelen
-Dashboard van het nieuwe project → **Storage → Create → Blob Store**.
-Naam bv. `derby-photos`. `BLOB_READ_WRITE_TOKEN` wordt automatisch toegevoegd.
+### 3. Vercel Blob store koppelen ✅
+- [x] Blob-store aangemaakt; `BLOB_READ_WRITE_TOKEN`, `BLOB_STORE_ID`, `BLOB_WEBHOOK_PUBLIC_KEY` automatisch toegevoegd op alle envs.
 
 ### 4. Env vars naar Vercel
 - [x] **Production** — 7 secrets via CLI gezet (`TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `ADMIN_PASSWORD`, `ADMIN_SECRET`, `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`). De 3 Blob-vars (`BLOB_READ_WRITE_TOKEN`, `BLOB_STORE_ID`, `BLOB_WEBHOOK_PUBLIC_KEY`) zijn al door de Blob-store toegevoegd op alle envs.
@@ -44,22 +44,20 @@ Naam bv. `derby-photos`. `BLOB_READ_WRITE_TOKEN` wordt automatisch toegevoegd.
 
 💡 Production is klaar — `vercel --prod` werkt nu volledig. Preview is alleen nodig voor PR/branch-deploys.
 
-### 5. Eerste deploy
-```bash
-vercel --prod
-```
-Of push naar `main` — Vercel deployt automatisch na stap 2.
+### 5. Eerste deploy ✅
+- [x] Gedaan via push naar `main` (commit `126d8dc`, 2026-05-29) → Vercel auto-deploy. Status: **Ready**.
+- Live op: **https://smallteamstournament.nl** (+ www), `https://derbyapp.vercel.app`.
 
 ### 6. Smoke test na deploy
-- [ ] Homepage laadt, countdown werkt
-- [ ] `/teams`, `/schema`, `/bingo`, `/fotos`, `/mvp` laden
-- [ ] `/admin/login` werkt met het prod wachtwoord
+- [x] Homepage laadt (HTTP 200) — countdown visueel nog handmatig checken
+- [x] `/teams`, `/schema`, `/bingo`, `/fotos`, `/mvp` laden (allemaal 200, ook `/en`)
+- [x] `/admin/login` bereikbaar (200) — inloggen met prod wachtwoord nog handmatig testen
 - [ ] Foto uploaden werkt (test Blob)
 - [ ] Push-notificaties: site toevoegen aan mobiel home screen → notificaties aanzetten → test vanaf `/admin/push`
 - [ ] PWA icons zichtbaar (`public/icon-192.png`, `icon-512.png`)
 
 ### 7. Optioneel
-- [ ] Custom domein koppelen (bv. `stt.roadkillrollers.nl`) via **Settings → Domains**
+- [x] Custom domein `smallteamstournament.nl` al gekoppeld (alias actief)
 - [ ] Demo-data seeden: `cp .env.production.local .env && npm run db:seed && rm .env`
 - [ ] URL + `ADMIN_PASSWORD` delen met mede-organisatoren via 1Password
 
@@ -76,4 +74,5 @@ Of push naar `main` — Vercel deployt automatisch na stap 2.
 
 - GitHub: https://github.com/Merel1988/smallteamstournament
 - Turso dashboard: https://app.turso.tech
-- Vercel: https://vercel.com/dashboard (nog niet gekoppeld)
+- Vercel: https://vercel.com/merel1988s-projects/derbyapp
+- Live site: https://smallteamstournament.nl

@@ -61,7 +61,7 @@ export default async function LocaleLayout({
       <header className="bg-derby-ink text-white sticky top-0 z-40 shadow-lg">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <RollerSkateLogo className="w-12 h-9" />
+            <RollerSkateLogo className="h-10 w-auto" />
             <span className="font-display text-2xl text-derby-yellow leading-none">
               Small Teams Tournament
             </span>
