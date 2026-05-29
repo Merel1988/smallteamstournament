@@ -65,23 +65,20 @@ export default async function TeamDetailPage({
                 {p.headshotUrl ? (
                   <Image
                     src={p.headshotUrl}
-                    alt={p.derbyName || p.name}
-                    width={200}
-                    height={200}
-                    className="rounded-lg w-full h-40 object-cover"
+                    alt={p.derbyName}
+                    width={300}
+                    height={400}
+                    className="rounded-lg w-full aspect-[3/4] object-cover object-[center_20%]"
                   />
                 ) : (
-                  <div className="w-full h-40 rounded-lg bg-derby-ink/10 flex items-center justify-center font-display text-5xl text-derby-ink/40">
+                  <div className="w-full aspect-[3/4] rounded-lg bg-derby-ink/10 flex items-center justify-center font-display text-5xl text-derby-ink/40">
                     #{p.number}
                   </div>
                 )}
                 <div className="mt-2 font-display text-lg truncate">
-                  {p.derbyName || p.name}
+                  {p.derbyName}
                 </div>
-                <div className="text-xs text-derby-ink/60">
-                  #{p.number}
-                  {p.position ? ` · ${p.position}` : ""}
-                </div>
+                <div className="text-xs text-derby-ink/60">#{p.number}</div>
               </li>
             ))}
           </ul>

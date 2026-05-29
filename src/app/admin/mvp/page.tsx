@@ -64,7 +64,7 @@ export default async function AdminMvpPage() {
                         <span className="font-display text-lg w-5">{i + 1}.</span>
                         <span className="flex-1">
                           {p
-                            ? `${p.derbyName || p.name} (#${p.number}, ${p.team.name})`
+                            ? `${p.derbyName} (#${p.number}, ${p.team.name})`
                             : "Onbekende speler"}
                         </span>
                         <span className="font-bold">

@@ -25,11 +25,9 @@ model Player {
   id          String    @id @default(cuid())
   teamId      String
   team        Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  name        String
-  derbyName   String?
+  derbyName   String
   number      String
   headshotUrl String?
-  position    String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   mvpVotes    MvpVote[]

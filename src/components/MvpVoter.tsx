@@ -5,8 +5,7 @@ import { useTranslations } from "next-intl";
 
 type Player = {
   id: string;
-  name: string;
-  derbyName: string | null;
+  derbyName: string;
   number: string;
   teamName: string;
 };
@@ -70,7 +69,7 @@ export default function MvpVoter({
                 onChange={() => setSelected(p.id)}
               />
               <span className="font-display text-lg">
-                #{p.number} {p.derbyName || p.name}
+                #{p.number} {p.derbyName}
               </span>
               <span className="block text-xs text-derby-ink/60">
                 {p.teamName}

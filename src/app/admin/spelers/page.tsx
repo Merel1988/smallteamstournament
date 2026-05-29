@@ -50,10 +50,8 @@ export default async function AdminSpelersPage() {
             ))}
           </select>
         </label>
-        <TextField name="name" label="Naam" required />
-        <TextField name="derbyName" label="Derby-naam" />
+        <TextField name="derbyName" label="Derby-naam" required />
         <TextField name="number" label="Nummer" required />
-        <TextField name="position" label="Positie (Jammer / Blocker / Pivot)" />
         <label className="block">
           <span className="block text-sm mb-1">Headshot</span>
           <input type="file" name="headshot" accept="image/*" />
@@ -78,10 +76,10 @@ export default async function AdminSpelersPage() {
               {p.headshotUrl ? (
                 <Image
                   src={p.headshotUrl}
-                  alt={p.name}
+                  alt={p.derbyName}
                   width={72}
                   height={72}
-                  className="rounded-lg object-cover"
+                  className="rounded-lg object-cover object-top"
                 />
               ) : (
                 <div className="w-[72px] h-[72px] rounded-lg bg-derby-ink/10 shrink-0" />
@@ -101,22 +99,17 @@ export default async function AdminSpelersPage() {
                     ))}
                   </select>
                 </label>
-                <TextField name="name" label="Naam" defaultValue={p.name} required />
                 <TextField
                   name="derbyName"
                   label="Derby-naam"
-                  defaultValue={p.derbyName ?? ""}
+                  defaultValue={p.derbyName}
+                  required
                 />
                 <TextField
                   name="number"
                   label="Nummer"
                   defaultValue={p.number}
                   required
-                />
-                <TextField
-                  name="position"
-                  label="Positie"
-                  defaultValue={p.position ?? ""}
                 />
                 <label className="block">
                   <span className="block text-sm mb-1">Headshot vervangen</span>

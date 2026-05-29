@@ -50,7 +50,6 @@ export default async function MvpPage({
               ...(playersByTeam.get(m.teamBId) || []),
             ].map((p) => ({
               id: p.id,
-              name: p.name,
               derbyName: p.derbyName,
               number: p.number,
               teamName: p.team.name,

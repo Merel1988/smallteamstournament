@@ -74,9 +74,9 @@ async function main() {
     });
     await prisma.player.createMany({
       data: [
-        { teamId: teamA.id, name: "Demo Skater 1", number: "42", position: "Jammer" },
-        { teamId: teamA.id, name: "Demo Skater 2", number: "7", position: "Blocker" },
-        { teamId: teamB.id, name: "Demo Skater 3", number: "99", position: "Pivot" },
+        { teamId: teamA.id, derbyName: "Demo Skater 1", number: "42" },
+        { teamId: teamA.id, derbyName: "Demo Skater 2", number: "7" },
+        { teamId: teamB.id, derbyName: "Demo Skater 3", number: "99" },
       ],
     });
     await prisma.match.create({

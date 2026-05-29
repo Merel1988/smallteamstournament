@@ -8,12 +8,10 @@ import { revalidatePath } from "next/cache";
 export async function createPlayer(formData: FormData) {
   await requireAdmin();
   const teamId = String(formData.get("teamId") || "");
-  const name = String(formData.get("name") || "").trim();
+  const derbyName = String(formData.get("derbyName") || "").trim();
   const number = String(formData.get("number") || "").trim();
-  if (!teamId || !name || !number) return;
+  if (!teamId || !derbyName || !number) return;
 
-  const derbyName = String(formData.get("derbyName") || "").trim() || null;
-  const position = String(formData.get("position") || "").trim() || null;
   const headshot = formData.get("headshot") as File | null;
 
   let headshotUrl: string | null = null;
@@ -22,7 +20,7 @@ export async function createPlayer(formData: FormData) {
   }
 
   await prisma.player.create({
-    data: { teamId, name, number, derbyName, position, headshotUrl },
+    data: { teamId, derbyName, number, headshotUrl },
   });
   revalidatePath("/admin/spelers");
   revalidatePath(`/teams/${teamId}`);
@@ -30,23 +28,19 @@ export async function createPlayer(formData: FormData) {
 
 export async function updatePlayer(id: string, formData: FormData) {
   await requireAdmin();
-  const name = String(formData.get("name") || "").trim();
+  const derbyName = String(formData.get("derbyName") || "").trim();
   const number = String(formData.get("number") || "").trim();
-  if (!name || !number) return;
+  if (!derbyName || !number) return;
 
-  const derbyName = String(formData.get("derbyName") || "").trim() || null;
-  const position = String(formData.get("position") || "").trim() || null;
   const teamId = String(formData.get("teamId") || "");
   const headshot = formData.get("headshot") as File | null;
 
   const data: {
-    name: string;
+    derbyName: string;
     number: string;
-    derbyName: string | null;
-    position: string | null;
     teamId?: string;
     headshotUrl?: string;
-  } = { name, number, derbyName, position };
+  } = { derbyName, number };
 
   if (teamId) data.teamId = teamId;
   if (headshot && headshot.size > 0) {
