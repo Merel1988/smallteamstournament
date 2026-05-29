@@ -39,20 +39,10 @@ Dashboard van het nieuwe project → **Storage → Create → Blob Store**.
 Naam bv. `derby-photos`. `BLOB_READ_WRITE_TOKEN` wordt automatisch toegevoegd.
 
 ### 4. Env vars naar Vercel
-**Makkelijkst:** dashboard → **Settings → Environment Variables → Import .env** → upload `.env.production.local` → selecteer Production + Preview.
+- [x] **Production** — 7 secrets via CLI gezet (`TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `ADMIN_PASSWORD`, `ADMIN_SECRET`, `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`). De 3 Blob-vars (`BLOB_READ_WRITE_TOKEN`, `BLOB_STORE_ID`, `BLOB_WEBHOOK_PUBLIC_KEY`) zijn al door de Blob-store toegevoegd op alle envs.
+- [ ] **Preview** — nog te doen via dashboard → **Settings → Environment Variables → Import .env** → upload `.env.production.local` → selecteer **alleen Preview** (Production staat al goed). Niet via CLI: de veilige stdin-methode kan niet zonder `--value` (secret op command line) "alle Preview branches" zetten in agent-mode.
 
-Of via CLI (één voor één):
-```bash
-vercel env add TURSO_DATABASE_URL production
-vercel env add TURSO_AUTH_TOKEN production
-vercel env add ADMIN_PASSWORD production
-vercel env add ADMIN_SECRET production
-vercel env add NEXT_PUBLIC_VAPID_PUBLIC_KEY production
-vercel env add VAPID_PRIVATE_KEY production
-vercel env add VAPID_SUBJECT production
-```
-
-💡 Tip: zeg tegen Claude "zet nu de env vars naar Vercel" zodra stap 2 en 3 klaar zijn — die kan het dan voor je automatiseren.
+💡 Production is klaar — `vercel --prod` werkt nu volledig. Preview is alleen nodig voor PR/branch-deploys.
 
 ### 5. Eerste deploy
 ```bash
