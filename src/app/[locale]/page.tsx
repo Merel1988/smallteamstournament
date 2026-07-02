@@ -1,10 +1,22 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import Countdown from "@/components/Countdown";
+import EventJsonLd from "@/components/EventJsonLd";
 import { EVENT } from "@/lib/event";
 import { prisma } from "@/lib/prisma";
+import { pageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return pageMetadata({ locale, page: "home", path: "", absoluteTitle: true });
+}
 
 export default async function HomePage({
   params,
@@ -40,6 +52,7 @@ export default async function HomePage({
 
   return (
     <div className="space-y-8">
+      <EventJsonLd description={tEvent("description")} />
       <section className="bg-derby-ink text-white rounded-2xl p-6 sm:p-10 shadow-lg">
         <p className="font-display text-derby-yellow text-xl sm:text-2xl">
           {tEvent("league")}

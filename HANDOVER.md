@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-07-02** — F1 (bewerkbare teksten), F2 (aanmeldpagina), F3 (zichtbaarheid), F4 (taalhint) en F5 (teams tweetalig) afgerond.
+Laatste update: **2026-07-02** — F1 (bewerkbare teksten), F2 (aanmeldpagina), F3 (zichtbaarheid), F4 (taalhint), F5 (teams tweetalig) en F6 (SEO) afgerond; prod-DB gemigreerd en live.
 
 ---
 
@@ -10,7 +10,7 @@ Laatste update: **2026-07-02** — F1 (bewerkbare teksten), F2 (aanmeldpagina), 
 
 - **Live in productie:** https://smallteamstournament.nl (Vercel + Turso).
 - **Event:** Small Teams Tournament, Roadkill Rollers Nijmegen — 21 november 2026, Sportzaal De Horstacker.
-- **Huidige fase:** eerste verbeterronde. **F1 t/m F5 zijn af** en lokaal geverifieerd; volgende stap is F6 (SEO) en F7 (toegankelijkheid).
+- **Huidige fase:** eerste verbeterronde. **F1 t/m F6 zijn af** en lokaal geverifieerd; volgende stap is F7 (toegankelijkheid).
 - **Productie-DB migratie (F1/F2/F5): ✅ GEDAAN op 2026-07-02.** Op Turso (`derby-stt-prod`) zijn `MessageOverride` + `RegistrationLink` aangemaakt en is `Team.description` vervangen door `descriptionNl` + `descriptionEn` (bestaande waarde gekopieerd naar `descriptionNl`, daarna oude kolom gedropt). Bingo-data (27 `BingoPrompt`-rijen) bleef behouden. Migratie is chirurgisch uitgevoerd via een libSQL-script met de creds uit `.env.production.local` (idempotent: `CREATE TABLE IF NOT EXISTS`-achtig + kolom-checks). Code is gecommit + gepusht naar `main` en live geverifieerd (`/aanmelden`, team-detail NL/EN → 200).
 - **Let op bij volgende schemawijzigingen:** de prod-DB is bestaand, dus `db:generate-sql` (from-empty) volstaat niet — schrijf een surgical migratie (ALTER/CREATE) tegen Turso en houd bingo-data intact.
 - **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons (`public/icon-192.png`, `public/icon-512.png`) ontbreken nog; preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
@@ -68,12 +68,14 @@ Generieke override-laag bovenop next-intl.
 - [x] Spelers: geen prozavelden om te vertalen → geen schemawijziging (bewust, alleen gedocumenteerd).
 - [x] Seed (`prisma/seed.ts`) bijgewerkt naar `descriptionNl` + `descriptionEn`.
 
-### F6 · SEO verbeteren
-- [ ] Per-pagina metadata (title/description) i.p.v. alleen de root-`Meta` in `[locale]/layout.tsx` — via `generateMetadata` per route, teksten uit de `messages/*.json` (dus bewerkbaar via F1).
-- [ ] `hreflang`/`alternates` voor nl/en (canonical + language alternates) zodat Google beide talen correct indexeert.
-- [ ] `sitemap.ts` en `robots.ts` toevoegen (App Router). **Let op F3:** geen verborgen `RegistrationLink`-URL's of andere niet-publieke content in de sitemap.
-- [ ] Open Graph / Twitter-card tags + een OG-afbeelding (kan samen met de nog ontbrekende PWA-icons opgepakt worden, zie §1).
-- [ ] Gestructureerde data (JSON-LD `SportsEvent`) voor het toernooi (datum, locatie, organisator) — mooie kandidaat voor rich results.
+### F6 · SEO verbeteren ✅ AF
+- [x] Per-pagina metadata via `generateMetadata` op elke publieke route. Titels/omschrijvingen in nieuwe namespace `PageMeta` in beide `messages/*.json` (dus bewerkbaar via F1). Helper: `src/lib/seo.ts` (`pageMetadata`, `SITE_URL`, `localizedPath`, `languageAlternates`). Titel-template `%s · Small Teams Tournament` staat in `[locale]/layout.tsx`; home gebruikt `absoluteTitle`. `notificaties` is `noindex`.
+- [x] `hreflang`/`alternates`: elke pagina zet `alternates.canonical` + `languages` (nl/en/x-default). Team-detail (`teams/[id]`) heeft dynamische metadata (titel = teamnaam, omschrijving locale-based). `metadataBase` = `https://www.smallteamstournament.nl`.
+- [x] `src/app/sitemap.ts` (dynamisch: statische routes × locales mét hreflang-alternates + alle team-pagina's uit de DB; `notificaties`/admin uitgesloten) en `src/app/robots.ts` (disallow `/admin`, `/api`, `notificaties`; verwijst naar sitemap). **F3 gerespecteerd:** geen verborgen `RegistrationLink`-URL's in de sitemap (die staan niet als eigen route).
+- [x] Open Graph / Twitter-card tags in alle metadata + **dynamische OG-afbeelding** via `src/app/[locale]/opengraph-image.tsx` (`next/og` `ImageResponse`, 1200×630, merkkleuren). Los van de nog ontbrekende PWA-icons. NB: de OG-URL bevat de locale-prefix (`/nl/opengraph-image`) en doet één 307-redirect naar `/opengraph-image` — alle grote scrapers volgen dat.
+- [x] JSON-LD `SportsEvent` op de homepage (`src/components/EventJsonLd.tsx`, data uit `src/lib/event.ts` — daar zijn `street`/`postalCode`/`country` aan toegevoegd voor een net `PostalAddress`). Lokaal geverifieerd: metadata/hreflang/canonical/OG per locale, `sitemap.xml`, `robots.txt`, JSON-LD en OG-image; `npm run build` groen.
+
+**Nog open (bewust doorgeschoven):** echte PWA-icons (`public/icon-192.png`, `icon-512.png`) + een statische fallback-OG/`icon` ontbreken nog (zie §1). `<html lang>` staat nog hard op `nl` in `src/app/layout.tsx` → hoort bij F7.
 
 ### F7 · Toegankelijkheid / WCAG verbeteren
 - [ ] Volledige toetsenbord-navigatie + zichtbare focus-states op alle interactieve elementen (nav, knoppen, bingo-vakjes, formulieren).

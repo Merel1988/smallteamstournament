@@ -164,5 +164,51 @@
     "message": "This site is also available in Dutch.",
     "action": "View in Dutch",
     "dismiss": "Dismiss"
+  },
+  "PageMeta": {
+    "home": {
+      "title": "Small Teams Tournament — Roadkill Rollers Nijmegen",
+      "description": "Everything about the Roadkill Rollers Nijmegen Small Teams Tournament on November 21, 2026 — teams, schedule, bingo, photos and more."
+    },
+    "aanmelden": {
+      "title": "Register",
+      "description": "Register your team for the Small Teams Tournament on November 21, 2026 in Nijmegen."
+    },
+    "teams": {
+      "title": "Teams",
+      "description": "All teams taking part in the Small Teams Tournament in Nijmegen."
+    },
+    "schema": {
+      "title": "Schedule",
+      "description": "The full match schedule of the Small Teams Tournament on November 21, 2026."
+    },
+    "bingo": {
+      "title": "Bingo",
+      "description": "Play derby bingo during the Small Teams Tournament and cross off your squares."
+    },
+    "fotos": {
+      "title": "Photos",
+      "description": "Photos from the Small Teams Tournament — view and share the best moments."
+    },
+    "mvp": {
+      "title": "MVP voting",
+      "description": "Vote for the MVP of each bout during the Small Teams Tournament."
+    },
+    "nickname": {
+      "title": "Derby name generator",
+      "description": "Generate your own roller derby name for the Small Teams Tournament."
+    },
+    "regels": {
+      "title": "Rules",
+      "description": "The house rules and game rules of the Small Teams Tournament."
+    },
+    "venue": {
+      "title": "Venue",
+      "description": "Sportzaal De Horstacker in Nijmegen — location and directions to the Small Teams Tournament."
+    },
+    "notificaties": {
+      "title": "Notifications",
+      "description": "Get notifications about the Small Teams Tournament."
+    }
   }
 }

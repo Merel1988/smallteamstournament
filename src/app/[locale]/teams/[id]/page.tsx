@@ -1,10 +1,49 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/prisma";
+import { SITE_NAME, SITE_URL, languageAlternates, localizedPath } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}): Promise<Metadata> {
+  const { locale, id } = await params;
+  const team = await prisma.team
+    .findUnique({ where: { id } })
+    .catch(() => null);
+  if (!team) return {};
+
+  const description =
+    (locale === "en" ? team.descriptionEn || team.descriptionNl : team.descriptionNl) ||
+    `${team.name} — ${SITE_NAME}`;
+  const path = `teams/${id}`;
+  const canonical = SITE_URL + localizedPath(locale, path);
+
+  return {
+    title: team.name,
+    description,
+    alternates: { canonical, languages: languageAlternates(path) },
+    openGraph: {
+      title: `${team.name} · ${SITE_NAME}`,
+      description,
+      url: canonical,
+      siteName: SITE_NAME,
+      locale: locale === "nl" ? "nl_NL" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${team.name} · ${SITE_NAME}`,
+      description,
+    },
+  };
+}
 
 export default async function TeamDetailPage({
   params,

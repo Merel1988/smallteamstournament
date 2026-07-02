@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import RollerSkateLogo from "@/components/RollerSkateLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import LanguageHintBar from "@/components/LanguageHintBar";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -20,7 +21,11 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Meta" });
   return {
-    title: t("title"),
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: t("title"),
+      template: `%s · ${SITE_NAME}`,
+    },
     description: t("description"),
     manifest: "/manifest.webmanifest",
     appleWebApp: {
@@ -28,6 +33,12 @@ export async function generateMetadata({
       statusBarStyle: "black-translucent",
       title: "Derby STT",
     },
+    openGraph: {
+      siteName: SITE_NAME,
+      locale: locale === "nl" ? "nl_NL" : "en_US",
+      type: "website",
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 

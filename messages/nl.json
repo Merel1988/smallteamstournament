@@ -164,5 +164,51 @@
     "message": "Deze site is ook in het Engels beschikbaar.",
     "action": "Bekijk in het Engels",
     "dismiss": "Sluiten"
+  },
+  "PageMeta": {
+    "home": {
+      "title": "Small Teams Tournament — Roadkill Rollers Nijmegen",
+      "description": "Alles over het Small Teams Tournament van Roadkill Rollers Nijmegen op 21 november 2026 — teams, schema, bingo, foto's en meer."
+    },
+    "aanmelden": {
+      "title": "Aanmelden",
+      "description": "Meld je team aan voor het Small Teams Tournament op 21 november 2026 in Nijmegen."
+    },
+    "teams": {
+      "title": "Teams",
+      "description": "Alle deelnemende teams aan het Small Teams Tournament in Nijmegen."
+    },
+    "schema": {
+      "title": "Schema",
+      "description": "Het volledige wedstrijdschema van het Small Teams Tournament op 21 november 2026."
+    },
+    "bingo": {
+      "title": "Bingo",
+      "description": "Speel derby-bingo tijdens het Small Teams Tournament en streep je vakjes af."
+    },
+    "fotos": {
+      "title": "Foto's",
+      "description": "Foto's van het Small Teams Tournament — bekijk en deel de mooiste momenten."
+    },
+    "mvp": {
+      "title": "MVP-stemmen",
+      "description": "Stem op de MVP van elke wedstrijd tijdens het Small Teams Tournament."
+    },
+    "nickname": {
+      "title": "Derby-naam generator",
+      "description": "Genereer je eigen roller derby-naam voor het Small Teams Tournament."
+    },
+    "regels": {
+      "title": "Regels",
+      "description": "De huis- en spelregels van het Small Teams Tournament."
+    },
+    "venue": {
+      "title": "Venue",
+      "description": "Sportzaal De Horstacker in Nijmegen — locatie en route naar het Small Teams Tournament."
+    },
+    "notificaties": {
+      "title": "Notificaties",
+      "description": "Ontvang meldingen over het Small Teams Tournament."
+    }
   }
 }

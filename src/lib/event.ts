@@ -6,6 +6,9 @@ export const EVENT = {
   venue: "Sportzaal De Horstacker",
   city: "Nijmegen",
   address: "Horstacker 1447, 6546 GH Nijmegen",
+  street: "Horstacker 1447",
+  postalCode: "6546 GH",
+  country: "NL",
   description:
     "Max 8 teams van 8 spelers (co-ed mogelijk). Korte intensieve bouts van 20 minuten. Voorrang voor kleinere leagues — dit is een leertoernooi.",
 } as const;
