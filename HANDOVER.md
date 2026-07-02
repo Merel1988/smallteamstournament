@@ -10,7 +10,7 @@ Laatste update: **2026-07-02** — F1 t/m F7 afgerond (bewerkbare teksten, aanme
 
 - **Live in productie:** https://smallteamstournament.nl (Vercel + Turso).
 - **Event:** Small Teams Tournament, Roadkill Rollers Nijmegen — 21 november 2026, Sportzaal De Horstacker.
-- **Huidige fase:** eerste verbeterronde. **F1 t/m F7 zijn af** en lokaal geverifieerd. Alle geplande fases (F1–F7) zijn afgerond; resterend werk: PWA-icons, e-mail (§4b) en een handmatige Lighthouse-nulmeting.
+- **Huidige fase:** eerste verbeterronde **F1 t/m F7 af** en live. **Volgende stap: feedback ronde 2 (§4a)** — pagina-zichtbaarheid (FB1), push-notificatie komt niet aan (FB2, bug), en overzicht verstuurde notificaties (FB3). Overig resterend werk: PWA-icons, e-mail (§4b), handmatige Lighthouse-nulmeting.
 - **Productie-DB migratie (F1/F2/F5): ✅ GEDAAN op 2026-07-02.** Op Turso (`derby-stt-prod`) zijn `MessageOverride` + `RegistrationLink` aangemaakt en is `Team.description` vervangen door `descriptionNl` + `descriptionEn` (bestaande waarde gekopieerd naar `descriptionNl`, daarna oude kolom gedropt). Bingo-data (27 `BingoPrompt`-rijen) bleef behouden. Migratie is chirurgisch uitgevoerd via een libSQL-script met de creds uit `.env.production.local` (idempotent: `CREATE TABLE IF NOT EXISTS`-achtig + kolom-checks). Code is gecommit + gepusht naar `main` en live geverifieerd (`/aanmelden`, team-detail NL/EN → 200).
 - **Let op bij volgende schemawijzigingen:** de prod-DB is bestaand, dus `db:generate-sql` (from-empty) volstaat niet — schrijf een surgical migratie (ALTER/CREATE) tegen Turso en houd bingo-data intact.
 - **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons (`public/icon-192.png`, `public/icon-512.png`) ontbreken nog; preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
@@ -84,6 +84,27 @@ Generieke override-laag bovenop next-intl.
 - [x] **Semantische structuur**: `<html lang>` nu **dynamisch per locale** via `getLocale()` in `src/app/layout.tsx` (admin buiten `[locale]` valt terug op `nl`). Skip-to-content-link + `<main id="main-content" aria-label>` + `<nav aria-label>` in `[locale]/layout.tsx`. Nieuwe `A11y`-namespace (skipToContent/mainLabel/navLabel/closePhoto) in beide `messages/*.json`.
 - [x] **Formulieren**: PhotoUpload-inputs hadden alleen placeholders → nu `aria-label` op file/naam/caption (+ `fileLabel`-string). Dynamische meldingen kondigen nu aan: fout = `role="alert"`, succes/status = `role="status"` (PhotoUpload, MvpVoter, NotificationsToggle). Nickname-generator kondigt de gerolde naam aan via een `aria-live` sr-only regio. Foto-lightbox: `role="dialog"` + `aria-modal` + label + zichtbare sluitknop + focus verplaatst naar sluitknop bij openen en terug bij sluiten (Escape werkte al).
 - [ ] **Automatische axe/Lighthouse-nulmeting**: niet gedraaid in deze sessie (geen headless Chromium beschikbaar in de agent-omgeving). Aanrader: Lighthouse-tab in Chrome DevTools op de live site draaien als nulmeting/verificatie; de bovenstaande fixes dekken de gangbare axe-regels (labels, contrast, landmarks, focus, lang, naam-op-knop).
+
+## 4a. Feedback ronde 2 — te verwerken (volgende stappen)
+
+Feedback van Merel na oplevering F1–F7 (2026-07-02). Nog **niet** geïmplementeerd; hieronder met eerste diagnose zodat een volgende sessie er direct in kan.
+
+### FB1 · "Ik zie de toggles om pagina's wel/niet te tonen nergens"
+- **Huidige situatie:** de zichtbaarheid-toggle uit F3 is **per aanmeldlink**, niet per pagina. Te vinden op **`/admin/aanmelden`** → bij elke link een checkbox **"Zichtbaar"** (nieuwe links staan standaard verborgen, met "verborgen"-badge). Dit staat los van de nav-pagina's zelf.
+- **Waarschijnlijke wens:** een schakelaar om **hele pagina's/nav-items** (teams, schema, bingo, foto's, mvp, …) aan/uit te zetten — dat bestaat nu niet.
+- **Voorstel volgende stap:** nieuw admin-scherm "Pagina's/zichtbaarheid" met een `PageVisibility`-model (`key`, `visible`) of een simpele config; nav in `[locale]/layout.tsx` filtert dan op zichtbare items en de betreffende routes geven `notFound()` als ze uit staan. Eerst met Merel afstemmen of ze link-niveau (F3) of pagina-niveau bedoelt.
+
+### FB2 · Push-notificatie komt niet aan (bug)
+- **Flow:** `/admin/push` → server action → `sendToAll()` in `src/lib/push.ts` (web-push + VAPID). Abonneren gebeurt in `NotificationsToggle` + `/api/push/subscribe`.
+- **Meest waarschijnlijke oorzaken (in volgorde):**
+  1. **VAPID-env vars niet (correct) in Vercel-productie gezet.** `configureWebPush()` gooit "VAPID keys not configured" als ze ontbreken; de server action vangt dat niet af → stille fout. Check `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` in Vercel (staan wél lokaal in `.env.production.local`). **Belangrijk:** de public key waarmee de browser abonneerde moet bij dezelfde private key horen — als de keys ooit gewijzigd zijn, moeten bestaande abonnementen opnieuw (oude subs falen met 403/InvalidSignature).
+  2. **`sendToAll` slikt fouten stil op:** alleen HTTP 410 wordt afgehandeld (sub verwijderen); álle andere fouten (403, 400, netwerk) vallen in een lege catch → `sent` blijft 0 en er komt geen melding, zonder zichtbare foutmelding in de admin. **Fix-richting:** per-abonnee-fouten loggen/teruggeven en in de admin-UI tonen (nu geeft de pagina helemaal geen resultaat terug). Overweeg de server action het `{sent, removed}`-resultaat + fouten te laten tonen.
+  3. **Service worker** (`public/sw.js`) `push`/`notificationclick`-handler verifiëren; en of de iOS-PWA daadwerkelijk "geïnstalleerd" is (iOS levert web-push alleen in geïnstalleerde PWA's).
+- **Voorstel volgende stap:** eerst env vars in Vercel verifiëren; dan `sendToAll` fouten laten bubbelen + resultaat in admin tonen; dan end-to-end testen (abonneren → versturen → ontvangen) op een echt device.
+
+### FB3 · Overzicht van reeds verstuurde notificaties
+- **Huidige situatie:** er wordt **niks opgeslagen** over verzonden pushes — geen historie.
+- **Voorstel volgende stap:** `SentNotification`-model (`title`, `body`, `url?`, `sentCount`, `removedCount`, `createdAt`) dat `sendToAll` na verzending wegschrijft; op `/admin/push` een lijst "Recent verstuurd" tonen (nieuwste eerst). Sluit mooi aan op de foutafhandeling uit FB2 (resultaat per verzending vastleggen).
 
 ## 4b. E-mail — `info@smallteamstournament.nl` (los van de app)
 
