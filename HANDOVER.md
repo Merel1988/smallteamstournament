@@ -11,16 +11,8 @@ Laatste update: **2026-07-02** — F1 (bewerkbare teksten), F2 (aanmeldpagina), 
 - **Live in productie:** https://smallteamstournament.nl (Vercel + Turso).
 - **Event:** Small Teams Tournament, Roadkill Rollers Nijmegen — 21 november 2026, Sportzaal De Horstacker.
 - **Huidige fase:** eerste verbeterronde. **F1 t/m F5 zijn af** en lokaal geverifieerd; volgende stap is F6 (SEO) en F7 (toegankelijkheid).
-- **Nog te doen in productie:**
-  - `MessageOverride` én `RegistrationLink` tabellen op Turso aanmaken — `npm run db:generate-sql && turso db shell <db> < schema.sql`.
-  - **F5-datamigratie op Turso** (kolommen van `Team`): `description` is lokaal vervangen door `descriptionNl` + `descriptionEn`. `db:generate-sql` gaat uit van een lege DB, dus voor de bestaande prod-DB handmatig migreren mét dataterugval, bijv.:
-    ```sql
-    ALTER TABLE Team ADD COLUMN descriptionNl TEXT;
-    ALTER TABLE Team ADD COLUMN descriptionEn TEXT;
-    UPDATE Team SET descriptionNl = description WHERE description IS NOT NULL;
-    ALTER TABLE Team DROP COLUMN description;
-    ```
-    (Voer dit uit vóór of samen met de deploy; anders verdwijnt de bestaande NL-beschrijving.)
+- **Productie-DB migratie (F1/F2/F5): ✅ GEDAAN op 2026-07-02.** Op Turso (`derby-stt-prod`) zijn `MessageOverride` + `RegistrationLink` aangemaakt en is `Team.description` vervangen door `descriptionNl` + `descriptionEn` (bestaande waarde gekopieerd naar `descriptionNl`, daarna oude kolom gedropt). Bingo-data (27 `BingoPrompt`-rijen) bleef behouden. Migratie is chirurgisch uitgevoerd via een libSQL-script met de creds uit `.env.production.local` (idempotent: `CREATE TABLE IF NOT EXISTS`-achtig + kolom-checks). Code is gecommit + gepusht naar `main` en live geverifieerd (`/aanmelden`, team-detail NL/EN → 200).
+- **Let op bij volgende schemawijzigingen:** de prod-DB is bestaand, dus `db:generate-sql` (from-empty) volstaat niet — schrijf een surgical migratie (ALTER/CREATE) tegen Turso en houd bingo-data intact.
 - **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons (`public/icon-192.png`, `public/icon-512.png`) ontbreken nog; preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
 
 ## 2. Architectuur — snelle oriëntatie
