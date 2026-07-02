@@ -31,20 +31,27 @@ export default async function HomePage({
   const hidden = await getHiddenPageKeys();
 
   const now = new Date();
-  const liveMatch = await prisma.match
-    .findFirst({
-      where: { status: "live" },
-      include: { teamA: true, teamB: true },
-    })
-    .catch(() => null);
+  // The live/next-match blocks expose team names (teams page) and the schedule
+  // (schema page), so only show them when both of those pages are visible.
+  const showMatches = !hidden.has("teams") && !hidden.has("schema");
+  const liveMatch = showMatches
+    ? await prisma.match
+        .findFirst({
+          where: { status: "live" },
+          include: { teamA: true, teamB: true },
+        })
+        .catch(() => null)
+    : null;
 
-  const nextMatch = await prisma.match
-    .findFirst({
-      where: { status: "scheduled", startsAt: { gte: now } },
-      orderBy: { startsAt: "asc" },
-      include: { teamA: true, teamB: true },
-    })
-    .catch(() => null);
+  const nextMatch = showMatches
+    ? await prisma.match
+        .findFirst({
+          where: { status: "scheduled", startsAt: { gte: now } },
+          orderBy: { startsAt: "asc" },
+          include: { teamA: true, teamB: true },
+        })
+        .catch(() => null)
+    : null;
 
   const beforeEvent = EVENT.date.getTime() > now.getTime();
   const timeFormatter = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "nl-NL", {

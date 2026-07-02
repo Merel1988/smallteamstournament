@@ -116,6 +116,10 @@ Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau
 
 ### FB5 · Teams-pagina tijdelijk verborgen
 - Op verzoek van Merel staat de **teams-pagina voorlopig uit** (niet in nav, niet op home). Gezet via `scripts/set-page-visibility-prod.mjs teams off` (prod `PageVisibility`-rij `teams`=0). Weer aanzetten kan in **`/admin/zichtbaarheid`** (vink Teams aan) of `... set-page-visibility-prod.mjs teams on`. NB: dit raakt alleen de **publieke** pagina; teams beheren/verwijderen in admin blijft gewoon werken.
+- **Homepage live/volgende-wedstrijd-blok:** toonde nog teamnamen ondanks verborgen teams. Nu gekoppeld: `[locale]/page.tsx` toont dat blok alleen als **teams én schema** zichtbaar zijn (`showMatches`). Gedeployed.
+
+### Deploy-notitie
+- **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
 
 ## 4b. E-mail — `info@smallteamstournament.nl` (los van de app)
 
