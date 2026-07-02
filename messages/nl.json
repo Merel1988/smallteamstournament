@@ -1,6 +1,7 @@
 {
   "Nav": {
     "home": "Home",
+    "aanmelden": "Aanmelden",
     "teams": "Teams",
     "schema": "Schema",
     "bingo": "Bingo",
@@ -39,6 +40,13 @@
     "hours": "uur",
     "minutes": "min",
     "seconds": "sec"
+  },
+  "Aanmelden": {
+    "title": "Aanmelden",
+    "subtitle": "Wil je met je team meedoen aan het Small Teams Tournament? Meld je aan via de link(s) hieronder.",
+    "empty": "De aanmeldingen zijn nog niet geopend — kom binnenkort terug!",
+    "openLink": "Open aanmeldformulier →",
+    "questions": "Vragen? Mail ons op info@smallteamstournament.nl."
   },
   "Teams": {
     "title": "Teams",
@@ -151,5 +159,10 @@
     "label": "Taal",
     "nl": "Nederlands",
     "en": "English"
+  },
+  "LanguageHint": {
+    "message": "Deze site is ook in het Engels beschikbaar.",
+    "action": "Bekijk in het Engels",
+    "dismiss": "Sluiten"
   }
 }

@@ -22,7 +22,8 @@ export default async function AdminTeamsPage() {
         <Field name="name" label="Naam" required />
         <Field name="shortName" label="Afkorting" />
         <Field name="color" label="Accent-kleur (hex, bv #ff3e6c)" />
-        <Field name="description" label="Korte beschrijving" />
+        <Field name="descriptionNl" label="Korte beschrijving (NL)" />
+        <Field name="descriptionEn" label="Korte beschrijving (EN, optioneel)" />
         <label className="block">
           <span className="block text-sm mb-1">Logo</span>
           <input type="file" name="logo" accept="image/*" />
@@ -68,9 +69,14 @@ export default async function AdminTeamsPage() {
                   defaultValue={t.color ?? ""}
                 />
                 <Field
-                  name="description"
-                  label="Beschrijving"
-                  defaultValue={t.description ?? ""}
+                  name="descriptionNl"
+                  label="Beschrijving (NL)"
+                  defaultValue={t.descriptionNl ?? ""}
+                />
+                <Field
+                  name="descriptionEn"
+                  label="Beschrijving (EN, optioneel)"
+                  defaultValue={t.descriptionEn ?? ""}
                 />
                 <label className="block">
                   <span className="block text-sm mb-1">Logo vervangen</span>

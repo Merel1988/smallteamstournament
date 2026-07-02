@@ -1,6 +1,7 @@
 {
   "Nav": {
     "home": "Home",
+    "aanmelden": "Register",
     "teams": "Teams",
     "schema": "Schedule",
     "bingo": "Bingo",
@@ -39,6 +40,13 @@
     "hours": "hrs",
     "minutes": "min",
     "seconds": "sec"
+  },
+  "Aanmelden": {
+    "title": "Register",
+    "subtitle": "Want to enter your team in the Small Teams Tournament? Sign up through the link(s) below.",
+    "empty": "Registration isn't open yet — check back soon!",
+    "openLink": "Open registration form →",
+    "questions": "Questions? Email us at info@smallteamstournament.nl."
   },
   "Teams": {
     "title": "Teams",
@@ -151,5 +159,10 @@
     "label": "Language",
     "nl": "Nederlands",
     "en": "English"
+  },
+  "LanguageHint": {
+    "message": "This site is also available in Dutch.",
+    "action": "View in Dutch",
+    "dismiss": "Dismiss"
   }
 }

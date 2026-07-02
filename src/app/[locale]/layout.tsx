@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import RollerSkateLogo from "@/components/RollerSkateLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import LanguageHintBar from "@/components/LanguageHintBar";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -46,6 +47,7 @@ export default async function LocaleLayout({
 
   const navItems = [
     { href: "/", label: tNav("home") },
+    { href: "/aanmelden", label: tNav("aanmelden") },
     { href: "/teams", label: tNav("teams") },
     { href: "/schema", label: tNav("schema") },
     { href: "/bingo", label: tNav("bingo") },
@@ -88,6 +90,8 @@ export default async function LocaleLayout({
           ))}
         </nav>
       </header>
+
+      <LanguageHintBar />
 
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
         {children}

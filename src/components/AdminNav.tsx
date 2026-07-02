@@ -2,11 +2,13 @@ import Link from "next/link";
 
 const items = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/aanmelden", label: "Aanmelden" },
   { href: "/admin/teams", label: "Teams" },
   { href: "/admin/spelers", label: "Spelers" },
   { href: "/admin/schema", label: "Schema" },
   { href: "/admin/bingo", label: "Bingo" },
   { href: "/admin/regels", label: "Regels" },
+  { href: "/admin/teksten", label: "Teksten" },
   { href: "/admin/fotos", label: "Foto's" },
   { href: "/admin/mvp", label: "MVP" },
   { href: "/admin/push", label: "Push" },

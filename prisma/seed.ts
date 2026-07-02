@@ -62,7 +62,8 @@ async function main() {
         name: "Roadkill Rollers",
         shortName: "RKR",
         color: "#ff3e6c",
-        description: "Thuisteam — Nijmegen",
+        descriptionNl: "Thuisteam — Nijmegen",
+        descriptionEn: "Home team — Nijmegen",
       },
     });
     const teamB = await prisma.team.create({

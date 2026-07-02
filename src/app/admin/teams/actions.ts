@@ -11,7 +11,8 @@ export async function createTeam(formData: FormData) {
   if (!name) return;
   const shortName = String(formData.get("shortName") || "").trim() || null;
   const color = String(formData.get("color") || "").trim() || null;
-  const description = String(formData.get("description") || "").trim() || null;
+  const descriptionNl = String(formData.get("descriptionNl") || "").trim() || null;
+  const descriptionEn = String(formData.get("descriptionEn") || "").trim() || null;
   const logo = formData.get("logo") as File | null;
 
   let logoUrl: string | null = null;
@@ -20,7 +21,7 @@ export async function createTeam(formData: FormData) {
   }
 
   await prisma.team.create({
-    data: { name, shortName, color, description, logoUrl },
+    data: { name, shortName, color, descriptionNl, descriptionEn, logoUrl },
   });
   revalidatePath("/admin/teams");
   revalidatePath("/teams");
@@ -32,16 +33,18 @@ export async function updateTeam(id: string, formData: FormData) {
   if (!name) return;
   const shortName = String(formData.get("shortName") || "").trim() || null;
   const color = String(formData.get("color") || "").trim() || null;
-  const description = String(formData.get("description") || "").trim() || null;
+  const descriptionNl = String(formData.get("descriptionNl") || "").trim() || null;
+  const descriptionEn = String(formData.get("descriptionEn") || "").trim() || null;
   const logo = formData.get("logo") as File | null;
 
   const data: {
     name: string;
     shortName: string | null;
     color: string | null;
-    description: string | null;
+    descriptionNl: string | null;
+    descriptionEn: string | null;
     logoUrl?: string;
-  } = { name, shortName, color, description };
+  } = { name, shortName, color, descriptionNl, descriptionEn };
 
   if (logo && logo.size > 0) {
     data.logoUrl = await uploadToBlob(logo, "teams");

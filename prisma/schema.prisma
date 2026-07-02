@@ -13,7 +13,8 @@ model Team {
   shortName   String?
   logoUrl     String?
   color       String?
-  description String?
+  descriptionNl String?
+  descriptionEn String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   players     Player[]
@@ -91,4 +92,32 @@ model PushSubscription {
   p256dh    String
   auth      String
   createdAt DateTime @default(now())
+}
+
+// External registration links shown on /aanmelden. Bilingual label/description
+// (EN falls back to NL when empty). Hidden by default (visible=false) so a link
+// can be prepared ahead of time and switched on manually.
+model RegistrationLink {
+  id            String   @id @default(cuid())
+  order         Int      @default(0)
+  url           String
+  labelNl       String
+  labelEn       String?
+  descriptionNl String?
+  descriptionEn String?
+  visible       Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Editable text layer over next-intl. `key` is a dotted path into the message
+// tree (e.g. "Home.countdownLabel"). Absent keys fall back to messages/*.json.
+model MessageOverride {
+  id        String   @id @default(cuid())
+  locale    String
+  key       String
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@unique([locale, key])
 }

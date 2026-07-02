@@ -29,6 +29,7 @@ To sync Turso (production DB) after schema changes: `npm run db:generate-sql && 
 - Admin pages live under `src/app/admin/...` and are **outside** the `[locale]` segment — admin is Dutch-only.
 - API routes under `src/app/api/...`.
 - `src/proxy.ts` is the Next.js 16 middleware (named `proxy`, not `middleware`). It branches by pathname: `/admin/*` runs admin auth (cookie verify or redirect to `/admin/login`); `/api/*` passes through; everything else runs `next-intl` middleware. The `matcher` excludes `_next` and files with extensions.
+- next-intl config lives in `src/i18n/`: `routing.ts` declares the locales (`nl` default, `en`) and `localePrefix`; `request.ts` loads the per-request messages; `navigation.ts` exports locale-aware `Link`, `redirect`, `usePathname`, `useRouter`.
 
 ### Admin auth
 
@@ -54,4 +55,5 @@ Shared-password gate (organisers share one password), not per-user accounts.
 - Server Components by default; `'use client'` only on interactive components (`BingoCard`, `MvpVoter`, `PhotoUpload`, `NotificationsToggle`, `NicknameGenerator`, `LanguageSwitcher`, `Countdown`).
 - Bingo state and other per-visitor progress is kept in `localStorage` — no user accounts.
 - New user-facing strings must be added to both `messages/nl.json` and `messages/en.json`.
+- In `[locale]` pages, import `Link` (and other navigation helpers) from `@/i18n/navigation` so URLs stay locale-aware — not from `next/link`. Admin pages are Dutch-only and use plain `next/link`.
 - Event metadata (date, venue) lives in `src/lib/event.ts` — change there, not in components.

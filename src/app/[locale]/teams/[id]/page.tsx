@@ -45,9 +45,17 @@ export default async function TeamDetailPage({
         )}
         <div>
           <h1 className="font-display text-4xl">{team.name}</h1>
-          {team.description && (
-            <p className="text-derby-ink/70 mt-1 text-sm">{team.description}</p>
-          )}
+          {(() => {
+            const description =
+              locale === "en"
+                ? team.descriptionEn || team.descriptionNl
+                : team.descriptionNl;
+            return (
+              description && (
+                <p className="text-derby-ink/70 mt-1 text-sm">{description}</p>
+              )
+            );
+          })()}
         </div>
       </header>
 

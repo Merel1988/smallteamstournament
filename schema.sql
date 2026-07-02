@@ -5,7 +5,8 @@ CREATE TABLE "Team" (
     "shortName" TEXT,
     "logoUrl" TEXT,
     "color" TEXT,
-    "description" TEXT,
+    "descriptionNl" TEXT,
+    "descriptionEn" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
@@ -85,9 +86,35 @@ CREATE TABLE "PushSubscription" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- CreateTable
+CREATE TABLE "RegistrationLink" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "order" INTEGER NOT NULL DEFAULT 0,
+    "url" TEXT NOT NULL,
+    "labelNl" TEXT NOT NULL,
+    "labelEn" TEXT,
+    "descriptionNl" TEXT,
+    "descriptionEn" TEXT,
+    "visible" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "MessageOverride" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "locale" TEXT NOT NULL,
+    "key" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "updatedAt" DATETIME NOT NULL
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "MvpVote_voterHash_matchId_key" ON "MvpVote"("voterHash", "matchId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "PushSubscription_endpoint_key" ON "PushSubscription"("endpoint");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "MessageOverride_locale_key_key" ON "MessageOverride"("locale", "key");
 
