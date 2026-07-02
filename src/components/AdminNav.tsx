@@ -3,6 +3,7 @@ import Link from "next/link";
 const items = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/aanmelden", label: "Aanmelden" },
+  { href: "/admin/zichtbaarheid", label: "Zichtbaarheid" },
   { href: "/admin/teams", label: "Teams" },
   { href: "/admin/spelers", label: "Spelers" },
   { href: "/admin/schema", label: "Schema" },

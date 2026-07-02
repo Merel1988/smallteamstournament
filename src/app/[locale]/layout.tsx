@@ -8,6 +8,7 @@ import RollerSkateLogo from "@/components/RollerSkateLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import LanguageHintBar from "@/components/LanguageHintBar";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
+import { getHiddenPageKeys } from "@/lib/page-visibility";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -57,18 +58,19 @@ export default async function LocaleLayout({
   const tFooter = await getTranslations({ locale, namespace: "Footer" });
   const tA11y = await getTranslations({ locale, namespace: "A11y" });
 
+  const hidden = await getHiddenPageKeys();
   const navItems = [
-    { href: "/", label: tNav("home") },
-    { href: "/aanmelden", label: tNav("aanmelden") },
-    { href: "/teams", label: tNav("teams") },
-    { href: "/schema", label: tNav("schema") },
-    { href: "/bingo", label: tNav("bingo") },
-    { href: "/fotos", label: tNav("photos") },
-    { href: "/mvp", label: tNav("mvp") },
-    { href: "/regels", label: tNav("rules") },
-    { href: "/venue", label: tNav("venue") },
-    { href: "/nickname", label: tNav("nickname") },
-  ] as const;
+    { key: "home", href: "/", label: tNav("home") },
+    { key: "aanmelden", href: "/aanmelden", label: tNav("aanmelden") },
+    { key: "teams", href: "/teams", label: tNav("teams") },
+    { key: "schema", href: "/schema", label: tNav("schema") },
+    { key: "bingo", href: "/bingo", label: tNav("bingo") },
+    { key: "fotos", href: "/fotos", label: tNav("photos") },
+    { key: "mvp", href: "/mvp", label: tNav("mvp") },
+    { key: "regels", href: "/regels", label: tNav("rules") },
+    { key: "venue", href: "/venue", label: tNav("venue") },
+    { key: "nickname", href: "/nickname", label: tNav("nickname") },
+  ].filter((item) => !hidden.has(item.key));
 
   return (
     <NextIntlClientProvider>

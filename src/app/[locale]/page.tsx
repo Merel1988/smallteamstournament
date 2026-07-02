@@ -6,6 +6,7 @@ import EventJsonLd from "@/components/EventJsonLd";
 import { EVENT } from "@/lib/event";
 import { prisma } from "@/lib/prisma";
 import { pageMetadata } from "@/lib/seo";
+import { getHiddenPageKeys } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,7 @@ export default async function HomePage({
   setRequestLocale(locale);
   const t = await getTranslations("Home");
   const tEvent = await getTranslations("Event");
+  const hidden = await getHiddenPageKeys();
 
   const now = new Date();
   const liveMatch = await prisma.match
@@ -123,7 +125,9 @@ export default async function HomePage({
           { href: "/fotos", label: t("cards.photos"), emoji: "📸" },
           { href: "/mvp", label: t("cards.mvpVote"), emoji: "⭐" },
           { href: "/nickname", label: t("cards.nickname"), emoji: "💀" },
-        ].map((card) => (
+        ]
+          .filter((card) => !hidden.has(card.href.slice(1)))
+          .map((card) => (
           <Link
             key={card.href}
             href={card.href}

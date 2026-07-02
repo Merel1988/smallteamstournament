@@ -101,6 +101,13 @@ CREATE TABLE "RegistrationLink" (
 );
 
 -- CreateTable
+CREATE TABLE "PageVisibility" (
+    "key" TEXT NOT NULL PRIMARY KEY,
+    "visible" BOOLEAN NOT NULL DEFAULT true,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "MessageOverride" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "locale" TEXT NOT NULL,

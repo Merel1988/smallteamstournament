@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { assertPageVisible } from "@/lib/page-visibility";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +23,7 @@ export default async function TeamsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  await assertPageVisible("teams");
   setRequestLocale(locale);
   const t = await getTranslations("Teams");
 

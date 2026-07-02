@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import MvpVoter from "@/components/MvpVoter";
+import { assertPageVisible } from "@/lib/page-visibility";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +22,7 @@ export default async function MvpPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  await assertPageVisible("mvp");
   setRequestLocale(locale);
   const t = await getTranslations("Mvp");
 

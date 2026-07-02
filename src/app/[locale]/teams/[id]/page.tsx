@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/prisma";
+import { assertPageVisible } from "@/lib/page-visibility";
 import { SITE_NAME, SITE_URL, languageAlternates, localizedPath } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -51,6 +52,7 @@ export default async function TeamDetailPage({
   params: Promise<{ locale: string; id: string }>;
 }) {
   const { locale, id } = await params;
+  await assertPageVisible("teams");
   setRequestLocale(locale);
   const t = await getTranslations("Teams");
 

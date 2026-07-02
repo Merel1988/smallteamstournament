@@ -110,6 +110,16 @@ model RegistrationLink {
   updatedAt     DateTime @updatedAt
 }
 
+// Per-page visibility toggle. `key` is a page key from src/lib/pages.ts
+// (e.g. "teams"). A missing row means visible — only hidden pages need a row
+// with visible=false. Nav items are filtered and the routes return notFound()
+// when hidden.
+model PageVisibility {
+  key       String   @id
+  visible   Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
 // Editable text layer over next-intl. `key` is a dotted path into the message
 // tree (e.g. "Home.countdownLabel"). Absent keys fall back to messages/*.json.
 model MessageOverride {

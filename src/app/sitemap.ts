@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { SITE_URL, localizedPath, languageAlternates } from "@/lib/seo";
+import { getHiddenPageKeys } from "@/lib/page-visibility";
 
 export const dynamic = "force-dynamic";
 
@@ -28,12 +29,20 @@ function entry(path: string, lastModified?: Date): MetadataRoute.Sitemap[number]
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticEntries = STATIC_PATHS.map((p) => entry(p));
+  // A togglable page's key equals its path segment, so a hidden page is simply
+  // dropped from the sitemap (home has path "" and is never togglable).
+  const hidden = await getHiddenPageKeys();
+  const staticEntries = STATIC_PATHS.filter((p) => !hidden.has(p)).map((p) =>
+    entry(p),
+  );
 
-  const teams = await prisma.team
-    .findMany({ select: { id: true, updatedAt: true } })
-    .catch(() => []);
-  const teamEntries = teams.map((t) => entry(`teams/${t.id}`, t.updatedAt));
+  const teamEntries = hidden.has("teams")
+    ? []
+    : (
+        await prisma.team
+          .findMany({ select: { id: true, updatedAt: true } })
+          .catch(() => [])
+      ).map((t) => entry(`teams/${t.id}`, t.updatedAt));
 
   return [...staticEntries, ...teamEntries];
 }
