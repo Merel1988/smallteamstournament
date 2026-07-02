@@ -110,6 +110,13 @@ Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau
 - **Huidige situatie:** er wordt **niks opgeslagen** over verzonden pushes — geen historie.
 - **Voorstel volgende stap:** `SentNotification`-model (`title`, `body`, `url?`, `sentCount`, `removedCount`, `createdAt`) dat `sendToAll` na verzending wegschrijft; op `/admin/push` een lijst "Recent verstuurd" tonen (nieuwste eerst). Sluit mooi aan op de foutafhandeling uit FB2 (resultaat per verzending vastleggen).
 
+### FB4 · Team verwijderen gaf een error ✅ FIX (deploy openstaand)
+- **Oorzaak:** `Match → Team` is `ON DELETE RESTRICT`, dus een team dat in een wedstrijd voorkomt kon niet verwijderd worden (FK-fout). Lokaal viel dit niet op (0 matches), in prod wel.
+- **Fix:** `deleteTeam` (`src/app/admin/teams/actions.ts`) verwijdert nu eerst de matches van het team (hun MVP-stemmen cascaden), dan het team (spelers + stemmen cascaden), atomair via `$transaction`. DB-niveau geverifieerd: directe delete faalt met FK-fout, matches-eerst-volgorde slaagt. `npm run build` groen. Commit `88a4812`. **Nog deployen naar `main`.**
+
+### FB5 · Teams-pagina tijdelijk verborgen
+- Op verzoek van Merel staat de **teams-pagina voorlopig uit** (niet in nav, niet op home). Gezet via `scripts/set-page-visibility-prod.mjs teams off` (prod `PageVisibility`-rij `teams`=0). Weer aanzetten kan in **`/admin/zichtbaarheid`** (vink Teams aan) of `... set-page-visibility-prod.mjs teams on`. NB: dit raakt alleen de **publieke** pagina; teams beheren/verwijderen in admin blijft gewoon werken.
+
 ## 4b. E-mail — `info@smallteamstournament.nl` (los van de app)
 
 Besluit: gedeelde postbus via **Purelymail** (~€9/jaar), minstens **2 organisatoren** delen dezelfde IMAP-login. iCloud viel af (postbus hangt aan één Apple ID, geen gedeelde toegang). DNS staat bij **Vercel** (`ns1/ns2.vercel-dns.com`), nu nog géén MX/SPF ingesteld.
