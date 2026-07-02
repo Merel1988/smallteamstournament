@@ -60,7 +60,17 @@ export async function deleteTeam(id: string) {
   await requireAdmin();
   const team = await prisma.team.findUnique({ where: { id } });
   if (team?.logoUrl) await deleteFromBlob(team.logoUrl);
-  await prisma.team.delete({ where: { id } });
+  // Match → Team is ON DELETE RESTRICT, so a team that plays in any match can't
+  // be deleted directly. Remove its matches first (their MVP votes cascade),
+  // then the team (its players and their votes cascade). Atomic so a failure
+  // never leaves half-deleted data.
+  await prisma.$transaction([
+    prisma.match.deleteMany({
+      where: { OR: [{ teamAId: id }, { teamBId: id }] },
+    }),
+    prisma.team.delete({ where: { id } }),
+  ]);
   revalidatePath("/admin/teams");
   revalidatePath("/teams");
+  revalidatePath("/schema");
 }

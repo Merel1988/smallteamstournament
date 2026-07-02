@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-07-02** — F1 t/m F7 afgerond; **FB1 (pagina-zichtbaarheid) afgerond lokaal** — nog niet naar prod (schema-migratie + deploy openstaand, zie §1). FB2 (push-bug) en FB3 (verstuurd-historie) nog open.
+Laatste update: **2026-07-02** — F1 t/m F7 afgerond; **FB1 (pagina-zichtbaarheid) afgerond, gemigreerd én live** (prod-tabel `PageVisibility` aangemaakt, code op `main` → Vercel Ready, live geverifieerd). FB2 (push-bug) en FB3 (verstuurd-historie) nog open.
 
 ---
 
@@ -10,7 +10,7 @@ Laatste update: **2026-07-02** — F1 t/m F7 afgerond; **FB1 (pagina-zichtbaarhe
 
 - **Live in productie:** https://smallteamstournament.nl (Vercel + Turso).
 - **Event:** Small Teams Tournament, Roadkill Rollers Nijmegen — 21 november 2026, Sportzaal De Horstacker.
-- **Huidige fase:** eerste verbeterronde **F1 t/m F7 af** en live; **feedback ronde 2: FB1 (pagina-zichtbaarheid) af lokaal.** **Volgende stap: FB1 naar prod** (`PageVisibility`-tabel op Turso aanmaken + deploy, zie §4a FB1), daarna **FB2** (push-notificatie komt niet aan — bug) en **FB3** (overzicht verstuurde notificaties). Overig resterend werk: PWA-icons, e-mail (§4b), handmatige Lighthouse-nulmeting.
+- **Huidige fase:** eerste verbeterronde **F1 t/m F7 af** en live; **feedback ronde 2: FB1 (pagina-zichtbaarheid) af, gemigreerd en live.** **Volgende stap: FB2** (push-notificatie komt niet aan — bug), daarna **FB3** (overzicht verstuurde notificaties). Overig resterend werk: PWA-icons, e-mail (§4b), handmatige Lighthouse-nulmeting.
 - **Productie-DB migratie (F1/F2/F5): ✅ GEDAAN op 2026-07-02.** Op Turso (`derby-stt-prod`) zijn `MessageOverride` + `RegistrationLink` aangemaakt en is `Team.description` vervangen door `descriptionNl` + `descriptionEn` (bestaande waarde gekopieerd naar `descriptionNl`, daarna oude kolom gedropt). Bingo-data (27 `BingoPrompt`-rijen) bleef behouden. Migratie is chirurgisch uitgevoerd via een libSQL-script met de creds uit `.env.production.local` (idempotent: `CREATE TABLE IF NOT EXISTS`-achtig + kolom-checks). Code is gecommit + gepusht naar `main` en live geverifieerd (`/aanmelden`, team-detail NL/EN → 200).
 - **Let op bij volgende schemawijzigingen:** de prod-DB is bestaand, dus `db:generate-sql` (from-empty) volstaat niet — schrijf een surgical migratie (ALTER/CREATE) tegen Turso en houd bingo-data intact.
 - **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons (`public/icon-192.png`, `public/icon-512.png`) ontbreken nog; preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
@@ -89,14 +89,14 @@ Generieke override-laag bovenop next-intl.
 
 Feedback van Merel na oplevering F1–F7 (2026-07-02). Nog **niet** geïmplementeerd; hieronder met eerste diagnose zodat een volgende sessie er direct in kan.
 
-### FB1 · Pagina-zichtbaarheid ✅ AF (lokaal — prod-migratie + deploy nog te doen)
+### FB1 · Pagina-zichtbaarheid ✅ AF (gemigreerd + live op 2026-07-02)
 Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau.
 - [x] Schema: model `PageVisibility { key @id, visible @default(true), updatedAt }`. **Ontbrekende rij = zichtbaar** — alleen verborgen pagina's krijgen een rij met `visible=false`. Lokaal via `db:push`.
 - [x] Centrale registry `src/lib/pages.ts` (`TOGGLABLE_PAGES`): één bron voor de 9 schakelbare pagina's (aanmelden, teams, schema, bingo, fotos, mvp, regels, venue, nickname) met `key`/`path`/`navKey`/`adminLabel`. **Home is bewust niet schakelbaar** (altijd aan).
 - [x] Helper `src/lib/page-visibility.ts`: `getHiddenPageKeys()` (Set, DB-fout → niks verborgen) + `assertPageVisible(key)` → `notFound()`.
 - [x] Nav in `[locale]/layout.tsx` filtert verborgen items (beide talen). Elke publieke route roept `assertPageVisible(...)` aan (venue + nickname kregen daarvoor `force-dynamic`; teams/[id] valt onder key "teams"). Homepage-feature-cards (`[locale]/page.tsx`) worden óók gefilterd zodat een verborgen pagina nergens meer bereikbaar is. `sitemap.ts` laat verborgen pagina's weg (en team-detailpagina's als "teams" uit staat).
 - [x] Admin-scherm `/admin/zichtbaarheid` (+ AdminNav-link "Zichtbaarheid"): checkbox per pagina, één "Opslaan" die per key upsert; daarna `revalidatePath("/", "layout")`. Lokaal end-to-end geverifieerd: verborgen pagina → 404 (NL + `/en`), uit nav, uit homepage-cards, uit sitemap; herstellen → alles terug; andere pagina's onaangetast; `npm run build` groen.
-- [ ] **Prod:** `PageVisibility`-tabel bestaat nog niet op Turso. Vóór/bij deploy een surgical migratie draaien: `CREATE TABLE "PageVisibility" ("key" TEXT PRIMARY KEY NOT NULL, "visible" INTEGER NOT NULL DEFAULT true, "updatedAt" DATETIME NOT NULL);` (zie §1-waarschuwing: prod-DB is bestaand, `db:generate-sql` from-empty volstaat niet). Daarna code naar `main` pushen + deploy.
+- [x] **Prod:** `PageVisibility`-tabel aangemaakt op Turso (`derby-stt-prod`) via het idempotente `scripts/migrate-pagevisibility-prod.mjs` (`node --env-file=.env.production.local ...`; `CREATE TABLE IF NOT EXISTS`, 0 rijen = alles zichtbaar). Code gecommit + gepusht naar `main` (`c96c02e`) → Vercel productie-deploy Ready. Live geverifieerd: home/bingo/teams 200, `/admin/zichtbaarheid` 307→login (geen 500), sitemap intact.
 
 ### FB2 · Push-notificatie komt niet aan (bug)
 - **Flow:** `/admin/push` → server action → `sendToAll()` in `src/lib/push.ts` (web-push + VAPID). Abonneren gebeurt in `NotificationsToggle` + `/api/push/subscribe`.
