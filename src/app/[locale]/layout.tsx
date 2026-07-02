@@ -55,6 +55,7 @@ export default async function LocaleLayout({
 
   const tNav = await getTranslations({ locale, namespace: "Nav" });
   const tFooter = await getTranslations({ locale, namespace: "Footer" });
+  const tA11y = await getTranslations({ locale, namespace: "A11y" });
 
   const navItems = [
     { href: "/", label: tNav("home") },
@@ -71,6 +72,9 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider>
+      <a href="#main-content" className="skip-link">
+        {tA11y("skipToContent")}
+      </a>
       <header className="bg-derby-ink text-white sticky top-0 z-40 shadow-lg">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2">
@@ -89,7 +93,10 @@ export default async function LocaleLayout({
             </Link>
           </div>
         </div>
-        <nav className="max-w-6xl mx-auto px-2 pb-2 flex gap-1 overflow-x-auto">
+        <nav
+          aria-label={tA11y("navLabel")}
+          className="max-w-6xl mx-auto px-2 pb-2 flex gap-1 overflow-x-auto"
+        >
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -104,7 +111,11 @@ export default async function LocaleLayout({
 
       <LanguageHintBar />
 
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
+      <main
+        id="main-content"
+        aria-label={tA11y("mainLabel")}
+        className="flex-1 max-w-6xl mx-auto w-full px-4 py-6"
+      >
         {children}
       </main>
 

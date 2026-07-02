@@ -48,11 +48,13 @@ export default function PhotoUpload({ onUploaded }: { onUploaded?: () => void })
       <input
         type="file"
         accept="image/*"
+        aria-label={t("fileLabel")}
         onChange={(e) => setFile(e.target.files?.[0] ?? null)}
         className="block w-full text-sm"
       />
       <input
         type="text"
+        aria-label={t("namePlaceholder")}
         placeholder={t("namePlaceholder")}
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -60,14 +62,23 @@ export default function PhotoUpload({ onUploaded }: { onUploaded?: () => void })
       />
       <input
         type="text"
+        aria-label={t("captionPlaceholder")}
         placeholder={t("captionPlaceholder")}
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
         className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
       />
 
-      {error && <p className="text-sm text-derby-accent">{error}</p>}
-      {done && <p className="text-sm text-green-700">{t("done")}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-derby-accent">
+          {error}
+        </p>
+      )}
+      {done && (
+        <p role="status" className="text-sm text-green-700">
+          {t("done")}
+        </p>
+      )}
 
       <button
         type="submit"

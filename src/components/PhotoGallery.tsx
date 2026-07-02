@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import PhotoUpload from "./PhotoUpload";
 
@@ -15,8 +15,11 @@ type Photo = {
 
 export default function PhotoGallery({ initial }: { initial: Photo[] }) {
   const t = useTranslations("Photos");
+  const tA11y = useTranslations("A11y");
   const [photos, setPhotos] = useState<Photo[]>(initial);
   const [lightbox, setLightbox] = useState<Photo | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
 
   async function reload() {
     const res = await fetch("/api/photos");
@@ -26,13 +29,28 @@ export default function PhotoGallery({ initial }: { initial: Photo[] }) {
     }
   }
 
+  function openLightbox(photo: Photo) {
+    lastFocusedRef.current = document.activeElement as HTMLElement;
+    setLightbox(photo);
+  }
+
+  function closeLightbox() {
+    setLightbox(null);
+    lastFocusedRef.current?.focus();
+  }
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLightbox(null);
+      if (e.key === "Escape") closeLightbox();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  // Move focus into the dialog when it opens.
+  useEffect(() => {
+    if (lightbox) closeButtonRef.current?.focus();
+  }, [lightbox]);
 
   return (
     <div className="space-y-6">
@@ -46,7 +64,7 @@ export default function PhotoGallery({ initial }: { initial: Photo[] }) {
             <button
               key={p.id}
               type="button"
-              onClick={() => setLightbox(p)}
+              onClick={() => openLightbox(p)}
               className="block mb-2 break-inside-avoid w-full"
             >
               <Image
@@ -74,15 +92,27 @@ export default function PhotoGallery({ initial }: { initial: Photo[] }) {
       {lightbox && (
         <div
           role="dialog"
-          onClick={() => setLightbox(null)}
+          aria-modal="true"
+          aria-label={lightbox.caption || t("altFallback")}
+          onClick={closeLightbox}
           className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
         >
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={closeLightbox}
+            aria-label={tA11y("closePhoto")}
+            className="absolute top-4 right-4 h-10 w-10 rounded-full bg-white/90 text-derby-ink text-xl font-bold flex items-center justify-center shadow"
+          >
+            ✕
+          </button>
           <Image
             src={lightbox.url}
-            alt={lightbox.caption || "Derby foto"}
+            alt={lightbox.caption || t("altFallback")}
             width={1200}
             height={1200}
             unoptimized
+            onClick={(e) => e.stopPropagation()}
             className="max-h-full max-w-full w-auto h-auto rounded-lg"
           />
         </div>

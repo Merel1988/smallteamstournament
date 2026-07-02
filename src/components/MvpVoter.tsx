@@ -43,7 +43,10 @@ export default function MvpVoter({
 
   if (submitted) {
     return (
-      <p className="bg-derby-yellow rounded-xl p-4 font-display text-xl text-center">
+      <p
+        role="status"
+        className="bg-derby-yellow rounded-xl p-4 font-display text-xl text-center"
+      >
         {t("thanks")}
       </p>
     );
@@ -79,7 +82,11 @@ export default function MvpVoter({
         ))}
       </ul>
 
-      {error && <p className="text-sm text-derby-accent">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-derby-accent">
+          {error}
+        </p>
+      )}
 
       <button
         type="button"

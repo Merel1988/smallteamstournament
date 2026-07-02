@@ -107,7 +107,11 @@ export default function NotificationsToggle({ vapidKey }: { vapidKey: string }) 
           {t("disable")}
         </button>
       )}
-      {error && <p className="text-sm text-derby-accent">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-derby-accent">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

@@ -32,6 +32,11 @@ export default function NicknameGenerator() {
         {t("again")}
       </button>
 
+      {/* Announce the freshly generated name to screen readers. */}
+      <p role="status" aria-live="polite" className="sr-only">
+        {name}
+      </p>
+
       {history.length > 0 && (
         <div className="pt-4">
           <p className="text-xs uppercase tracking-wider text-derby-ink/60 mb-2">

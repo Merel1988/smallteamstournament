@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-07-02** — F1 (bewerkbare teksten), F2 (aanmeldpagina), F3 (zichtbaarheid), F4 (taalhint), F5 (teams tweetalig) en F6 (SEO) afgerond; prod-DB gemigreerd en live.
+Laatste update: **2026-07-02** — F1 t/m F7 afgerond (bewerkbare teksten, aanmeldpagina, zichtbaarheid, taalhint, teams tweetalig, SEO, toegankelijkheid); prod-DB gemigreerd en live.
 
 ---
 
@@ -10,7 +10,7 @@ Laatste update: **2026-07-02** — F1 (bewerkbare teksten), F2 (aanmeldpagina), 
 
 - **Live in productie:** https://smallteamstournament.nl (Vercel + Turso).
 - **Event:** Small Teams Tournament, Roadkill Rollers Nijmegen — 21 november 2026, Sportzaal De Horstacker.
-- **Huidige fase:** eerste verbeterronde. **F1 t/m F6 zijn af** en lokaal geverifieerd; volgende stap is F7 (toegankelijkheid).
+- **Huidige fase:** eerste verbeterronde. **F1 t/m F7 zijn af** en lokaal geverifieerd. Alle geplande fases (F1–F7) zijn afgerond; resterend werk: PWA-icons, e-mail (§4b) en een handmatige Lighthouse-nulmeting.
 - **Productie-DB migratie (F1/F2/F5): ✅ GEDAAN op 2026-07-02.** Op Turso (`derby-stt-prod`) zijn `MessageOverride` + `RegistrationLink` aangemaakt en is `Team.description` vervangen door `descriptionNl` + `descriptionEn` (bestaande waarde gekopieerd naar `descriptionNl`, daarna oude kolom gedropt). Bingo-data (27 `BingoPrompt`-rijen) bleef behouden. Migratie is chirurgisch uitgevoerd via een libSQL-script met de creds uit `.env.production.local` (idempotent: `CREATE TABLE IF NOT EXISTS`-achtig + kolom-checks). Code is gecommit + gepusht naar `main` en live geverifieerd (`/aanmelden`, team-detail NL/EN → 200).
 - **Let op bij volgende schemawijzigingen:** de prod-DB is bestaand, dus `db:generate-sql` (from-empty) volstaat niet — schrijf een surgical migratie (ALTER/CREATE) tegen Turso en houd bingo-data intact.
 - **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons (`public/icon-192.png`, `public/icon-512.png`) ontbreken nog; preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
@@ -75,15 +75,15 @@ Generieke override-laag bovenop next-intl.
 - [x] Open Graph / Twitter-card tags in alle metadata + **dynamische OG-afbeelding** via `src/app/[locale]/opengraph-image.tsx` (`next/og` `ImageResponse`, 1200×630, merkkleuren). Los van de nog ontbrekende PWA-icons. NB: de OG-URL bevat de locale-prefix (`/nl/opengraph-image`) en doet één 307-redirect naar `/opengraph-image` — alle grote scrapers volgen dat.
 - [x] JSON-LD `SportsEvent` op de homepage (`src/components/EventJsonLd.tsx`, data uit `src/lib/event.ts` — daar zijn `street`/`postalCode`/`country` aan toegevoegd voor een net `PostalAddress`). Lokaal geverifieerd: metadata/hreflang/canonical/OG per locale, `sitemap.xml`, `robots.txt`, JSON-LD en OG-image; `npm run build` groen.
 
-**Nog open (bewust doorgeschoven):** echte PWA-icons (`public/icon-192.png`, `icon-512.png`) + een statische fallback-OG/`icon` ontbreken nog (zie §1). `<html lang>` staat nog hard op `nl` in `src/app/layout.tsx` → hoort bij F7.
+**Nog open (bewust doorgeschoven):** echte PWA-icons (`public/icon-192.png`, `icon-512.png`) + een statische fallback-OG/`icon` ontbreken nog (zie §1).
 
-### F7 · Toegankelijkheid / WCAG verbeteren
-- [ ] Volledige toetsenbord-navigatie + zichtbare focus-states op alle interactieve elementen (nav, knoppen, bingo-vakjes, formulieren).
-- [ ] Kleurcontrast controleren tegen WCAG AA (derby-ink/yellow/accent combinaties) en waar nodig bijstellen.
-- [ ] Alt-teksten op alle afbeeldingen (team-logo's, headshots, foto's, roller-skate-logo) en zinnige `aria-label`s waar iconen/emoji als knop dienen.
-- [ ] Semantische structuur: correcte heading-hiërarchie, `lang`-attribuut per locale op `<html>`, `main`/`nav`/`header`/`footer` landmarks (grotendeels aanwezig — verifiëren).
-- [ ] Formulieren: expliciete `<label>`-koppeling, foutmeldingen toegankelijk (`aria-live`), en de notificaties/upload-flows met screenreader testen.
-- [ ] Automatische check (bijv. axe/Lighthouse) draaien als nulmeting en na de fixes.
+### F7 · Toegankelijkheid / WCAG verbeteren ✅ AF
+- [x] **Focus-states**: globale `:focus-visible`-ring (rode outline + offset, zichtbaar op licht/donker/geel) in `globals.css` voor alle interactieve elementen. Bingo-vakjes en knoppen waren al echte `<button>`s (toetsenbord-OK). Ook `prefers-reduced-motion` gerespecteerd (animaties/transities uit).
+- [x] **Kleurcontrast** tegen WCAG AA gecontroleerd (script met echte luminantie-berekening). Alle daadwerkelijke combinaties halen AA: ink-op-cream 17.6, geel-op-ink 12.0, wit/70-op-ink 9.8, accent-op-wit 4.88, wit-op-accent 4.88, ink/60-op-wit 5.25, groen-700-op-wit 5.02. **Enige randgeval:** `derby-accent` (rood) klein tekst direct op de cream achtergrond = 4.34 (alleen AA-large) — in de praktijk staat rode tekst op witte kaarten (4.88 ✓). Palet bewust niet aangepast (branding); gebruik `derby-accent-dark` (#8b0000, 10:1) als er ooit kleine rode tekst rechtstreeks op cream moet.
+- [x] **Alt-teksten**: alle 8 `<Image>` hadden al alt; icoon-knoppen (bingo-toggle, taal-switch, taalhint-dismiss, foto-sluiten) hebben `aria-label`. RollerSkateLogo heeft een `<title>`.
+- [x] **Semantische structuur**: `<html lang>` nu **dynamisch per locale** via `getLocale()` in `src/app/layout.tsx` (admin buiten `[locale]` valt terug op `nl`). Skip-to-content-link + `<main id="main-content" aria-label>` + `<nav aria-label>` in `[locale]/layout.tsx`. Nieuwe `A11y`-namespace (skipToContent/mainLabel/navLabel/closePhoto) in beide `messages/*.json`.
+- [x] **Formulieren**: PhotoUpload-inputs hadden alleen placeholders → nu `aria-label` op file/naam/caption (+ `fileLabel`-string). Dynamische meldingen kondigen nu aan: fout = `role="alert"`, succes/status = `role="status"` (PhotoUpload, MvpVoter, NotificationsToggle). Nickname-generator kondigt de gerolde naam aan via een `aria-live` sr-only regio. Foto-lightbox: `role="dialog"` + `aria-modal` + label + zichtbare sluitknop + focus verplaatst naar sluitknop bij openen en terug bij sluiten (Escape werkte al).
+- [ ] **Automatische axe/Lighthouse-nulmeting**: niet gedraaid in deze sessie (geen headless Chromium beschikbaar in de agent-omgeving). Aanrader: Lighthouse-tab in Chrome DevTools op de live site draaien als nulmeting/verificatie; de bovenstaande fixes dekken de gangbare axe-regels (labels, contrast, landmarks, focus, lang, naam-op-knop).
 
 ## 4b. E-mail — `info@smallteamstournament.nl` (los van de app)
 

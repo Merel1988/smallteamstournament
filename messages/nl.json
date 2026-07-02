@@ -81,6 +81,7 @@
     "altFallback": "Derby foto",
     "upload": {
       "heading": "Stuur je foto in",
+      "fileLabel": "Kies een foto",
       "namePlaceholder": "Jouw (derby-)naam (optioneel)",
       "captionPlaceholder": "Korte caption (optioneel)",
       "submit": "Upload",
@@ -164,6 +165,12 @@
     "message": "Deze site is ook in het Engels beschikbaar.",
     "action": "Bekijk in het Engels",
     "dismiss": "Sluiten"
+  },
+  "A11y": {
+    "skipToContent": "Ga naar de inhoud",
+    "closePhoto": "Foto sluiten",
+    "mainLabel": "Hoofdinhoud",
+    "navLabel": "Hoofdnavigatie"
   },
   "PageMeta": {
     "home": {
