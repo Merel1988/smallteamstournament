@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
+Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB3 prod-migratie gedraaid; PWA-icons gegenereerd uit het logo; FB9 (illustratieve regelspagina + huisregels naar venue) af — nog committen/deployen.** **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
 
 ---
 
@@ -10,10 +10,10 @@ Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB2, FB6, FB7, FB8
 
 - **Live in productie:** https://smallteamstournament.nl (Vercel + Turso).
 - **Event:** Small Teams Tournament, Roadkill Rollers Nijmegen — 21 november 2026, Sportzaal De Horstacker.
-- **Huidige fase:** eerste verbeterronde F1–F7 + FB1 af/live. **FB2/FB6/FB7/FB8 live gedeployed.** **Openstaand: (a) prod-migratie `SentNotification`-tabel voor FB3** — draai `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` (idempotent, start leeg; site draait al zonder dankzij defensieve code); **(b) FB2 device-test** (abonneren op geïnstalleerde PWA → test-push via `/admin/push`, UI toont resultaat/fout). Overig resterend werk: PWA-icons, e-mail (§4b), handmatige Lighthouse-nulmeting.
+- **Huidige fase:** eerste verbeterronde F1–F7 + FB1 af/live. **FB2/FB6/FB7/FB8 live gedeployed.** **Openstaand: (a) prod-migratie `SentNotification`-tabel voor FB3** — draai `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` (idempotent, start leeg; site draait al zonder dankzij defensieve code); **(b) FB2 device-test** (abonneren op geïnstalleerde PWA → test-push via `/admin/push`, UI toont resultaat/fout). FB3-migratie is inmiddels gedraaid (✅ 2026-07-03). **PWA-icons zijn nu gegenereerd uit het logo** (`public/icon-192.png`, `public/icon-512.png` + `src/app/apple-icon.png`, bron `scripts/icon-source.svg`) — nog niet gedeployed. Overig resterend werk: e-mail (§4b), handmatige Lighthouse-nulmeting.
 - **Productie-DB migratie (F1/F2/F5): ✅ GEDAAN op 2026-07-02.** Op Turso (`derby-stt-prod`) zijn `MessageOverride` + `RegistrationLink` aangemaakt en is `Team.description` vervangen door `descriptionNl` + `descriptionEn` (bestaande waarde gekopieerd naar `descriptionNl`, daarna oude kolom gedropt). Bingo-data (27 `BingoPrompt`-rijen) bleef behouden. Migratie is chirurgisch uitgevoerd via een libSQL-script met de creds uit `.env.production.local` (idempotent: `CREATE TABLE IF NOT EXISTS`-achtig + kolom-checks). Code is gecommit + gepusht naar `main` en live geverifieerd (`/aanmelden`, team-detail NL/EN → 200).
 - **Let op bij volgende schemawijzigingen:** de prod-DB is bestaand, dus `db:generate-sql` (from-empty) volstaat niet — schrijf een surgical migratie (ALTER/CREATE) tegen Turso en houd bingo-data intact.
-- **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons (`public/icon-192.png`, `public/icon-512.png`) ontbreken nog; preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
+- **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons ✅ gegenereerd (`public/icon-192.png`, `public/icon-512.png`, `src/app/apple-icon.png` uit `scripts/icon-source.svg`) — nog te deployen; preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
 
 ## 2. Architectuur — snelle oriëntatie
 
@@ -75,7 +75,7 @@ Generieke override-laag bovenop next-intl.
 - [x] Open Graph / Twitter-card tags in alle metadata + **dynamische OG-afbeelding** via `src/app/[locale]/opengraph-image.tsx` (`next/og` `ImageResponse`, 1200×630, merkkleuren). Los van de nog ontbrekende PWA-icons. NB: de OG-URL bevat de locale-prefix (`/nl/opengraph-image`) en doet één 307-redirect naar `/opengraph-image` — alle grote scrapers volgen dat.
 - [x] JSON-LD `SportsEvent` op de homepage (`src/components/EventJsonLd.tsx`, data uit `src/lib/event.ts` — daar zijn `street`/`postalCode`/`country` aan toegevoegd voor een net `PostalAddress`). Lokaal geverifieerd: metadata/hreflang/canonical/OG per locale, `sitemap.xml`, `robots.txt`, JSON-LD en OG-image; `npm run build` groen.
 
-**Nog open (bewust doorgeschoven):** echte PWA-icons (`public/icon-192.png`, `icon-512.png`) + een statische fallback-OG/`icon` ontbreken nog (zie §1).
+**Nog open (bewust doorgeschoven):** PWA-icons ✅ gegenereerd uit het logo (`public/icon-192.png`, `icon-512.png`, `src/app/apple-icon.png`); een statische fallback-OG ontbreekt nog.
 
 ### F7 · Toegankelijkheid / WCAG verbeteren ✅ AF
 - [x] **Focus-states**: globale `:focus-visible`-ring (rode outline + offset, zichtbaar op licht/donker/geel) in `globals.css` voor alle interactieve elementen. Bingo-vakjes en knoppen waren al echte `<button>`s (toetsenbord-OK). Ook `prefers-reduced-motion` gerespecteerd (animaties/transities uit).
@@ -110,12 +110,12 @@ Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau
 - **Nog te doen (heeft een echt device nodig):** code staat **live** — op de live site abonneren → test-push versturen vanuit `/admin/push` → kijken wat de nieuwe UI toont. `0 verstuurd, geen abonnees` = niemand geabonneerd (iOS levert web-push alléén in een geïnstalleerde PWA). `403` = VAPID-paar klopt niet. Zichtbare fout = direct diagnosticeerbaar.
 - **Losse observatie:** `public/icon-192.png`/`icon-512.png` ontbreken nog (zie §1); `sw.js` verwijst ernaar in `showNotification`. Dit blokkeert de melding niet (icoon valt gewoon weg), maar netjes om mee te nemen bij de PWA-icons.
 
-### FB3 · Overzicht van reeds verstuurde notificaties — ✅ code live gedeployed, ⏳ prod-migratie open
+### FB3 · Overzicht van reeds verstuurde notificaties — ✅ AF (code live + prod-migratie gedaan 2026-07-03)
 - [x] Schema: model `SentNotification { id, title, body, url?, sentCount, removedCount, failedCount, errors?, createdAt }` (`prisma/schema.prisma`). Lokaal via `db:push` toegepast + geverifieerd (kolommen + round-trip via libSQL).
 - [x] `sendToAll` (`src/lib/push.ts`) schrijft na elke verzending een `SentNotification`-rij weg (best-effort: in try-catch, een logging-fout verbergt nooit een echte verzending). `errors[]` wordt als newline-joined tekst opgeslagen.
 - [x] `/admin/push` toont onderaan **"Recent verstuurd"** (nieuwste eerst, max 20): titel, tekst, evt. link, `x verstuurd / y opgeruimd / z mislukt` + evt. foutlijst. De lijst ververst na een verzending dankzij de bestaande `revalidatePath("/admin/push")`. `npm run build` groen.
 - **Code is live gedeployed** (`501b6f5` op `main`). Site draait zonder de tabel dankzij defensieve code (write in try-catch, read `.catch(() => [])`) — alleen de historie-lijst blijft leeg tot de migratie is gedraaid.
-- [ ] **Prod-migratie (jouw actie):** `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` (idempotent, `CREATE TABLE IF NOT EXISTS`, start leeg, raakt geen bestaande data). De sandbox blokkeert dit in auto-mode; draai het zelf. Verwachte output: `Ensured table: SentNotification` + `SentNotification rows: 0`.
+- [x] **Prod-migratie ✅ GEDAAN op 2026-07-03:** `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` gedraaid → `Ensured table: SentNotification` + `SentNotification rows: 0`. Tabel staat live op Turso, historie vult zich vanaf de eerstvolgende push.
 
 ### FB6 · Admin niet in een container (layout) ✅ AF
 - [x] `src/app/admin/layout.tsx` wikkelt nu alles in `max-w-6xl mx-auto w-full px-4 py-6` (zelfde container als de publieke `[locale]/layout.tsx`), zodat velden niet meer tegen de rand lopen. `npm run build` groen.
@@ -135,6 +135,14 @@ Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau
 - Op verzoek van Merel staat de **teams-pagina voorlopig uit** (niet in nav, niet op home). Gezet via `scripts/set-page-visibility-prod.mjs teams off` (prod `PageVisibility`-rij `teams`=0). Weer aanzetten kan in **`/admin/zichtbaarheid`** (vink Teams aan) of `... set-page-visibility-prod.mjs teams on`. NB: dit raakt alleen de **publieke** pagina; teams beheren/verwijderen in admin blijft gewoon werken.
 - **Homepage live/volgende-wedstrijd-blok:** toonde nog teamnamen ondanks verborgen teams. Nu gekoppeld: `[locale]/page.tsx` toont dat blok alleen als **teams én schema** zichtbaar zijn (`showMatches`). Gedeployed.
 
+### FB9 · Regelspagina met illustraties + huisregels naar venue ✅ AF (deploy openstaand)
+- **Regelspagina (`/regels`) volledig herzien** tot een beknopte "zo werkt roller derby"-uitleg met eigen brand-SVG-illustraties (geen externe/WFTDA-beelden i.v.m. copyright + CSP). Nieuwe component `src/components/RulesIllustrations.tsx`: `TrackDiagram` (baan + pack + jammer), `HelmetCover` (variant jammer/pivot/blocker, stripe geклipt op de helm), `ScoringDiagram` (+1 per ingehaalde tegenstander), `PenaltyDiagram` (fluit + 0:30-klok). Alle SVG's in de huisstijl (ink/accent/geel/cream), server-rendered, `role="img"` + `aria-label`.
+- **Secties:** basis, rollen (3 helmkaarten), scoren, penalties, "dit toernooi" (ink-blok), en een bronnenblok met links naar `rules.wftda.org` + `resources.wftda.org` (WFTDA als bron vermeld). Illustraties visueel geverifieerd via inline-SVG → PNG render.
+- **Teksten volledig aanpasbaar** via `/admin/teksten`: `Rules`-namespace herschreven (title/lead/basics/roles/rolelabels+desc/scoring/penalties/format/sources...) in **beide** `messages/*.json`. Oude `intro1–4`/`quickHeading`-keys vervallen (eventuele oude overrides zijn inert, niets leest ze).
+- **Huisregels verplaatst naar `/venue`:** de `HouseRule`-lijst (DB, met defaults als fallback) rendert nu op de venue-pagina; `houseHeading`/`houseIntro`/`houseDefault1–5` verhuisd naar de `Venue`-namespace. Regelspagina bevat geen huisregels meer.
+- **Tekststijl:** en/em-dash (– / —) vermeden in alle nieuwe/geraakte copy (zie ook Merel's voorkeur). NB: ±13 dashes staan nog in overige bestaande strings (PageMeta, Aanmelden, schema-subtitle, tijdrange `12:00–18:00`) — nog niet opgeschoond.
+- `npm run build` groen; lint-fouten die overblijven zijn allemaal pre-existing (NotificationsToggle/BingoCard/LanguageHintBar/qr/layout), niet in de nieuwe bestanden. **Nog committen + deployen naar `main`.**
+
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
 
@@ -151,7 +159,7 @@ Besluit: gedeelde postbus via **Purelymail** (~€9/jaar), minstens **2 organisa
 
 - Team-/derbynamen worden niet vertaald (eigennamen) — bewust, zie B3.
 - Caching-gedrag van de tekst-override-laag goed testen: publieke pagina's mogen niet een oude (gecachte) tekst blijven tonen na een admin-edit.
-- PWA-icons ontbreken nog (zie §1).
+- PWA-icons ✅ gegenereerd uit het logo (zie §1); nog te deployen.
 
 ## 6. Nieuwe sessie starten
 

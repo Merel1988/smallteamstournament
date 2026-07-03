@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { assertPageVisible } from "@/lib/page-visibility";
 import { EVENT } from "@/lib/event";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,11 @@ export default async function VenuePage({
   await assertPageVisible("venue");
   setRequestLocale(locale);
   const t = await getTranslations("Venue");
+
+  const houseRules = await prisma.houseRule
+    .findMany({ orderBy: { order: "asc" } })
+    .catch(() => []);
+  const hasText = (key: string) => String(t.raw(key) ?? "").trim().length > 0;
 
   const mapsQuery = encodeURIComponent(EVENT.address);
   return (
@@ -50,6 +56,31 @@ export default async function VenuePage({
         <InfoCard title={t("firstAidTitle")}>{t("firstAidBody")}</InfoCard>
         <InfoCard title={t("changingTitle")}>{t("changingBody")}</InfoCard>
         <InfoCard title={t("parkingTitle")}>{t("parkingBody")}</InfoCard>
+      </section>
+
+      <section className="bg-white rounded-2xl p-6 shadow space-y-3">
+        <h2 className="font-display text-3xl">{t("houseHeading")}</h2>
+        {hasText("houseIntro") && (
+          <p className="text-derby-ink/70 text-sm">{t("houseIntro")}</p>
+        )}
+        {houseRules.length === 0 ? (
+          <ul className="space-y-2 list-disc pl-5">
+            <li>{t("houseDefault1")}</li>
+            <li>{t("houseDefault2")}</li>
+            <li>{t("houseDefault3")}</li>
+            <li>{t("houseDefault4")}</li>
+            <li>{t("houseDefault5")}</li>
+          </ul>
+        ) : (
+          <ol className="space-y-3 list-decimal pl-5">
+            {houseRules.map((r) => (
+              <li key={r.id}>
+                <strong>{r.title}</strong>
+                {r.body ? ` — ${r.body}` : ""}
+              </li>
+            ))}
+          </ol>
+        )}
       </section>
 
       <section className="bg-white rounded-2xl p-6 shadow">
