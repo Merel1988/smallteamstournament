@@ -58,6 +58,14 @@ export default async function LocaleLayout({
   const tFooter = await getTranslations({ locale, namespace: "Footer" });
   const tA11y = await getTranslations({ locale, namespace: "A11y" });
 
+  // The language hint deliberately speaks the *other* language: on the Dutch
+  // page it invites English speakers to switch (in English), and vice versa.
+  const otherLocale = routing.locales.find((l) => l !== locale) ?? locale;
+  const tHint = await getTranslations({
+    locale: otherLocale,
+    namespace: "LanguageHint",
+  });
+
   const hidden = await getHiddenPageKeys();
   const navItems = [
     { key: "home", href: "/", label: tNav("home") },
@@ -112,7 +120,12 @@ export default async function LocaleLayout({
         </nav>
       </header>
 
-      <LanguageHintBar />
+      <LanguageHintBar
+        targetLocale={otherLocale}
+        message={tHint("message")}
+        action={tHint("action")}
+        dismiss={tHint("dismiss")}
+      />
 
       <main
         id="main-content"

@@ -197,8 +197,8 @@
     "en": "English"
   },
   "LanguageHint": {
-    "message": "This site is also available in Dutch.",
-    "action": "View in Dutch",
+    "message": "This site is also available in English.",
+    "action": "View in English",
     "dismiss": "Dismiss"
   },
   "A11y": {
