@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB10 (regelspagina-illustraties bijgeschaafd na feedback Merel: rondere baan, 2 volledige teams van 5 op de baan, pivot-streep van voor naar achter, iets uitgebreidere basis-tekst) gecommit (`5c73760`) + gepusht naar `main`; deploy-verificatie nog open.** **FB3 prod-migratie gedraaid (tabel live); PWA-icons uit het logo + FB9 (illustratieve regelspagina + huisregels naar venue) gecommit (`6b10137`), gepusht naar `main` en live gedeployed (auto-deploy Ready, live smoke-test: /regels NL+EN, /venue-huisregels en alle icons 200).** **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
+Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB10 + FB11 (regelspagina-illustraties in twee rondes bijgeschaafd na feedback Merel: uiteindelijk een echte flat-track-vorm (stadion/afgeronde rechthoek), jammer- + pivot-startlijn, 2 volledige teams van 5, en pivot-helmstreep in zijaanzicht van voor naar achter) gecommit (`5c73760` + `a6e44db`) + gepusht naar `main`; deploy-verificatie nog open.** **Nieuwe feedback ronde 3 open — zie §4c (homepage-blokjes + toernooi-infopagina, admin-container-ruimte).** **FB3 prod-migratie gedraaid (tabel live); PWA-icons uit het logo + FB9 (illustratieve regelspagina + huisregels naar venue) gecommit (`6b10137`), gepusht naar `main` en live gedeployed (auto-deploy Ready, live smoke-test: /regels NL+EN, /venue-huisregels en alle icons 200).** **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
 
 ---
 
@@ -150,6 +150,24 @@ Feedback op FB9 verwerkt in `src/components/RulesIllustrations.tsx` + basis-teks
 - [x] **2 volledige teams van 5 op de baan:** nieuwe `PlayerToken` (kleur = team ACCENT/WHITE, marking = positie). Baan toont nu 10 spelers: 2 jammers (ster) die uit de pack breken + pack van 2 pivots (streep) + 6 blockers. Markers in INK voor contrast op beide teamkleuren.
 - [x] **Basis-tekst iets uitgebreider:** `Rules.basicsBody` in beide `messages/*.json` (fysiek contact + pack-uitleg + "één puntenmaker en vier verdedigers"). Blijft bewerkbaar via `/admin/teksten`.
 - Visueel geverifieerd via inline-SVG → PNG render (baan + pivot-helm). `tsc --noEmit` schoon op de geraakte bestanden; JSON valide. **✅ Gecommit (`5c73760`) + gepusht naar `main`.** Auto-deploy nog niet geverifieerd — controleer of Vercel Ready is; zo niet, `vercel --prod --yes` als fallback (zie deploy-notitie).
+
+### FB11 · Regelspagina-illustraties, tweede feedbackronde ✅ code klaar (deploy openstaand)
+Vervolgfeedback van Merel op FB10, verwerkt in `src/components/RulesIllustrations.tsx`:
+- [x] **Baan-vorm klopt nu:** FB10 maakte de ovaal te rond. Nu een **stadion/afgeronde-rechthoekvorm** (twee rechte stukken + halfronde bochten) die als een echte flat track leest, qua verhouding tussen de te-platte (FB9) en te-ronde (FB10) versie in. Paden i.p.v. `<ellipse>` (viewBox 390×260).
+- [x] **Jammer- + pivot-startlijn toegevoegd** (ontbraken): rode `jammer line` en witte `pivot line` dwars over het onderste rechte stuk. De 10 spelers staan nu opgesteld als **jam-start**: pack tussen de lijnen, de 2 jammers achter de jammer line.
+- [x] **Pivot-helmstreep gecorrigeerd (zijaanzicht):** de helm is een zijaanzicht (links = voor, rechts = achter), dus de streep loopt nu als een boog van voor naar achter **over de bovenkant/kruin**, niet als verticale streep over het midden. `PlayerToken`-pivotmarkering is meegedraaid naar horizontaal (langs de rijrichting).
+- Visueel geverifieerd via inline-SVG → PNG render. `tsc --noEmit` schoon. **✅ Gecommit (`a6e44db`) + gepusht naar `main`; deploy nog te verifiëren.**
+
+## 4c. Feedback ronde 3 — te verwerken (volgende stappen)
+
+Nieuwe feedback van Merel (2026-07-03), nog **niet** geïmplementeerd.
+
+### FB12 · Homepage-blokjes + toernooi-infopagina
+- [ ] **Homepage aanpassen** met blokjes/linkjes naar de belangrijkste pagina's: **Aanmelden**, **Regels**, en **info over het toernooi**. NB: er is al een homepage-feature-card-mechanisme (`[locale]/page.tsx`, gefilterd op `PageVisibility`) — kijk of dat uitgebreid/hergebruikt kan worden i.p.v. iets nieuws.
+- [ ] **Open vraag (met Merel afstemmen):** waar komt "info over het toernooi zelf"? Losse **nieuwe pagina** aanmaken (bijv. `/toernooi` of `/info`, met eigen `PageVisibility`-key + nav-item + bewerkbare teksten), of uitbreiden van bestaande content? Er is al `Home.eventInfo` (bewerkbaar tekstblok op home, FB7) en de `/venue`-pagina — mogelijk overlap. Eerst beslissen vóór bouwen.
+
+### FB13 · Admin-container: velden tegen de randen
+- [ ] Ondanks FB6 (buitenste container in `src/app/admin/layout.tsx`: `max-w-6xl mx-auto w-full px-4 py-6`) staan de **tekstvlakken in het admin-gedeelte nog tegen de randen**. Waarschijnlijk missen de **pagina-/kaart-/formulier-niveau** elementen interne padding (of forms zijn edge-to-edge). Uitzoeken per admin-pagina (o.a. `/admin/teksten`, `/admin/teams`, `/admin/aanmelden`) en ruimte/padding toevoegen — bv. inputs in kaarten met `p-*`, of `space-y`/`gap` tussen velden. Even de daadwerkelijke schermen bekijken om te zien waar het knelt.
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
