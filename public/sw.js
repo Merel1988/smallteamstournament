@@ -46,7 +46,16 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  const data = event.data?.json() || {};
+  // Payloads from the app are JSON, but a raw-text push (e.g. the DevTools
+  // "Push" test button) must not crash the handler and swallow the notification.
+  let data = {};
+  if (event.data) {
+    try {
+      data = event.data.json();
+    } catch {
+      data = { body: event.data.text() };
+    }
+  }
   const title = data.title || "Derby STT";
   const options = {
     body: data.body || "Er is nieuws van het toernooi",
