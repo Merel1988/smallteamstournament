@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-07-02** — F1 t/m F7 afgerond; FB1 (pagina-zichtbaarheid) afgerond, gemigreerd én live. **FB2 (push-bug): code-fix af (foutafhandeling + zichtbaar resultaat in admin), `npm run build` groen — nog committen/deployen + device-verificatie.** FB3 (verstuurd-historie) nog open.
+Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
 
 ---
 
@@ -10,7 +10,7 @@ Laatste update: **2026-07-02** — F1 t/m F7 afgerond; FB1 (pagina-zichtbaarheid
 
 - **Live in productie:** https://smallteamstournament.nl (Vercel + Turso).
 - **Event:** Small Teams Tournament, Roadkill Rollers Nijmegen — 21 november 2026, Sportzaal De Horstacker.
-- **Huidige fase:** eerste verbeterronde **F1 t/m F7 af** en live; feedback ronde 2: FB1 af/live. **FB2 (push-bug): code-fix af (foutafhandeling + zichtbaar resultaat), nog committen/deployen + op device verifiëren.** **Volgende stap daarna: FB3** (overzicht verstuurde notificaties). Overig resterend werk: PWA-icons, e-mail (§4b), handmatige Lighthouse-nulmeting.
+- **Huidige fase:** eerste verbeterronde F1–F7 + FB1 af/live. **FB2/FB6/FB7/FB8 live gedeployed.** **Openstaand: (a) prod-migratie `SentNotification`-tabel voor FB3** — draai `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` (idempotent, start leeg; site draait al zonder dankzij defensieve code); **(b) FB2 device-test** (abonneren op geïnstalleerde PWA → test-push via `/admin/push`, UI toont resultaat/fout). Overig resterend werk: PWA-icons, e-mail (§4b), handmatige Lighthouse-nulmeting.
 - **Productie-DB migratie (F1/F2/F5): ✅ GEDAAN op 2026-07-02.** Op Turso (`derby-stt-prod`) zijn `MessageOverride` + `RegistrationLink` aangemaakt en is `Team.description` vervangen door `descriptionNl` + `descriptionEn` (bestaande waarde gekopieerd naar `descriptionNl`, daarna oude kolom gedropt). Bingo-data (27 `BingoPrompt`-rijen) bleef behouden. Migratie is chirurgisch uitgevoerd via een libSQL-script met de creds uit `.env.production.local` (idempotent: `CREATE TABLE IF NOT EXISTS`-achtig + kolom-checks). Code is gecommit + gepusht naar `main` en live geverifieerd (`/aanmelden`, team-detail NL/EN → 200).
 - **Let op bij volgende schemawijzigingen:** de prod-DB is bestaand, dus `db:generate-sql` (from-empty) volstaat niet — schrijf een surgical migratie (ALTER/CREATE) tegen Turso en houd bingo-data intact.
 - **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons (`public/icon-192.png`, `public/icon-512.png`) ontbreken nog; preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
@@ -98,7 +98,7 @@ Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau
 - [x] Admin-scherm `/admin/zichtbaarheid` (+ AdminNav-link "Zichtbaarheid"): checkbox per pagina, één "Opslaan" die per key upsert; daarna `revalidatePath("/", "layout")`. Lokaal end-to-end geverifieerd: verborgen pagina → 404 (NL + `/en`), uit nav, uit homepage-cards, uit sitemap; herstellen → alles terug; andere pagina's onaangetast; `npm run build` groen.
 - [x] **Prod:** `PageVisibility`-tabel aangemaakt op Turso (`derby-stt-prod`) via het idempotente `scripts/migrate-pagevisibility-prod.mjs` (`node --env-file=.env.production.local ...`; `CREATE TABLE IF NOT EXISTS`, 0 rijen = alles zichtbaar). Code gecommit + gepusht naar `main` (`c96c02e`) → Vercel productie-deploy Ready. Live geverifieerd: home/bingo/teams 200, `/admin/zichtbaarheid` 307→login (geen 500), sitemap intact.
 
-### FB2 · Push-notificatie komt niet aan (bug) — ⏳ code-fix af, device-verificatie open
+### FB2 · Push-notificatie komt niet aan (bug) — ✅ code live gedeployed, ⏳ device-verificatie open
 - **Flow:** `/admin/push` → server action → `sendToAll()` in `src/lib/push.ts` (web-push + VAPID). Abonneren gebeurt in `NotificationsToggle` + `/api/push/subscribe`.
 - **Onderzocht op 2026-07-02:**
   - **VAPID-env vars staan wél in Vercel-productie** (`NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` — alle drie "Encrypted", 35 dagen oud; geverifieerd met `vercel env ls production`). Suspect #1 (ontbrekende vars) is dus **onwaarschijnlijk**. NB: of de public/private in Vercel een kloppend *paar* vormen kon niet lokaal geverifieerd worden (secrets pullen werd geblokkeerd) — als het versturen nu een **403/InvalidSignature** toont, is dát de oorzaak → keys opnieuw genereren en bestaande abonnees opnieuw laten abonneren.
@@ -107,14 +107,15 @@ Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau
   - [x] Server action `src/app/admin/push/actions.ts` (`useActionState`-vorm) vangt de "VAPID keys not configured"-throw af → toont een duidelijke NL-melding i.p.v. stille crash.
   - [x] Admin-UI `src/app/admin/push/PushForm.tsx` (nieuw, client) toont na versturen het resultaat: aantal verstuurd/opgeruimd/mislukt + de foutlijst (`role="alert"`/`role="status"`). `page.tsx` rendert dit component.
   - [x] `/api/push/send/route.ts` profiteert automatisch van de rijkere `sendToAll`-return (geen wijziging nodig).
-- **Nog te doen (heeft een echt device nodig):** op de live site abonneren → test-push versturen vanuit `/admin/push` → kijken wat de nieuwe UI toont. `0 verstuurd, geen abonnees` = niemand geabonneerd (iOS levert web-push alléén in een geïnstalleerde PWA). `403` = VAPID-paar klopt niet. Zichtbare fout = direct diagnosticeerbaar. **Deploy deze code eerst** zodat de foutmelding live zichtbaar is.
+- **Nog te doen (heeft een echt device nodig):** code staat **live** — op de live site abonneren → test-push versturen vanuit `/admin/push` → kijken wat de nieuwe UI toont. `0 verstuurd, geen abonnees` = niemand geabonneerd (iOS levert web-push alléén in een geïnstalleerde PWA). `403` = VAPID-paar klopt niet. Zichtbare fout = direct diagnosticeerbaar.
 - **Losse observatie:** `public/icon-192.png`/`icon-512.png` ontbreken nog (zie §1); `sw.js` verwijst ernaar in `showNotification`. Dit blokkeert de melding niet (icoon valt gewoon weg), maar netjes om mee te nemen bij de PWA-icons.
 
-### FB3 · Overzicht van reeds verstuurde notificaties — ⏳ code af, prod-migratie + deploy open
+### FB3 · Overzicht van reeds verstuurde notificaties — ✅ code live gedeployed, ⏳ prod-migratie open
 - [x] Schema: model `SentNotification { id, title, body, url?, sentCount, removedCount, failedCount, errors?, createdAt }` (`prisma/schema.prisma`). Lokaal via `db:push` toegepast + geverifieerd (kolommen + round-trip via libSQL).
 - [x] `sendToAll` (`src/lib/push.ts`) schrijft na elke verzending een `SentNotification`-rij weg (best-effort: in try-catch, een logging-fout verbergt nooit een echte verzending). `errors[]` wordt als newline-joined tekst opgeslagen.
 - [x] `/admin/push` toont onderaan **"Recent verstuurd"** (nieuwste eerst, max 20): titel, tekst, evt. link, `x verstuurd / y opgeruimd / z mislukt` + evt. foutlijst. De lijst ververst na een verzending dankzij de bestaande `revalidatePath("/admin/push")`. `npm run build` groen.
-- [ ] **Prod:** tabel `SentNotification` aanmaken op Turso via `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` (idempotent, `CREATE TABLE IF NOT EXISTS`, start leeg). Daarna committen + deployen (samen met FB2, die dezelfde code raakt).
+- **Code is live gedeployed** (`501b6f5` op `main`). Site draait zonder de tabel dankzij defensieve code (write in try-catch, read `.catch(() => [])`) — alleen de historie-lijst blijft leeg tot de migratie is gedraaid.
+- [ ] **Prod-migratie (jouw actie):** `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` (idempotent, `CREATE TABLE IF NOT EXISTS`, start leeg, raakt geen bestaande data). De sandbox blokkeert dit in auto-mode; draai het zelf. Verwachte output: `Ensured table: SentNotification` + `SentNotification rows: 0`.
 
 ### FB6 · Admin niet in een container (layout) ✅ AF
 - [x] `src/app/admin/layout.tsx` wikkelt nu alles in `max-w-6xl mx-auto w-full px-4 py-6` (zelfde container als de publieke `[locale]/layout.tsx`), zodat velden niet meer tegen de rand lopen. `npm run build` groen.
