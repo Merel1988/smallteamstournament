@@ -22,6 +22,7 @@
   },
   "Home": {
     "countdownLabel": "Counting down to first whistle",
+    "eventInfo": "",
     "tournamentLive": "The tournament is on!",
     "liveNow": "● Live now",
     "nextMatch": "Next bout",

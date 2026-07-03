@@ -34,6 +34,10 @@ export default async function RegelsPage({
     em: (chunks: React.ReactNode) => <em>{chunks}</em>,
   };
 
+  // A text field that's been cleared via /admin/teksten should not render as an
+  // empty paragraph. t.raw gives the raw message string (incl. rich-text tags).
+  const hasText = (key: string) => String(t.raw(key) ?? "").trim().length > 0;
+
   return (
     <div className="space-y-10">
       <header>
@@ -42,10 +46,12 @@ export default async function RegelsPage({
 
       <section className="bg-white rounded-2xl p-6 shadow space-y-3">
         <h2 className="font-display text-3xl">{t("quickHeading")}</h2>
-        <p>{t.rich("intro1", richTags)}</p>
-        <p>{t.rich("intro2", richTags)}</p>
-        <p>{t.rich("intro3", richTags)}</p>
-        <p className="text-sm text-derby-ink/60">{t("intro4")}</p>
+        {hasText("intro1") && <p>{t.rich("intro1", richTags)}</p>}
+        {hasText("intro2") && <p>{t.rich("intro2", richTags)}</p>}
+        {hasText("intro3") && <p>{t.rich("intro3", richTags)}</p>}
+        {hasText("intro4") && (
+          <p className="text-sm text-derby-ink/60">{t("intro4")}</p>
+        )}
       </section>
 
       <section className="bg-white rounded-2xl p-6 shadow space-y-3">

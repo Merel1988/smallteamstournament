@@ -22,6 +22,7 @@
   },
   "Home": {
     "countdownLabel": "Aftellen naar eerste whistle",
+    "eventInfo": "",
     "tournamentLive": "Het toernooi is bezig!",
     "liveNow": "● Live nu",
     "nextMatch": "Volgende wedstrijd",

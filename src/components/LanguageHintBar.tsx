@@ -16,8 +16,17 @@ export default function LanguageHintBar() {
   const [dismissed, setDismissed] = useState(true);
 
   // Read dismiss state after mount so SSR and first client render match.
+  // If still showing, auto-dismiss after 10s (persisted, so it stays gone
+  // instead of re-appearing on every navigation).
   useEffect(() => {
-    setDismissed(localStorage.getItem(STORAGE_KEY) === "1");
+    const isDismissed = localStorage.getItem(STORAGE_KEY) === "1";
+    setDismissed(isDismissed);
+    if (isDismissed) return;
+    const timer = setTimeout(() => {
+      localStorage.setItem(STORAGE_KEY, "1");
+      setDismissed(true);
+    }, 10000);
+    return () => clearTimeout(timer);
   }, []);
 
   if (dismissed) return null;

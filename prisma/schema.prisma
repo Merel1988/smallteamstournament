@@ -120,6 +120,20 @@ model PageVisibility {
   updatedAt DateTime @updatedAt
 }
 
+// History of push notifications sent from /admin/push. Written by sendToAll()
+// after each send so organisers can see what went out and how it landed.
+model SentNotification {
+  id           String   @id @default(cuid())
+  title        String
+  body         String
+  url          String?
+  sentCount    Int      @default(0)
+  removedCount Int      @default(0)
+  failedCount  Int      @default(0)
+  errors       String?  // newline-joined failure summaries, null when none
+  createdAt    DateTime @default(now())
+}
+
 // Editable text layer over next-intl. `key` is a dotted path into the message
 // tree (e.g. "Home.countdownLabel"). Absent keys fall back to messages/*.json.
 model MessageOverride {

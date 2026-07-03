@@ -69,5 +69,23 @@ export async function sendToAll(payload: {
     count > 1 ? `${msg} (${count}×)` : msg,
   );
 
+  // Record what went out so /admin/push can show a history (FB3). Never let a
+  // logging failure hide a send that actually happened.
+  try {
+    await prisma.sentNotification.create({
+      data: {
+        title: payload.title,
+        body: payload.body,
+        url: payload.url ?? null,
+        sentCount: sent,
+        removedCount: removed,
+        failedCount: failed,
+        errors: errors.length > 0 ? errors.join("\n") : null,
+      },
+    });
+  } catch {
+    // ignore: history is best-effort
+  }
+
   return { sent, removed, failed, errors };
 }

@@ -8,7 +8,7 @@ export default async function AdminLayout({
 }) {
   const authed = await isAdmin();
   return (
-    <div>
+    <div className="max-w-6xl mx-auto w-full px-4 py-6">
       {authed && <AdminNav />}
       {children}
     </div>

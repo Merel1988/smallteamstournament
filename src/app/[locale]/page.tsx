@@ -29,6 +29,8 @@ export default async function HomePage({
   const t = await getTranslations("Home");
   const tEvent = await getTranslations("Event");
   const hidden = await getHiddenPageKeys();
+  // Editable via /admin/teksten (Home.eventInfo); only shown when filled.
+  const eventInfo = t("eventInfo").trim();
 
   const now = new Date();
   // The live/next-match blocks expose team names (teams page) and the schedule
@@ -92,6 +94,12 @@ export default async function HomePage({
           )}
         </div>
       </section>
+
+      {eventInfo && (
+        <section className="bg-white rounded-2xl p-6 shadow whitespace-pre-line">
+          {eventInfo}
+        </section>
+      )}
 
       {liveMatch && (
         <section className="border-2 border-derby-accent rounded-2xl p-5 bg-white">

@@ -110,9 +110,21 @@ Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau
 - **Nog te doen (heeft een echt device nodig):** op de live site abonneren → test-push versturen vanuit `/admin/push` → kijken wat de nieuwe UI toont. `0 verstuurd, geen abonnees` = niemand geabonneerd (iOS levert web-push alléén in een geïnstalleerde PWA). `403` = VAPID-paar klopt niet. Zichtbare fout = direct diagnosticeerbaar. **Deploy deze code eerst** zodat de foutmelding live zichtbaar is.
 - **Losse observatie:** `public/icon-192.png`/`icon-512.png` ontbreken nog (zie §1); `sw.js` verwijst ernaar in `showNotification`. Dit blokkeert de melding niet (icoon valt gewoon weg), maar netjes om mee te nemen bij de PWA-icons.
 
-### FB3 · Overzicht van reeds verstuurde notificaties
-- **Huidige situatie:** er wordt **niks opgeslagen** over verzonden pushes — geen historie.
-- **Voorstel volgende stap:** `SentNotification`-model (`title`, `body`, `url?`, `sentCount`, `removedCount`, `createdAt`) dat `sendToAll` na verzending wegschrijft; op `/admin/push` een lijst "Recent verstuurd" tonen (nieuwste eerst). Sluit mooi aan op de foutafhandeling uit FB2 (resultaat per verzending vastleggen).
+### FB3 · Overzicht van reeds verstuurde notificaties — ⏳ code af, prod-migratie + deploy open
+- [x] Schema: model `SentNotification { id, title, body, url?, sentCount, removedCount, failedCount, errors?, createdAt }` (`prisma/schema.prisma`). Lokaal via `db:push` toegepast + geverifieerd (kolommen + round-trip via libSQL).
+- [x] `sendToAll` (`src/lib/push.ts`) schrijft na elke verzending een `SentNotification`-rij weg (best-effort: in try-catch, een logging-fout verbergt nooit een echte verzending). `errors[]` wordt als newline-joined tekst opgeslagen.
+- [x] `/admin/push` toont onderaan **"Recent verstuurd"** (nieuwste eerst, max 20): titel, tekst, evt. link, `x verstuurd / y opgeruimd / z mislukt` + evt. foutlijst. De lijst ververst na een verzending dankzij de bestaande `revalidatePath("/admin/push")`. `npm run build` groen.
+- [ ] **Prod:** tabel `SentNotification` aanmaken op Turso via `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` (idempotent, `CREATE TABLE IF NOT EXISTS`, start leeg). Daarna committen + deployen (samen met FB2, die dezelfde code raakt).
+
+### FB6 · Admin niet in een container (layout) ✅ AF
+- [x] `src/app/admin/layout.tsx` wikkelt nu alles in `max-w-6xl mx-auto w-full px-4 py-6` (zelfde container als de publieke `[locale]/layout.tsx`), zodat velden niet meer tegen de rand lopen. `npm run build` groen.
+
+### FB7 · Evenement-info op home + lege velden verbergen ✅ AF
+- [x] **Evenement-info-blok op home:** nieuwe bewerkbare key `Home.eventInfo` (leeg in beide `messages/*.json` → bewerkbaar via `/admin/teksten`). `[locale]/page.tsx` toont een wit tekstblok (na de hero, `whitespace-pre-line`) **alleen als de key gevuld is** (`t("eventInfo").trim()`). Lokaal geverifieerd: leeg = geen blok, met override = blok zichtbaar.
+- [x] **Lege velden verbergen (huisregels-intro):** `[locale]/regels/page.tsx` rendert `intro1`–`intro4` nu alleen als ze tekst bevatten (`hasText(key)` via `t.raw`). Zo levert een via de tekst-admin leeggemaakt veld geen lege `<p>` meer op. Lokaal geverifieerd: intro leeggemaakt → verdwijnt. (De DB-huisregels zelf verborgen een lege `body` al.)
+
+### FB8 · Taalhint auto-dismiss ✅ AF
+- [x] `LanguageHintBar` verdwijnt nu automatisch na **10 s** (timer in de mount-effect, cleared bij unmount). Auto-dismiss wordt **gepersisteerd** in `localStorage` (zelfde key als de handmatige ✕), zodat de balk niet bij elke navigatie opnieuw verschijnt en weer wegvalt. `npm run build` groen.
 
 ### FB4 · Team verwijderen gaf een error ✅ FIX (deploy openstaand)
 - **Oorzaak:** `Match → Team` is `ON DELETE RESTRICT`, dus een team dat in een wedstrijd voorkomt kon niet verwijderd worden (FK-fout). Lokaal viel dit niet op (0 matches), in prod wel.
