@@ -165,6 +165,8 @@
     "changingBody": "There are gendered and gender-neutral locker rooms. Valuables? Lock them up — organizers aren't responsible.",
     "parkingTitle": "🚲 Parking & public transport",
     "parkingBody": "Free parking around the venue. From Nijmegen Central Station take bus 6 towards Weezenhof, stop Horstacker.",
+    "floorTitle": "🛞 Floor & wheels",
+    "floorBody": "Sports floor with skate coating. Advised wheel hardness: 92a to 95a.",
     "sponsorsHeading": "Sponsors",
     "sponsorsBody": "This tournament is supported by our sponsors. Logos follow closer to the event date."
   },
@@ -257,12 +259,16 @@
   },
   "Toernooi": {
     "title": "About the tournament",
-    "lead": "Everything you need to know about the Small Teams Tournament by Roadkill Rollers Nijmegen.",
+    "lead": "Everything you need to know about the Small Teams Tournament by Roadkill Rollers Nijmegen on 21 November 2026.",
     "introHeading": "What is the Small Teams Tournament?",
-    "introBody": "The Small Teams Tournament is a roller derby tournament for small teams. In short, fast matches the teams face off against each other. A fun day full of derby, for players and spectators alike.",
-    "formatHeading": "How does it work?",
-    "formatBody": "Throughout the day every team plays several short matches. New to roller derby? On the rules page we explain what to look for in just a few minutes.",
-    "dayHeading": "The day itself",
-    "dayBody": "Arrive on time, bring your water bottle and a good mood. There is plenty to enjoy around the track: cheer on the teams, vote for the MVP and join in on the derby bingo. Practical info about the venue is on the location page."
+    "introBody": "The Small Teams Tournament is a roller derby tournament for small teams: a fun day full of short, fast matches, for skaters and spectators alike. New to roller derby? On the rules page we explain what to look for in just a few minutes.",
+    "formatHeading": "Format",
+    "formatBody": "This tournament features 8 teams of 8 skaters, split across 2 pools. Each team plays every other team in its pool, so three pool games per team. There are 13 games in total, including one final. After the pool phase, the best teams from each pool advance to the final. Games are spread across the day as evenly as possible, with rest between each game.",
+    "gamesHeading": "The games",
+    "gamesBody": "Each game lasts 20 minutes with no clock stop. Each team gets one team time-out per game. There is no official review. Four penalties in a game means a foul out. In the pool phase teams play in black and white; in the final they play in their own colours.",
+    "scheduleHeading": "Schedule",
+    "scheduleBody": "Preliminary schedule:\n11.00: officials meeting\n12.00: tournament start\n18.00: tournament end\n\nThe two pools alternate, so you have at least 20 minutes between your games. There is also one half-hour break.",
+    "officialsHeading": "Officials",
+    "officialsBody": "Head Tournament Referee: Nat Safe For Work\nHead Tournament NSO: to be announced"
   }
 }

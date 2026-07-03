@@ -56,6 +56,7 @@ export default async function VenuePage({
         <InfoCard title={t("firstAidTitle")}>{t("firstAidBody")}</InfoCard>
         <InfoCard title={t("changingTitle")}>{t("changingBody")}</InfoCard>
         <InfoCard title={t("parkingTitle")}>{t("parkingBody")}</InfoCard>
+        <InfoCard title={t("floorTitle")}>{t("floorBody")}</InfoCard>
       </section>
 
       <section className="bg-white rounded-2xl p-6 shadow space-y-3">

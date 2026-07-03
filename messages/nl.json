@@ -165,6 +165,8 @@
     "changingBody": "Er zijn gescheiden en gender-neutrale kleedkamers. Waardevolle spullen? Kluisje op slot, organisatie is niet verantwoordelijk.",
     "parkingTitle": "🚲 Parkeren & OV",
     "parkingBody": "Gratis parkeren rondom de hal. Vanaf Nijmegen CS bus 6 richting Weezenhof, halte Horstacker.",
+    "floorTitle": "🛞 Vloer & wielen",
+    "floorBody": "Sportvloer met skatecoating. Geadviseerde wielhardheid: 92a tot 95a.",
     "sponsorsHeading": "Sponsors",
     "sponsorsBody": "Dit toernooi wordt mede mogelijk gemaakt door onze sponsors. Logo's volgen dichter bij de datum."
   },
@@ -257,12 +259,16 @@
   },
   "Toernooi": {
     "title": "Over het toernooi",
-    "lead": "Alles wat je moet weten over het Small Teams Tournament van Roadkill Rollers Nijmegen.",
+    "lead": "Alles wat je moet weten over het Small Teams Tournament van Roadkill Rollers Nijmegen op 21 november 2026.",
     "introHeading": "Wat is het Small Teams Tournament?",
-    "introBody": "Het Small Teams Tournament is een roller derby toernooi voor kleine teams. In korte, snelle wedstrijden nemen de teams het tegen elkaar op. Een gezellige dag vol derby, voor spelers en publiek.",
-    "formatHeading": "Hoe werkt het?",
-    "formatBody": "Door de dag heen speelt ieder team meerdere korte wedstrijden. Nieuw bij roller derby? Op de regelspagina leggen we in een paar minuten uit waar je naar kijkt.",
-    "dayHeading": "De dag zelf",
-    "dayBody": "Kom op tijd, neem je bidon mee en zorg voor goede zin. Langs de baan valt van alles te beleven: moedig de teams aan, stem op de MVP en speel mee met de derby-bingo. Praktische info over de locatie vind je op de locatiepagina."
+    "introBody": "Het Small Teams Tournament is een roller derby toernooi voor kleine teams: een gezellige dag vol snelle, korte wedstrijden, voor skaters en publiek. Nieuw bij roller derby? Op de regelspagina leggen we in een paar minuten uit waar je naar kijkt.",
+    "formatHeading": "Opzet",
+    "formatBody": "In dit toernooi spelen 8 teams van 8 skaters, verdeeld over 2 poules. Elk team speelt tegen elk ander team in zijn poule, dus drie poulewedstrijden per team. In totaal zijn er 13 wedstrijden, inclusief één finale. Na de poulefase gaan de beste teams van elke poule door naar de finale. De wedstrijden worden zo goed mogelijk over de dag verdeeld, met rust tussen elke wedstrijd.",
+    "gamesHeading": "De wedstrijden",
+    "gamesBody": "Elke wedstrijd duurt 20 minuten zonder klokstop. Per wedstrijd heeft een team één team time-out. Er wordt niet gewerkt met official review. Na 4 penalty's in een wedstrijd volgt een foul out. In de poulefase spelen de teams in wit-zwart; in de finale in hun eigen kleur.",
+    "scheduleHeading": "Programma",
+    "scheduleBody": "Voorlopig programma:\n11.00 uur: officials meeting\n12.00 uur: start van het toernooi\n18.00 uur: einde\n\nDe twee poules wisselen elkaar af, waardoor je tussen je wedstrijden minimaal 20 minuten pauze hebt. Daarnaast is er één keer een pauze van een half uur.",
+    "officialsHeading": "Officials",
+    "officialsBody": "Head Tournament Referee: Nat Safe For Work\nHead Tournament NSO: nog niet bekend"
   }
 }

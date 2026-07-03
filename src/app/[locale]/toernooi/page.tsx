@@ -31,7 +31,9 @@ export default async function ToernooiPage({
   const sections = [
     { heading: "introHeading", body: "introBody" },
     { heading: "formatHeading", body: "formatBody" },
-    { heading: "dayHeading", body: "dayBody" },
+    { heading: "gamesHeading", body: "gamesBody" },
+    { heading: "scheduleHeading", body: "scheduleBody" },
+    { heading: "officialsHeading", body: "officialsBody" },
   ];
 
   return (
