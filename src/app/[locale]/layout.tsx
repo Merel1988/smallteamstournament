@@ -62,6 +62,7 @@ export default async function LocaleLayout({
   const navItems = [
     { key: "home", href: "/", label: tNav("home") },
     { key: "aanmelden", href: "/aanmelden", label: tNav("aanmelden") },
+    { key: "toernooi", href: "/toernooi", label: tNav("toernooi") },
     { key: "teams", href: "/teams", label: tNav("teams") },
     { key: "schema", href: "/schema", label: tNav("schema") },
     { key: "bingo", href: "/bingo", label: tNav("bingo") },

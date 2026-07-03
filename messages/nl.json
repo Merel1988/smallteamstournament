@@ -2,6 +2,7 @@
   "Nav": {
     "home": "Home",
     "aanmelden": "Aanmelden",
+    "toernooi": "Toernooi",
     "teams": "Teams",
     "schema": "Schema",
     "bingo": "Bingo",
@@ -34,6 +35,20 @@
       "photos": "Foto's",
       "mvpVote": "MVP stem",
       "nickname": "Derby-naam"
+    },
+    "primary": {
+      "aanmelden": {
+        "label": "Aanmelden",
+        "desc": "Meld je team aan voor het toernooi."
+      },
+      "toernooi": {
+        "label": "Over het toernooi",
+        "desc": "Alles over het Small Teams Tournament."
+      },
+      "regels": {
+        "label": "Regels",
+        "desc": "Zo werkt roller derby, in het kort."
+      }
     }
   },
   "Countdown": {
@@ -199,6 +214,10 @@
       "title": "Aanmelden",
       "description": "Meld je team aan voor het Small Teams Tournament op 21 november 2026 in Nijmegen."
     },
+    "toernooi": {
+      "title": "Over het toernooi",
+      "description": "Alles over het Small Teams Tournament van Roadkill Rollers Nijmegen: opzet, wedstrijden en de dag zelf."
+    },
     "teams": {
       "title": "Teams",
       "description": "Alle deelnemende teams aan het Small Teams Tournament in Nijmegen."
@@ -235,5 +254,15 @@
       "title": "Notificaties",
       "description": "Ontvang meldingen over het Small Teams Tournament."
     }
+  },
+  "Toernooi": {
+    "title": "Over het toernooi",
+    "lead": "Alles wat je moet weten over het Small Teams Tournament van Roadkill Rollers Nijmegen.",
+    "introHeading": "Wat is het Small Teams Tournament?",
+    "introBody": "Het Small Teams Tournament is een roller derby toernooi voor kleine teams. In korte, snelle wedstrijden nemen de teams het tegen elkaar op. Een gezellige dag vol derby, voor spelers en publiek.",
+    "formatHeading": "Hoe werkt het?",
+    "formatBody": "Door de dag heen speelt ieder team meerdere korte wedstrijden. Nieuw bij roller derby? Op de regelspagina leggen we in een paar minuten uit waar je naar kijkt.",
+    "dayHeading": "De dag zelf",
+    "dayBody": "Kom op tijd, neem je bidon mee en zorg voor goede zin. Langs de baan valt van alles te beleven: moedig de teams aan, stem op de MVP en speel mee met de derby-bingo. Praktische info over de locatie vind je op de locatiepagina."
   }
 }

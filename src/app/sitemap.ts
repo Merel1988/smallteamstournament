@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 const STATIC_PATHS = [
   "",
   "aanmelden",
+  "toernooi",
   "teams",
   "schema",
   "bingo",

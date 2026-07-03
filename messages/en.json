@@ -2,6 +2,7 @@
   "Nav": {
     "home": "Home",
     "aanmelden": "Register",
+    "toernooi": "Tournament",
     "teams": "Teams",
     "schema": "Schedule",
     "bingo": "Bingo",
@@ -34,6 +35,20 @@
       "photos": "Photos",
       "mvpVote": "MVP vote",
       "nickname": "Derby name"
+    },
+    "primary": {
+      "aanmelden": {
+        "label": "Register",
+        "desc": "Sign your team up for the tournament."
+      },
+      "toernooi": {
+        "label": "About the tournament",
+        "desc": "Everything about the Small Teams Tournament."
+      },
+      "regels": {
+        "label": "Rules",
+        "desc": "How roller derby works, in short."
+      }
     }
   },
   "Countdown": {
@@ -199,6 +214,10 @@
       "title": "Register",
       "description": "Register your team for the Small Teams Tournament on November 21, 2026 in Nijmegen."
     },
+    "toernooi": {
+      "title": "About the tournament",
+      "description": "Everything about the Small Teams Tournament by Roadkill Rollers Nijmegen: format, matches and the day itself."
+    },
     "teams": {
       "title": "Teams",
       "description": "All teams taking part in the Small Teams Tournament in Nijmegen."
@@ -235,5 +254,15 @@
       "title": "Notifications",
       "description": "Get notifications about the Small Teams Tournament."
     }
+  },
+  "Toernooi": {
+    "title": "About the tournament",
+    "lead": "Everything you need to know about the Small Teams Tournament by Roadkill Rollers Nijmegen.",
+    "introHeading": "What is the Small Teams Tournament?",
+    "introBody": "The Small Teams Tournament is a roller derby tournament for small teams. In short, fast matches the teams face off against each other. A fun day full of derby, for players and spectators alike.",
+    "formatHeading": "How does it work?",
+    "formatBody": "Throughout the day every team plays several short matches. New to roller derby? On the rules page we explain what to look for in just a few minutes.",
+    "dayHeading": "The day itself",
+    "dayBody": "Arrive on time, bring your water bottle and a good mood. There is plenty to enjoy around the track: cheer on the teams, vote for the MVP and join in on the derby bingo. Practical info about the venue is on the location page."
   }
 }

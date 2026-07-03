@@ -101,6 +101,28 @@ export default async function HomePage({
         </section>
       )}
 
+      <section className="grid gap-3 sm:grid-cols-3">
+        {[
+          { href: "/aanmelden", label: t("primary.aanmelden.label"), desc: t("primary.aanmelden.desc"), emoji: "📝" },
+          { href: "/toernooi", label: t("primary.toernooi.label"), desc: t("primary.toernooi.desc"), emoji: "🏆" },
+          { href: "/regels", label: t("primary.regels.label"), desc: t("primary.regels.desc"), emoji: "📖" },
+        ]
+          .filter((block) => !hidden.has(block.href.slice(1)))
+          .map((block) => (
+            <Link
+              key={block.href}
+              href={block.href}
+              className="group bg-derby-ink text-white rounded-2xl p-6 shadow-lg hover:bg-derby-accent transition flex flex-col"
+            >
+              <div className="text-3xl">{block.emoji}</div>
+              <div className="font-display text-2xl text-derby-yellow group-hover:text-white mt-2">
+                {block.label}
+              </div>
+              <p className="text-sm text-white/80 mt-1">{block.desc}</p>
+            </Link>
+          ))}
+      </section>
+
       {liveMatch && (
         <section className="border-2 border-derby-accent rounded-2xl p-5 bg-white">
           <p className="text-xs uppercase tracking-wider text-derby-accent font-bold">

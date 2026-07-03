@@ -10,6 +10,7 @@
 
 export type PageKey =
   | "aanmelden"
+  | "toernooi"
   | "teams"
   | "schema"
   | "bingo"
@@ -28,6 +29,7 @@ export interface TogglablePage {
 
 export const TOGGLABLE_PAGES: TogglablePage[] = [
   { key: "aanmelden", path: "aanmelden", navKey: "aanmelden", adminLabel: "Aanmelden" },
+  { key: "toernooi", path: "toernooi", navKey: "toernooi", adminLabel: "Toernooi-info" },
   { key: "teams", path: "teams", navKey: "teams", adminLabel: "Teams" },
   { key: "schema", path: "schema", navKey: "schema", adminLabel: "Schema" },
   { key: "bingo", path: "bingo", navKey: "bingo", adminLabel: "Bingo" },
