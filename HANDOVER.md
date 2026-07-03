@@ -143,6 +143,14 @@ Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau
 - **Tekststijl:** en/em-dash (– / —) vermeden in alle nieuwe/geraakte copy (zie ook Merel's voorkeur). NB: ±13 dashes staan nog in overige bestaande strings (PageMeta, Aanmelden, schema-subtitle, tijdrange `12:00–18:00`) — nog niet opgeschoond.
 - `npm run build` groen; lint-fouten die overblijven zijn allemaal pre-existing (NotificationsToggle/BingoCard/LanguageHintBar/qr/layout), niet in de nieuwe bestanden. **✅ Gecommit (`6b10137`), gepusht naar `main` en live gedeployed** (auto-deploy triggerde nu wél; live geverifieerd: /regels NL "Zo werkt roller derby" + /en/regels + WFTDA-bronlink, /venue toont huisregels, icons 200).
 
+### FB10 · Regelspagina-illustraties bijgeschaafd (feedback Merel) ✅ code klaar (deploy openstaand)
+Feedback op FB9 verwerkt in `src/components/RulesIllustrations.tsx` + basis-tekst:
+- [x] **Baan ronder:** `TrackDiagram` van een platte ovaal (rx/ry 196/106) naar een rondere oval (viewBox 360×300, rx/ry 170/132) + rondere infield.
+- [x] **Pivot-streep gecorrigeerd:** liep dwars over de zijkant (horizontale band); nu een verticale streep van voor naar achter midden over de helm (`HelmetCover` pivot-rect x53 w14 y38 h60, geclipt op de dome-semicirkel cx=60). Zelfde verticale streep op de pivot-tokens op de baan.
+- [x] **2 volledige teams van 5 op de baan:** nieuwe `PlayerToken` (kleur = team ACCENT/WHITE, marking = positie). Baan toont nu 10 spelers: 2 jammers (ster) die uit de pack breken + pack van 2 pivots (streep) + 6 blockers. Markers in INK voor contrast op beide teamkleuren.
+- [x] **Basis-tekst iets uitgebreider:** `Rules.basicsBody` in beide `messages/*.json` (fysiek contact + pack-uitleg + "één puntenmaker en vier verdedigers"). Blijft bewerkbaar via `/admin/teksten`.
+- Visueel geverifieerd via inline-SVG → PNG render (baan + pivot-helm). `tsc --noEmit` schoon op de geraakte bestanden; JSON valide. **Nog committen + deployen.**
+
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
 

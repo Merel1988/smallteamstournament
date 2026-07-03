@@ -36,25 +36,65 @@ function Star({
   return <polygon points={pts.join(" ")} fill={fill} />;
 }
 
-/** Oval flat track seen from above, with the pack and a jammer breaking out. */
+type Team = "A" | "B";
+type PlayerRole = "jammer" | "pivot" | "blocker";
+
+/** One skater on the track: colour marks the team, the marking marks the position. */
+function PlayerToken({
+  cx,
+  cy,
+  team,
+  role,
+  r = 12,
+}: {
+  cx: number;
+  cy: number;
+  team: Team;
+  role: PlayerRole;
+  r?: number;
+}) {
+  const fill = team === "A" ? ACCENT : WHITE;
+  return (
+    <g>
+      <circle cx={cx} cy={cy} r={r} fill={fill} stroke={INK} strokeWidth="2" />
+      {/* jammer: star; pivot: a stripe front-to-back down the middle; blocker: plain */}
+      {role === "jammer" && <Star cx={cx} cy={cy} r={r * 0.72} fill={INK} />}
+      {role === "pivot" && (
+        <rect
+          x={cx - r * 0.26}
+          y={cy - r * 0.72}
+          width={r * 0.52}
+          height={r * 1.44}
+          rx={r * 0.22}
+          fill={INK}
+        />
+      )}
+    </g>
+  );
+}
+
+/**
+ * Round flat track seen from above with two full teams of five on it: two jammers
+ * (star) breaking out ahead of the pack of six blockers and two pivots (stripe).
+ */
 export function TrackDiagram({ className, label }: Props) {
   return (
     <svg
-      viewBox="0 0 420 240"
+      viewBox="0 0 360 300"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       role="img"
       aria-label={label}
     >
-      {/* track ring */}
-      <ellipse cx="210" cy="120" rx="196" ry="106" fill={INK} />
-      <ellipse cx="210" cy="120" rx="104" ry="40" fill={CREAM} />
+      {/* track ring (rounded oval) + infield */}
+      <ellipse cx="180" cy="150" rx="170" ry="132" fill={INK} />
+      <ellipse cx="180" cy="150" rx="88" ry="58" fill={CREAM} />
       {/* dashed centre line */}
       <ellipse
-        cx="210"
-        cy="120"
-        rx="150"
-        ry="73"
+        cx="180"
+        cy="150"
+        rx="128"
+        ry="95"
         fill="none"
         stroke={WHITE}
         strokeWidth="1.5"
@@ -63,21 +103,23 @@ export function TrackDiagram({ className, label }: Props) {
       />
       {/* direction of play (counter-clockwise): arrow on the top straight */}
       <g stroke={YELLOW} strokeWidth="3" fill="none" strokeLinecap="round">
-        <path d="M 250 30 L 190 30" />
+        <path d="M 214 46 L 150 46" />
       </g>
-      <polygon points="190,24 178,30 190,36" fill={YELLOW} />
+      <polygon points="150,40 138,46 150,52" fill={YELLOW} />
 
-      {/* the pack (bottom straight): two teams mixed together */}
-      <g stroke={INK} strokeWidth="2">
-        <circle cx="250" cy="192" r="12" fill={WHITE} />
-        <circle cx="285" cy="196" r="12" fill={ACCENT} />
-        <circle cx="220" cy="196" r="12" fill={ACCENT} />
-        <circle cx="188" cy="192" r="12" fill={WHITE} />
-      </g>
+      {/* the pack: two pivots (stripe) + six blockers, both teams mixed together */}
+      <PlayerToken cx={150} cy={232} team="A" role="pivot" />
+      <PlayerToken cx={192} cy={228} team="B" role="pivot" />
+      <PlayerToken cx={128} cy={250} team="B" role="blocker" />
+      <PlayerToken cx={168} cy={252} team="A" role="blocker" />
+      <PlayerToken cx={210} cy={250} team="B" role="blocker" />
+      <PlayerToken cx={232} cy={244} team="A" role="blocker" />
+      <PlayerToken cx={150} cy={270} team="B" role="blocker" />
+      <PlayerToken cx={196} cy={272} team="A" role="blocker" />
 
-      {/* jammer breaking out ahead of the pack */}
-      <circle cx="138" cy="188" r="15" fill={YELLOW} stroke={INK} strokeWidth="2" />
-      <Star cx={138} cy={188} r={9} fill={ACCENT} />
+      {/* the two jammers (star) breaking out ahead of the pack */}
+      <PlayerToken cx={95} cy={255} team="A" role="jammer" />
+      <PlayerToken cx={74} cy={222} team="B" role="jammer" />
     </svg>
   );
 }
@@ -115,11 +157,12 @@ export function HelmetCover({
       {variant === "jammer" && <Star cx={62} cy={62} r={20} fill={YELLOW} />}
 
       {variant === "pivot" && (
+        // Stripe runs front-to-back down the centre of the dome, not across the side.
         <rect
-          x="18"
-          y="56"
-          width="84"
-          height="14"
+          x="53"
+          y="38"
+          width="14"
+          height="60"
           fill={YELLOW}
           clipPath={`url(#helmet-clip-${variant})`}
         />
