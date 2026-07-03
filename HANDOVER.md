@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB3 prod-migratie gedraaid; PWA-icons gegenereerd uit het logo; FB9 (illustratieve regelspagina + huisregels naar venue) af — nog committen/deployen.** **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
+Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB3 prod-migratie gedraaid (tabel live); PWA-icons uit het logo + FB9 (illustratieve regelspagina + huisregels naar venue) gecommit (`6b10137`), gepusht naar `main` en live gedeployed (auto-deploy Ready, live smoke-test: /regels NL+EN, /venue-huisregels en alle icons 200).** **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
 
 ---
 
@@ -10,10 +10,10 @@ Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB3 prod-migratie 
 
 - **Live in productie:** https://smallteamstournament.nl (Vercel + Turso).
 - **Event:** Small Teams Tournament, Roadkill Rollers Nijmegen — 21 november 2026, Sportzaal De Horstacker.
-- **Huidige fase:** eerste verbeterronde F1–F7 + FB1 af/live. **FB2/FB6/FB7/FB8 live gedeployed.** **Openstaand: (a) prod-migratie `SentNotification`-tabel voor FB3** — draai `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` (idempotent, start leeg; site draait al zonder dankzij defensieve code); **(b) FB2 device-test** (abonneren op geïnstalleerde PWA → test-push via `/admin/push`, UI toont resultaat/fout). FB3-migratie is inmiddels gedraaid (✅ 2026-07-03). **PWA-icons zijn nu gegenereerd uit het logo** (`public/icon-192.png`, `public/icon-512.png` + `src/app/apple-icon.png`, bron `scripts/icon-source.svg`) — nog niet gedeployed. Overig resterend werk: e-mail (§4b), handmatige Lighthouse-nulmeting.
+- **Huidige fase:** eerste verbeterronde F1–F7 + FB1 af/live. **FB2/FB6/FB7/FB8 live gedeployed.** **Openstaand: (a) prod-migratie `SentNotification`-tabel voor FB3** — draai `node --env-file=.env.production.local scripts/migrate-sentnotification-prod.mjs` (idempotent, start leeg; site draait al zonder dankzij defensieve code); **(b) FB2 device-test** (abonneren op geïnstalleerde PWA → test-push via `/admin/push`, UI toont resultaat/fout). FB3-migratie is inmiddels gedraaid (✅ 2026-07-03). **PWA-icons zijn gegenereerd uit het logo** (`public/icon-192.png`, `public/icon-512.png` + `src/app/apple-icon.png`, bron `scripts/icon-source.svg`) **en live gedeployed** (alle drie 200 op prod). Overig resterend werk: e-mail (§4b), handmatige Lighthouse-nulmeting.
 - **Productie-DB migratie (F1/F2/F5): ✅ GEDAAN op 2026-07-02.** Op Turso (`derby-stt-prod`) zijn `MessageOverride` + `RegistrationLink` aangemaakt en is `Team.description` vervangen door `descriptionNl` + `descriptionEn` (bestaande waarde gekopieerd naar `descriptionNl`, daarna oude kolom gedropt). Bingo-data (27 `BingoPrompt`-rijen) bleef behouden. Migratie is chirurgisch uitgevoerd via een libSQL-script met de creds uit `.env.production.local` (idempotent: `CREATE TABLE IF NOT EXISTS`-achtig + kolom-checks). Code is gecommit + gepusht naar `main` en live geverifieerd (`/aanmelden`, team-detail NL/EN → 200).
 - **Let op bij volgende schemawijzigingen:** de prod-DB is bestaand, dus `db:generate-sql` (from-empty) volstaat niet — schrijf een surgical migratie (ALTER/CREATE) tegen Turso en houd bingo-data intact.
-- **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons ✅ gegenereerd (`public/icon-192.png`, `public/icon-512.png`, `src/app/apple-icon.png` uit `scripts/icon-source.svg`) — nog te deployen; preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
+- **Bekende openstaande productiepunten** (uit `DEPLOY.md`): PWA-icons ✅ gegenereerd én live (`public/icon-192.png`, `public/icon-512.png`, `src/app/apple-icon.png` uit `scripts/icon-source.svg`); preview-env-vars nog niet geïmporteerd; handmatige smoke tests (admin-login, foto-upload, push) nog te doen.
 
 ## 2. Architectuur — snelle oriëntatie
 
@@ -141,7 +141,7 @@ Besloten met Merel: **pagina-niveau** (hele nav-items aan/uit), niet link-niveau
 - **Teksten volledig aanpasbaar** via `/admin/teksten`: `Rules`-namespace herschreven (title/lead/basics/roles/rolelabels+desc/scoring/penalties/format/sources...) in **beide** `messages/*.json`. Oude `intro1–4`/`quickHeading`-keys vervallen (eventuele oude overrides zijn inert, niets leest ze).
 - **Huisregels verplaatst naar `/venue`:** de `HouseRule`-lijst (DB, met defaults als fallback) rendert nu op de venue-pagina; `houseHeading`/`houseIntro`/`houseDefault1–5` verhuisd naar de `Venue`-namespace. Regelspagina bevat geen huisregels meer.
 - **Tekststijl:** en/em-dash (– / —) vermeden in alle nieuwe/geraakte copy (zie ook Merel's voorkeur). NB: ±13 dashes staan nog in overige bestaande strings (PageMeta, Aanmelden, schema-subtitle, tijdrange `12:00–18:00`) — nog niet opgeschoond.
-- `npm run build` groen; lint-fouten die overblijven zijn allemaal pre-existing (NotificationsToggle/BingoCard/LanguageHintBar/qr/layout), niet in de nieuwe bestanden. **Nog committen + deployen naar `main`.**
+- `npm run build` groen; lint-fouten die overblijven zijn allemaal pre-existing (NotificationsToggle/BingoCard/LanguageHintBar/qr/layout), niet in de nieuwe bestanden. **✅ Gecommit (`6b10137`), gepusht naar `main` en live gedeployed** (auto-deploy triggerde nu wél; live geverifieerd: /regels NL "Zo werkt roller derby" + /en/regels + WFTDA-bronlink, /venue toont huisregels, icons 200).
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
@@ -159,7 +159,7 @@ Besluit: gedeelde postbus via **Purelymail** (~€9/jaar), minstens **2 organisa
 
 - Team-/derbynamen worden niet vertaald (eigennamen) — bewust, zie B3.
 - Caching-gedrag van de tekst-override-laag goed testen: publieke pagina's mogen niet een oude (gecachte) tekst blijven tonen na een admin-edit.
-- PWA-icons ✅ gegenereerd uit het logo (zie §1); nog te deployen.
+- PWA-icons ✅ gegenereerd uit het logo en live gedeployed (zie §1).
 
 ## 6. Nieuwe sessie starten
 
