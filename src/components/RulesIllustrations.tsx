@@ -57,14 +57,14 @@ function PlayerToken({
   return (
     <g>
       <circle cx={cx} cy={cy} r={r} fill={fill} stroke={INK} strokeWidth="2" />
-      {/* jammer: star; pivot: a stripe front-to-back down the middle; blocker: plain */}
+      {/* jammer: star; pivot: a stripe running front-to-back (along travel); blocker: plain */}
       {role === "jammer" && <Star cx={cx} cy={cy} r={r * 0.72} fill={INK} />}
       {role === "pivot" && (
         <rect
-          x={cx - r * 0.26}
-          y={cy - r * 0.72}
-          width={r * 0.52}
-          height={r * 1.44}
+          x={cx - r * 0.72}
+          y={cy - r * 0.26}
+          width={r * 1.44}
+          height={r * 0.52}
           rx={r * 0.22}
           fill={INK}
         />
@@ -74,52 +74,62 @@ function PlayerToken({
 }
 
 /**
- * Round flat track seen from above with two full teams of five on it: two jammers
- * (star) breaking out ahead of the pack of six blockers and two pivots (stripe).
+ * Roller-derby track seen from above (rounded-rectangle / stadium shape) with two
+ * full teams of five lined up for the start of a jam: the jammer line (red) and
+ * pivot line (white) across the straight, six blockers and two pivots (stripe) in
+ * the pack between the lines, and the two jammers (star) behind the jammer line.
  */
 export function TrackDiagram({ className, label }: Props) {
   return (
     <svg
-      viewBox="0 0 360 300"
+      viewBox="0 0 390 260"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       role="img"
       aria-label={label}
     >
-      {/* track ring (rounded oval) + infield */}
-      <ellipse cx="180" cy="150" rx="170" ry="132" fill={INK} />
-      <ellipse cx="180" cy="150" rx="88" ry="58" fill={CREAM} />
+      {/* track: outer boundary + infield (stadium shape, like a real flat track) */}
+      <path
+        d="M 129 16 L 261 16 A 114 114 0 0 1 261 244 L 129 244 A 114 114 0 0 1 129 16 Z"
+        fill={INK}
+      />
+      <path
+        d="M 153 84 L 237 84 A 46 46 0 0 1 237 176 L 153 176 A 46 46 0 0 1 153 84 Z"
+        fill={CREAM}
+      />
       {/* dashed centre line */}
-      <ellipse
-        cx="180"
-        cy="150"
-        rx="128"
-        ry="95"
+      <path
+        d="M 141 50 L 249 50 A 80 80 0 0 1 249 210 L 141 210 A 80 80 0 0 1 141 50 Z"
         fill="none"
         stroke={WHITE}
         strokeWidth="1.5"
         strokeDasharray="6 7"
-        opacity="0.35"
+        opacity="0.3"
       />
+
+      {/* start lines across the bottom straight: jammer line (red), pivot line (white) */}
+      <line x1="172" y1="176" x2="172" y2="244" stroke={ACCENT} strokeWidth="4" />
+      <line x1="224" y1="176" x2="224" y2="244" stroke={WHITE} strokeWidth="4" />
+
       {/* direction of play (counter-clockwise): arrow on the top straight */}
       <g stroke={YELLOW} strokeWidth="3" fill="none" strokeLinecap="round">
-        <path d="M 214 46 L 150 46" />
+        <path d="M 228 42 L 166 42" />
       </g>
-      <polygon points="150,40 138,46 150,52" fill={YELLOW} />
+      <polygon points="166,36 154,42 166,48" fill={YELLOW} />
 
-      {/* the pack: two pivots (stripe) + six blockers, both teams mixed together */}
-      <PlayerToken cx={150} cy={232} team="A" role="pivot" />
-      <PlayerToken cx={192} cy={228} team="B" role="pivot" />
-      <PlayerToken cx={128} cy={250} team="B" role="blocker" />
-      <PlayerToken cx={168} cy={252} team="A" role="blocker" />
-      <PlayerToken cx={210} cy={250} team="B" role="blocker" />
-      <PlayerToken cx={232} cy={244} team="A" role="blocker" />
-      <PlayerToken cx={150} cy={270} team="B" role="blocker" />
-      <PlayerToken cx={196} cy={272} team="A" role="blocker" />
+      {/* the pack: two pivots (stripe) + six blockers, both teams, between the lines */}
+      <PlayerToken cx={180} cy={196} team="A" role="blocker" r={11} />
+      <PlayerToken cx={198} cy={190} team="B" role="blocker" r={11} />
+      <PlayerToken cx={216} cy={196} team="A" role="pivot" r={11} />
+      <PlayerToken cx={188} cy={214} team="A" role="blocker" r={11} />
+      <PlayerToken cx={206} cy={212} team="B" role="blocker" r={11} />
+      <PlayerToken cx={222} cy={220} team="B" role="pivot" r={11} />
+      <PlayerToken cx={196} cy={232} team="A" role="blocker" r={11} />
+      <PlayerToken cx={214} cy={234} team="B" role="blocker" r={11} />
 
-      {/* the two jammers (star) breaking out ahead of the pack */}
-      <PlayerToken cx={95} cy={255} team="A" role="jammer" />
-      <PlayerToken cx={74} cy={222} team="B" role="jammer" />
+      {/* the two jammers (star), one per team, behind the jammer line */}
+      <PlayerToken cx={156} cy={200} team="A" role="jammer" r={11} />
+      <PlayerToken cx={156} cy={224} team="B" role="jammer" r={11} />
     </svg>
   );
 }
@@ -157,15 +167,16 @@ export function HelmetCover({
       {variant === "jammer" && <Star cx={62} cy={62} r={20} fill={YELLOW} />}
 
       {variant === "pivot" && (
-        // Stripe runs front-to-back down the centre of the dome, not across the side.
-        <rect
-          x="53"
-          y="38"
-          width="14"
-          height="60"
-          fill={YELLOW}
-          clipPath={`url(#helmet-clip-${variant})`}
-        />
+        // Side view: the stripe runs front (left) to back (right) over the crown.
+        <g clipPath={`url(#helmet-clip-${variant})`}>
+          <path
+            d="M 28 71 A 33 33 0 0 1 92 71"
+            fill="none"
+            stroke={YELLOW}
+            strokeWidth="16"
+            strokeLinecap="round"
+          />
+        </g>
       )}
 
       {variant === "blocker" && (
