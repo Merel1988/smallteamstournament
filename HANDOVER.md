@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB3 prod-migratie gedraaid (tabel live); PWA-icons uit het logo + FB9 (illustratieve regelspagina + huisregels naar venue) gecommit (`6b10137`), gepusht naar `main` en live gedeployed (auto-deploy Ready, live smoke-test: /regels NL+EN, /venue-huisregels en alle icons 200).** **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
+Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. **FB10 (regelspagina-illustraties bijgeschaafd na feedback Merel: rondere baan, 2 volledige teams van 5 op de baan, pivot-streep van voor naar achter, iets uitgebreidere basis-tekst) gecommit (`5c73760`) + gepusht naar `main`; deploy-verificatie nog open.** **FB3 prod-migratie gedraaid (tabel live); PWA-icons uit het logo + FB9 (illustratieve regelspagina + huisregels naar venue) gecommit (`6b10137`), gepusht naar `main` en live gedeployed (auto-deploy Ready, live smoke-test: /regels NL+EN, /venue-huisregels en alle icons 200).** **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
 
 ---
 
@@ -149,7 +149,7 @@ Feedback op FB9 verwerkt in `src/components/RulesIllustrations.tsx` + basis-teks
 - [x] **Pivot-streep gecorrigeerd:** liep dwars over de zijkant (horizontale band); nu een verticale streep van voor naar achter midden over de helm (`HelmetCover` pivot-rect x53 w14 y38 h60, geclipt op de dome-semicirkel cx=60). Zelfde verticale streep op de pivot-tokens op de baan.
 - [x] **2 volledige teams van 5 op de baan:** nieuwe `PlayerToken` (kleur = team ACCENT/WHITE, marking = positie). Baan toont nu 10 spelers: 2 jammers (ster) die uit de pack breken + pack van 2 pivots (streep) + 6 blockers. Markers in INK voor contrast op beide teamkleuren.
 - [x] **Basis-tekst iets uitgebreider:** `Rules.basicsBody` in beide `messages/*.json` (fysiek contact + pack-uitleg + "één puntenmaker en vier verdedigers"). Blijft bewerkbaar via `/admin/teksten`.
-- Visueel geverifieerd via inline-SVG → PNG render (baan + pivot-helm). `tsc --noEmit` schoon op de geraakte bestanden; JSON valide. **Nog committen + deployen.**
+- Visueel geverifieerd via inline-SVG → PNG render (baan + pivot-helm). `tsc --noEmit` schoon op de geraakte bestanden; JSON valide. **✅ Gecommit (`5c73760`) + gepusht naar `main`.** Auto-deploy nog niet geverifieerd — controleer of Vercel Ready is; zo niet, `vercel --prod --yes` als fallback (zie deploy-notitie).
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
