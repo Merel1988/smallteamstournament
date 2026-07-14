@@ -113,7 +113,7 @@ export default function BingoCard({ prompts }: { prompts: Prompt[] }) {
               className={`rounded-md text-[10px] sm:text-xs p-1 sm:p-2 leading-tight text-center flex items-center justify-center transition shadow-sm ${
                 checked
                   ? "bg-derby-accent text-white"
-                  : "bg-white hover:bg-derby-yellow/60 text-derby-ink"
+                  : "bg-white hover:bg-derby-accent hover:text-white text-derby-ink"
               } ${isFree ? "font-display text-lg sm:text-2xl" : ""}`}
             >
               {text}
@@ -126,7 +126,7 @@ export default function BingoCard({ prompts }: { prompts: Prompt[] }) {
         <button
           type="button"
           onClick={newCard}
-          className="bg-derby-ink text-derby-yellow rounded-full px-5 py-2 font-bold"
+          className="bg-derby-ink text-white rounded-full px-5 py-2 font-bold"
         >
           {t("newCard")}
         </button>

@@ -38,7 +38,7 @@ export default async function AdminLoginPage({
 
         <button
           type="submit"
-          className="w-full bg-derby-ink text-derby-yellow rounded-full py-2 font-bold"
+          className="w-full bg-derby-ink text-white rounded-full py-2 font-bold"
         >
           Inloggen
         </button>

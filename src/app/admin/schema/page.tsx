@@ -64,7 +64,7 @@ export default async function AdminSchemaPage() {
           </label>
           <button
             type="submit"
-            className="bg-derby-ink text-derby-yellow rounded-full px-4 py-2 font-bold justify-self-start"
+            className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold justify-self-start"
           >
             Toevoegen
           </button>
@@ -131,7 +131,7 @@ export default async function AdminSchemaPage() {
             <div className="sm:col-span-2 flex gap-2">
               <button
                 type="submit"
-                className="bg-derby-ink text-derby-yellow rounded-full px-4 py-2 font-bold"
+                className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
               >
                 Opslaan
               </button>

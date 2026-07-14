@@ -13,7 +13,7 @@ export default function LanguageSwitcher() {
   const [pending, startTransition] = useTransition();
 
   return (
-    <label className="flex items-center gap-1 text-xs text-derby-yellow">
+    <label className="flex items-center gap-1 text-xs text-white">
       <span className="sr-only">{t("label")}</span>
       <select
         aria-label={t("label")}
@@ -25,7 +25,7 @@ export default function LanguageSwitcher() {
             router.replace(pathname, { locale: next });
           });
         }}
-        className="bg-transparent text-derby-yellow border border-derby-yellow/40 rounded px-1 py-0.5"
+        className="bg-transparent text-white border border-white/40 rounded px-1 py-0.5"
       >
         {routing.locales.map((l) => (
           <option key={l} value={l} className="text-derby-ink">

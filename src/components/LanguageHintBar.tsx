@@ -53,7 +53,7 @@ export default function LanguageHintBar({
   }
 
   return (
-    <div className="bg-derby-yellow text-derby-ink text-sm">
+    <div className="bg-derby-accent text-white text-sm">
       <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-center gap-3 flex-wrap text-center">
         <span>{message}</span>
         <button

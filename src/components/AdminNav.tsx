@@ -23,7 +23,7 @@ export default function AdminNav() {
         <Link
           key={it.href}
           href={it.href}
-          className="px-3 py-1 text-sm rounded-full hover:bg-derby-yellow transition"
+          className="px-3 py-1 text-sm rounded-full hover:bg-derby-accent hover:text-white transition"
         >
           {it.label}
         </Link>
@@ -31,7 +31,7 @@ export default function AdminNav() {
       <form method="POST" action="/api/admin/logout" className="ml-auto">
         <button
           type="submit"
-          className="px-3 py-1 text-sm rounded-full bg-derby-ink text-derby-yellow"
+          className="px-3 py-1 text-sm rounded-full bg-derby-ink text-white"
         >
           Uitloggen
         </button>

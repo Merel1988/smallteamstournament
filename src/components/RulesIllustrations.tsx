@@ -1,11 +1,10 @@
 // Brand-style SVG illustrations for the roller-derby explainer on /regels.
 // Flat, self-contained line art in the tournament palette (no external assets,
 // CSP-safe). Palette matches globals.css: ink #0a0a0a, accent #e30613,
-// yellow #f4c41f, cream #f7f1e6.
+// white #FAFAFA, cream #f7f1e6.
 
 const INK = "#0a0a0a";
 const ACCENT = "#e30613";
-const YELLOW = "#f4c41f";
 const CREAM = "#f7f1e6";
 const WHITE = "#FAFAFA";
 
@@ -112,10 +111,10 @@ export function TrackDiagram({ className, label }: Props) {
       <line x1="224" y1="176" x2="224" y2="244" stroke={WHITE} strokeWidth="4" />
 
       {/* direction of play (counter-clockwise): arrow on the top straight */}
-      <g stroke={YELLOW} strokeWidth="3" fill="none" strokeLinecap="round">
+      <g stroke={ACCENT} strokeWidth="3" fill="none" strokeLinecap="round">
         <path d="M 228 42 L 166 42" />
       </g>
-      <polygon points="166,36 154,42 166,48" fill={YELLOW} />
+      <polygon points="166,36 154,42 166,48" fill={ACCENT} />
 
       {/* the pack: two pivots (stripe) + six blockers, both teams, between the lines */}
       <PlayerToken cx={180} cy={196} team="A" role="blocker" r={11} />
@@ -164,7 +163,7 @@ export function HelmetCover({
       {/* ear vent */}
       <circle cx="40" cy="78" r="6" fill={CREAM} opacity="0.55" />
 
-      {variant === "jammer" && <Star cx={62} cy={62} r={20} fill={YELLOW} />}
+      {variant === "jammer" && <Star cx={62} cy={62} r={20} fill={ACCENT} />}
 
       {variant === "pivot" && (
         // Side view: the stripe runs front (left) to back (right) over the crown.
@@ -172,7 +171,7 @@ export function HelmetCover({
           <path
             d="M 28 71 A 33 33 0 0 1 92 71"
             fill="none"
-            stroke={YELLOW}
+            stroke={ACCENT}
             strokeWidth="16"
             strokeLinecap="round"
           />
@@ -230,7 +229,7 @@ export function ScoringDiagram({ className, label }: Props) {
       ))}
 
       {/* jammer */}
-      <circle cx="48" cy="84" r="20" fill={YELLOW} stroke={INK} strokeWidth="2" />
+      <circle cx="48" cy="84" r="20" fill={ACCENT} stroke={INK} strokeWidth="2" />
       <Star cx={48} cy={84} r={12} fill={ACCENT} />
     </svg>
   );

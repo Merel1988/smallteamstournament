@@ -65,10 +65,10 @@ export default async function HomePage({
     <div className="space-y-8">
       <EventJsonLd description={tEvent("description")} />
       <section className="bg-derby-ink text-white rounded-2xl p-6 sm:p-10 shadow-lg">
-        <p className="font-display text-derby-yellow text-xl sm:text-2xl">
+        <p className="font-display text-white text-xl sm:text-2xl">
           {tEvent("league")}
         </p>
-        <h1 className="font-display text-5xl sm:text-7xl text-derby-yellow leading-[0.9] mt-1">
+        <h1 className="font-display text-5xl sm:text-7xl text-white leading-[0.9] mt-1">
           {tEvent("name")}
         </h1>
         <p className="text-white/80 mt-3 max-w-2xl">{tEvent("description")}</p>
@@ -115,7 +115,7 @@ export default async function HomePage({
               className="group bg-derby-ink text-white rounded-2xl p-6 shadow-lg hover:bg-derby-accent transition flex flex-col"
             >
               <div className="text-3xl">{block.emoji}</div>
-              <div className="font-display text-2xl text-derby-yellow group-hover:text-white mt-2">
+              <div className="font-display text-2xl text-white group-hover:text-white mt-2">
                 {block.label}
               </div>
               <p className="text-sm text-white/80 mt-1">{block.desc}</p>
@@ -168,7 +168,7 @@ export default async function HomePage({
           <Link
             key={card.href}
             href={card.href}
-            className="bg-white hover:bg-derby-yellow rounded-xl p-5 text-center shadow transition"
+            className="bg-white hover:bg-derby-accent hover:text-white rounded-xl p-5 text-center shadow transition"
           >
             <div className="text-3xl">{card.emoji}</div>
             <div className="font-display text-xl mt-2">{card.label}</div>

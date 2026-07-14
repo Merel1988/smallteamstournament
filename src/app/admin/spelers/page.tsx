@@ -58,7 +58,7 @@ export default async function AdminSpelersPage() {
         </label>
         <button
           type="submit"
-          className="bg-derby-ink text-derby-yellow rounded-full px-4 py-2 font-bold"
+          className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
         >
           Aanmaken
         </button>
@@ -120,7 +120,7 @@ export default async function AdminSpelersPage() {
             <div className="flex gap-2 mt-3">
               <button
                 type="submit"
-                className="bg-derby-ink text-derby-yellow rounded-full px-4 py-2 font-bold"
+                className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
               >
                 Opslaan
               </button>

@@ -139,9 +139,9 @@ export default async function RegelsPage({
 
       {/* Dit toernooi */}
       {hasText("formatBody") && (
-        <section className="bg-derby-ink text-derby-yellow rounded-2xl p-6 shadow space-y-2">
+        <section className="bg-derby-ink text-white rounded-2xl p-6 shadow space-y-2">
           <h2 className="font-display text-3xl">{t("formatHeading")}</h2>
-          <p className="text-derby-yellow/90">{t.rich("formatBody", richTags)}</p>
+          <p className="text-white/90">{t.rich("formatBody", richTags)}</p>
         </section>
       )}
 

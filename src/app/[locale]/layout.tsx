@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
-import RollerSkateLogo from "@/components/RollerSkateLogo";
+import RoadkillLogo from "@/components/RoadkillLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import LanguageHintBar from "@/components/LanguageHintBar";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -89,8 +89,8 @@ export default async function LocaleLayout({
       <header className="bg-derby-ink text-white sticky top-0 z-40 shadow-lg">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <RollerSkateLogo className="h-10 w-auto" />
-            <span className="font-display text-2xl text-derby-yellow leading-none">
+            <RoadkillLogo className="h-10 w-auto" />
+            <span className="font-display text-2xl text-white leading-none">
               Small Teams Tournament
             </span>
           </Link>
@@ -98,7 +98,7 @@ export default async function LocaleLayout({
             <LanguageSwitcher />
             <Link
               href="/notificaties"
-              className="text-xs text-derby-yellow underline underline-offset-2"
+              className="text-xs text-white underline underline-offset-2"
             >
               {tNav("notifications")}
             </Link>

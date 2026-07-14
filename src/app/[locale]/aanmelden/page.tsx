@@ -62,7 +62,7 @@ export default async function AanmeldenPage({
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block bg-derby-ink text-derby-yellow rounded-full px-5 py-2 font-bold"
+                  className="inline-block bg-derby-ink text-white rounded-full px-5 py-2 font-bold"
                 >
                   {t("openLink")}
                 </a>

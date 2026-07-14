@@ -64,7 +64,7 @@ export default async function AdminBingoPage() {
         />
         <button
           type="submit"
-          className="bg-derby-ink text-derby-yellow rounded-full px-4 py-2 font-bold"
+          className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
         >
           Toevoegen
         </button>

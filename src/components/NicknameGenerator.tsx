@@ -20,7 +20,7 @@ export default function NicknameGenerator() {
       <button
         type="button"
         onClick={roll}
-        className="w-full bg-derby-ink text-derby-yellow rounded-2xl py-10 font-display text-4xl sm:text-5xl shadow-lg hover:bg-derby-accent transition"
+        className="w-full bg-derby-ink text-white rounded-2xl py-10 font-display text-4xl sm:text-5xl shadow-lg hover:bg-derby-accent transition"
       >
         {name ?? t("clickMe")}
       </button>

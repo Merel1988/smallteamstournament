@@ -94,7 +94,7 @@ export default function NotificationsToggle({ vapidKey }: { vapidKey: string }) 
         <button
           type="button"
           onClick={enable}
-          className="bg-derby-ink text-derby-yellow rounded-full px-5 py-3 font-bold"
+          className="bg-derby-ink text-white rounded-full px-5 py-3 font-bold"
         >
           {t("enable")}
         </button>

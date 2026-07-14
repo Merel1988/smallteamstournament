@@ -83,7 +83,7 @@ export default async function AdminAanmeldenPage() {
             <input type="checkbox" name="visible" className="h-4 w-4" />
             Zichtbaar
           </label>
-          <button type="submit" className="bg-derby-ink text-derby-yellow rounded-full px-4 py-2 font-bold ml-auto">
+          <button type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold ml-auto">
             Toevoegen
           </button>
         </div>
@@ -120,7 +120,7 @@ export default async function AdminAanmeldenPage() {
                   Zichtbaar
                 </label>
                 <div className="flex gap-2 ml-auto">
-                  <button type="submit" className="bg-derby-ink text-derby-yellow rounded-full px-4 py-2 font-bold">
+                  <button type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold">
                     Opslaan
                   </button>
                   <button

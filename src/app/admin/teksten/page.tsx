@@ -100,8 +100,8 @@ export default async function AdminTekstenPage({
               href={`/admin/teksten?locale=${loc}`}
               className={`px-3 py-1 text-sm rounded-full font-bold transition ${
                 loc === locale
-                  ? "bg-derby-ink text-derby-yellow"
-                  : "bg-white shadow hover:bg-derby-yellow"
+                  ? "bg-derby-ink text-white"
+                  : "bg-white shadow hover:bg-derby-accent hover:text-white"
               }`}
             >
               {LOCALE_LABELS[loc] ?? loc}
@@ -137,7 +137,7 @@ export default async function AdminTekstenPage({
                 <label className="flex flex-wrap items-center gap-2 text-xs font-mono text-derby-ink/60">
                   {key}
                   {overridden && (
-                    <span className="rounded-full bg-derby-yellow px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-derby-ink">
+                    <span className="rounded-full bg-derby-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
                       aangepast
                     </span>
                   )}
@@ -181,7 +181,7 @@ export default async function AdminTekstenPage({
 
           <button
             type="submit"
-            className="bg-derby-ink text-derby-yellow rounded-full px-4 py-2 font-bold"
+            className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
           >
             {ns} opslaan
           </button>

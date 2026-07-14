@@ -45,7 +45,7 @@ export default function MvpVoter({
     return (
       <p
         role="status"
-        className="bg-derby-yellow rounded-xl p-4 font-display text-xl text-center"
+        className="bg-derby-accent text-white rounded-xl p-4 font-display text-xl text-center"
       >
         {t("thanks")}
       </p>
@@ -92,7 +92,7 @@ export default function MvpVoter({
         type="button"
         onClick={submit}
         disabled={!selected || busy}
-        className="w-full bg-derby-ink text-derby-yellow rounded-full py-3 font-bold disabled:opacity-40"
+        className="w-full bg-derby-ink text-white rounded-full py-3 font-bold disabled:opacity-40"
       >
         {busy ? t("busy") : t("submit")}
       </button>

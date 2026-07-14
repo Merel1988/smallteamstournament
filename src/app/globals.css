@@ -5,7 +5,6 @@
   --derby-ink: #0a0a0a;
   --derby-accent: #e30613;
   --derby-accent-dark: #8b0000;
-  --derby-yellow: #f4c41f;
   --derby-purple: #1a1a1a;
 }
 
@@ -14,7 +13,6 @@
   --color-derby-ink: var(--derby-ink);
   --color-derby-accent: var(--derby-accent);
   --color-derby-accent-dark: var(--derby-accent-dark);
-  --color-derby-yellow: var(--derby-yellow);
   --color-derby-purple: var(--derby-purple);
   --font-display: "Bebas Neue", "Impact", system-ui, sans-serif;
 }
@@ -31,7 +29,7 @@ body {
 }
 
 /* Visible keyboard focus on all interactive elements. A red ring with an offset
-   stays visible on the light body, the dark header and the yellow hover states. */
+   stays visible on the light body, the dark header and the red hover states. */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -50,7 +48,7 @@ summary:focus-visible,
   top: -3rem;
   z-index: 100;
   background: var(--derby-ink);
-  color: var(--derby-yellow);
+  color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 0 0 0.5rem 0.5rem;
   font-weight: 700;
