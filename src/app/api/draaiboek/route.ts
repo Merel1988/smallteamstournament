@@ -149,6 +149,23 @@ export async function POST(req: NextRequest) {
         await prisma.draaiboekItem.update({ where: { id: str(body.id) }, data });
         break;
       }
+      case "addItem": {
+        if (!org) return json({ error: "Alleen voor de organisatie." }, 403);
+        const kind = str(body.kind);
+        if (!["prep", "issue", "role"].includes(kind)) return json({ error: "Onbekend soort item." }, 400);
+        const text = str(body.text, 300);
+        if (!text) return json({ error: "Vul een omschrijving in." }, 400);
+        const max = await prisma.draaiboekItem.aggregate({ _max: { sortOrder: true } });
+        await prisma.draaiboekItem.create({
+          data: { kind, fase: str(body.fase, 60), text, note: str(body.note, 300), sortOrder: (max._max.sortOrder ?? 0) + 1 },
+        });
+        break;
+      }
+      case "deleteItem": {
+        if (!org) return json({ error: "Alleen voor de organisatie." }, 403);
+        await prisma.draaiboekItem.delete({ where: { id: str(body.id) } });
+        break;
+      }
       default:
         return json({ error: "Onbekende actie." }, 400);
     }
