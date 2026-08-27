@@ -104,7 +104,7 @@ export default function DagOverzicht({
               ))}
               {S.games.length === 0 && (
                 <div className="absolute inset-0 flex items-center px-3 text-xs text-white/40">
-                  Het speelschema volgt in oktober.
+                  {org ? "Nog geen wedstrijden. Teams vul je in via /admin/teams, het speelschema via /admin/schema." : "Het speelschema volgt in oktober."}
                 </div>
               )}
               {S.games.map((g) => {

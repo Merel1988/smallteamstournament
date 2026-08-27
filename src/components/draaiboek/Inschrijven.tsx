@@ -58,7 +58,7 @@ export default function Inschrijven({
           <div className="grid gap-3 sm:grid-cols-4 items-end mt-5">
             <div className="sm:col-span-2">
               <label className={label} htmlFor="meName">Of nieuw: naam of derbynaam</label>
-              <input id="meName" className={input} value={name} onChange={(e) => setName(e.target.value)} placeholder="Bijv. Spicy Boy" onKeyDown={(e) => e.key === "Enter" && add()} />
+              <input id="meName" className={input} value={name} onChange={(e) => setName(e.target.value)} placeholder="Bijv. Merel" onKeyDown={(e) => e.key === "Enter" && add()} />
             </div>
             <div>
               <label className={label} htmlFor="meTeam">Team</label>

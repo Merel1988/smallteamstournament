@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { DraaiboekState } from "@/lib/draaiboek-types";
 import type { Api } from "./Draaiboek";
 import { hours, m2s, myGames, status, teamName, volMinutes, volShifts } from "./util";
@@ -20,12 +21,24 @@ export default function Vrijwilligers({ S, org, api, busy }: { S: DraaiboekState
     <>
       <Card
         title="Vrijwilliger toevoegen"
-        sub="Koppel iemand aan een team als die zelf skate. Officials en zaalvrijwilligers laat je op 'speelt niet mee' staan. Alleen namen, geen telefoonnummers: iedereen met de link kan deze lijst zien."
+        sub={
+          <>
+            Koppel iemand aan een team als die zelf skate. Officials en zaalvrijwilligers laat je op &lsquo;speelt niet mee&rsquo; staan. Alleen namen, geen telefoonnummers: iedereen met de link kan deze lijst zien.
+            {org && S.teams.length === 0 && (
+              <>
+                {" "}
+                De teamkeuze is nog leeg: teams vul je in via{" "}
+                <Link className="underline" href="/admin/teams">/admin/teams</Link>, wedstrijden via{" "}
+                <Link className="underline" href="/admin/schema">/admin/schema</Link>.
+              </>
+            )}
+          </>
+        }
       >
         <div className="grid gap-3 sm:grid-cols-4 items-end">
           <div className="sm:col-span-2">
             <label className={label} htmlFor="vName">Naam of derbynaam</label>
-            <input id="vName" className={input} value={name} onChange={(e) => setName(e.target.value)} placeholder="Bijv. Spicy Boy" onKeyDown={(e) => e.key === "Enter" && add()} />
+            <input id="vName" className={input} value={name} onChange={(e) => setName(e.target.value)} placeholder="Bijv. Merel" onKeyDown={(e) => e.key === "Enter" && add()} />
           </div>
           <div>
             <label className={label} htmlFor="vTeam">Team</label>
