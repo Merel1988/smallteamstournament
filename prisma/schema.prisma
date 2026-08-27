@@ -145,3 +145,59 @@ model MessageOverride {
 
   @@unique([locale, key])
 }
+
+// Draaiboek / vrijwilligersrooster. Lives on an unlisted, noindex page
+// (/draaiboek/<DRAAIBOEK_TOKEN>). Times are minutes since midnight on event
+// day. `info` is a JSON array of checklist strings. Volunteers are plain names
+// (no accounts); a signup links a volunteer to a shift.
+model VolunteerTask {
+  id        String           @id @default(cuid())
+  area      String           // zaal | kantine | officials | algemeen
+  name      String
+  info      String           @default("[]")
+  sortOrder Int              @default(0)
+  shifts    VolunteerShift[]
+}
+
+model VolunteerShift {
+  id      String            @id @default(cuid())
+  taskId  String
+  task    VolunteerTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  start   Int
+  end     Int
+  need    Int               @default(1)
+  signups VolunteerSignup[]
+}
+
+model Volunteer {
+  id        String            @id @default(cuid())
+  name      String
+  teamId    String?           // Team.id when the volunteer skates in the tournament
+  createdAt DateTime          @default(now())
+  signups   VolunteerSignup[]
+}
+
+model VolunteerSignup {
+  id          String         @id @default(cuid())
+  shiftId     String
+  shift       VolunteerShift @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+  volunteerId String
+  volunteer   Volunteer      @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime       @default(now())
+
+  @@unique([shiftId, volunteerId])
+}
+
+// Organisation-only lists on the draaiboek page: `kind` is "prep" (timeline
+// to the event), "issue" (open questions) or "role" (who is responsible).
+model DraaiboekItem {
+  id        String  @id @default(cuid())
+  kind      String
+  fase      String  @default("")
+  text      String
+  note      String  @default("")
+  wie       String  @default("")
+  datum     String  @default("")
+  done      Boolean @default(false)
+  sortOrder Int     @default(0)
+}

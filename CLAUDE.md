@@ -57,3 +57,10 @@ Shared-password gate (organisers share one password), not per-user accounts.
 - New user-facing strings must be added to both `messages/nl.json` and `messages/en.json`.
 - In `[locale]` pages, import `Link` (and other navigation helpers) from `@/i18n/navigation` so URLs stay locale-aware — not from `next/link`. Admin pages are Dutch-only and use plain `next/link`.
 - Event metadata (date, venue) lives in `src/lib/event.ts` — change there, not in components.
+
+### Draaiboek / vrijwilligersrooster
+
+- Unlisted page at `/draaiboek/[token]` (outside `[locale]`, Dutch-only, `noindex` + disallowed in `robots.ts`, never linked from the public site; the links are shown on `/admin`). Two tokens: `DRAAIBOEK_TOKEN` (volunteers: Dagoverzicht, Inschrijven, Vrijwilligers) and `DRAAIBOEK_ORG_TOKEN` (organisation: also Draaiboek dag, Voorbereiding, Delen). Unknown token → 404.
+- Server logic in `src/lib/draaiboek.ts` (token check, `loadState`, seeding of default posts from `src/lib/draaiboek-seed.ts` when `VolunteerTask` is empty); shared types/constants in `src/lib/draaiboek-types.ts` (no Prisma import, safe for client components). API: `src/app/api/draaiboek/route.ts` (GET state, POST `{token, action, ...}`); org-only actions check the role. UI in `src/components/draaiboek/`.
+- Shift times are minutes since midnight on event day. A volunteer's own games (from `Match` + `Team`) block overlapping shifts and warn within 45/15 min margins.
+- Prod tables were created with `scripts/migrate-draaiboek-prod.mjs` (idempotent).
