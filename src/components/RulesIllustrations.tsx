@@ -283,3 +283,131 @@ export function PenaltyDiagram({ className, label }: Props) {
     </svg>
   );
 }
+
+type TacticVariant = "wall" | "pack" | "isolate";
+
+/**
+ * Mini pack diagrams for the cheatsheet. Direction of play is left, so a skater
+ * "in front" sits further left. Team A = red, team B = white.
+ */
+export function TacticDiagram({
+  variant,
+  className,
+  label,
+}: Props & { variant: TacticVariant }) {
+  return (
+    <svg
+      viewBox="0 0 160 80"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      role="img"
+      aria-label={label}
+    >
+      {variant === "wall" && (
+        <>
+          {/* three white blockers side by side, the red jammer stuck behind them */}
+          <PlayerToken cx={62} cy={18} team="B" role="blocker" />
+          <PlayerToken cx={62} cy={42} team="B" role="pivot" />
+          <PlayerToken cx={62} cy={66} team="B" role="blocker" />
+          <PlayerToken cx={116} cy={42} team="A" role="jammer" />
+          <line x1="100" y1="42" x2="80" y2="42" stroke={ACCENT} strokeWidth="3" strokeLinecap="round" />
+          <line x1="88" y1="34" x2="80" y2="50" stroke={INK} strokeWidth="3" strokeLinecap="round" />
+          <line x1="80" y1="34" x2="88" y2="50" stroke={INK} strokeWidth="3" strokeLinecap="round" />
+        </>
+      )}
+      {variant === "pack" && (
+        <>
+          {/* both teams' blockers bunched together, a jammer looking for a gap */}
+          <PlayerToken cx={46} cy={26} team="B" role="blocker" />
+          <PlayerToken cx={50} cy={54} team="A" role="pivot" />
+          <PlayerToken cx={72} cy={40} team="A" role="blocker" />
+          <PlayerToken cx={78} cy={64} team="B" role="pivot" />
+          <PlayerToken cx={74} cy={16} team="A" role="blocker" />
+          <PlayerToken cx={98} cy={30} team="B" role="blocker" />
+          <PlayerToken cx={136} cy={46} team="A" role="jammer" />
+          <path
+            d="M 122 46 Q 110 46 104 50"
+            fill="none"
+            stroke={ACCENT}
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeDasharray="4 4"
+          />
+        </>
+      )}
+      {variant === "isolate" && (
+        <>
+          {/* two red blockers push one white blocker away from its pack */}
+          <PlayerToken cx={22} cy={40} team="B" role="blocker" />
+          <PlayerToken cx={44} cy={30} team="B" role="pivot" />
+          <PlayerToken cx={100} cy={28} team="A" role="blocker" />
+          <PlayerToken cx={100} cy={54} team="A" role="blocker" />
+          <PlayerToken cx={128} cy={41} team="B" role="blocker" />
+          <line x1="64" y1="40" x2="82" y2="40" stroke={INK} strokeWidth="2" strokeDasharray="3 4" />
+          <path d="M 146 41 L 156 41" stroke={ACCENT} strokeWidth="3" strokeLinecap="round" />
+          <polygon points="156,36 160,41 156,46" fill={ACCENT} />
+        </>
+      )}
+    </svg>
+  );
+}
+
+type CheatIconKind = "clock" | "team" | "star" | "contact" | "penalty";
+
+/** Simple line icons for the cheatsheet's list of key rules. */
+export function CheatIcon({
+  kind,
+  className,
+}: {
+  kind: CheatIconKind;
+  className?: string;
+}) {
+  const stroke = {
+    fill: "none",
+    stroke: INK,
+    strokeWidth: 2.5,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      {kind === "clock" && (
+        <>
+          <circle cx="20" cy="22" r="13" {...stroke} />
+          <path d="M 20 22 L 20 14 M 20 22 L 26 25 M 16 5 L 24 5 M 20 5 L 20 9" {...stroke} />
+        </>
+      )}
+      {kind === "team" && (
+        <>
+          {[8, 20, 32].map((x) => (
+            <g key={x}>
+              <circle cx={x} cy="13" r="4.5" fill={x === 20 ? ACCENT : INK} />
+              <path d={`M ${x - 6} 32 Q ${x - 6} 20 ${x} 20 Q ${x + 6} 20 ${x + 6} 32 Z`} fill={x === 20 ? ACCENT : INK} />
+            </g>
+          ))}
+        </>
+      )}
+      {kind === "star" && <Star cx={20} cy={21} r={15} fill={ACCENT} />}
+      {kind === "contact" && (
+        <>
+          {/* shoulder-to-hip blocking zone: torso with highlighted legal zone */}
+          <circle cx="20" cy="7" r="4.5" fill={INK} />
+          <rect x="12" y="13" width="16" height="16" rx="3" fill={ACCENT} />
+          <path d="M 15 29 L 14 37 M 25 29 L 26 37" {...stroke} />
+        </>
+      )}
+      {kind === "penalty" && (
+        <>
+          <circle cx="20" cy="20" r="15" {...stroke} />
+          <path d="M 20 11 L 20 23" {...stroke} stroke={ACCENT} strokeWidth={3.5} />
+          <circle cx="20" cy="29" r="2.2" fill={ACCENT} />
+        </>
+      )}
+    </svg>
+  );
+}

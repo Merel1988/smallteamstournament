@@ -2,7 +2,13 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-07-03** — F1 t/m F7 + FB1 af/live. FB10 + FB11 (regelspagina-illustraties) gecommit + gepusht naar `main`; live geverifieerd (`/regels` NL+EN = 200). **FB12 (nieuwe pagina `/toernooi` + homepage-blokjes Aanmelden/Toernooi/Regels) ✅ gebouwd & lokaal geverifieerd, `npm run build` groen — nog committen + deployen.** **FB13 (admin-ruimte) uitgesteld op verzoek Merel ("leave for now").** Zie §4c. **FB3 prod-migratie gedraaid (tabel live); PWA-icons uit het logo + FB9 (illustratieve regelspagina + huisregels naar venue) gecommit (`6b10137`), gepusht naar `main` en live gedeployed (auto-deploy Ready, live smoke-test: /regels NL+EN, /venue-huisregels en alle icons 200).** **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
+Laatste update: **2026-10-07**: FB14 (spiekbriefje op `/regels`, naar voorbeeld van een collega) gebouwd en live. Lighthouse-nulmeting gedraaid (F7, zie hieronder). Sinds de vorige update ook live: **branding** (echt Roadkill Rollers-logo + rood/zwart/wit palet, `ec825aa`, 2026-07-14) en het **draaiboek/vrijwilligersrooster** (`/draaiboek/[token]`, 2026-08-27, zie CLAUDE.md). Nog open: FB2 device-test, e-mail (§4b), FB13 (uitgesteld).
+
+<details><summary>Vorige update (2026-07-03)</summary>
+
+**2026-07-03** — F1 t/m F7 + FB1 af/live. FB10 + FB11 (regelspagina-illustraties) gecommit + gepusht naar `main`; live geverifieerd (`/regels` NL+EN = 200). **FB12 (nieuwe pagina `/toernooi` + homepage-blokjes Aanmelden/Toernooi/Regels) ✅ gebouwd & lokaal geverifieerd, `npm run build` groen — nog committen + deployen.** **FB13 (admin-ruimte) uitgesteld op verzoek Merel ("leave for now").** Zie §4c. **FB3 prod-migratie gedraaid (tabel live); PWA-icons uit het logo + FB9 (illustratieve regelspagina + huisregels naar venue) gecommit (`6b10137`), gepusht naar `main` en live gedeployed (auto-deploy Ready, live smoke-test: /regels NL+EN, /venue-huisregels en alle icons 200).** **FB2, FB6, FB7, FB8 gecommit (`501b6f5`/`7fc1ae5`), gepusht naar `main` en live gedeployed** (auto-deploy Ready, live smoke-test 200). **FB2 wacht nog op device-verificatie.** **FB3 (verstuurd-historie): code live, maar wacht op de prod-migratie van de `SentNotification`-tabel** (zie hieronder). FB4/FB5 waren al live.
+
+</details>
 
 ---
 
@@ -83,7 +89,9 @@ Generieke override-laag bovenop next-intl.
 - [x] **Alt-teksten**: alle 8 `<Image>` hadden al alt; icoon-knoppen (bingo-toggle, taal-switch, taalhint-dismiss, foto-sluiten) hebben `aria-label`. RollerSkateLogo heeft een `<title>`.
 - [x] **Semantische structuur**: `<html lang>` nu **dynamisch per locale** via `getLocale()` in `src/app/layout.tsx` (admin buiten `[locale]` valt terug op `nl`). Skip-to-content-link + `<main id="main-content" aria-label>` + `<nav aria-label>` in `[locale]/layout.tsx`. Nieuwe `A11y`-namespace (skipToContent/mainLabel/navLabel/closePhoto) in beide `messages/*.json`.
 - [x] **Formulieren**: PhotoUpload-inputs hadden alleen placeholders → nu `aria-label` op file/naam/caption (+ `fileLabel`-string). Dynamische meldingen kondigen nu aan: fout = `role="alert"`, succes/status = `role="status"` (PhotoUpload, MvpVoter, NotificationsToggle). Nickname-generator kondigt de gerolde naam aan via een `aria-live` sr-only regio. Foto-lightbox: `role="dialog"` + `aria-modal` + label + zichtbare sluitknop + focus verplaatst naar sluitknop bij openen en terug bij sluiten (Escape werkte al).
-- [ ] **Automatische axe/Lighthouse-nulmeting**: niet gedraaid in deze sessie (geen headless Chromium beschikbaar in de agent-omgeving). Aanrader: Lighthouse-tab in Chrome DevTools op de live site draaien als nulmeting/verificatie; de bovenstaande fixes dekken de gangbare axe-regels (labels, contrast, landmarks, focus, lang, naam-op-knop).
+- [x] **Lighthouse-nulmeting** (2026-10-07, live site, mobiel, Lighthouse 12 via lokale Chrome headless). Performance / Accessibility / Best practices / SEO:
+  - home 95 / 95 / 96 / 100 · regels 98 / 96 / 96 / 100 · toernooi 99 / 95 / 96 / 100 · bingo 99 / 95 / 93 / 100 · venue 98 / 96 / 96 / 100
+  - Herhalen: `npx -y lighthouse@12 https://www.smallteamstournament.nl/<pad> --chrome-flags="--headless=new" --only-categories=performance,accessibility,best-practices,seo`
 
 ## 4a. Feedback ronde 2 — te verwerken (volgende stappen)
 
@@ -176,6 +184,17 @@ Nieuwe feedback van Merel (2026-07-03), nog **niet** geïmplementeerd.
 
 ### FB13 · Admin-container: velden tegen de randen — ⏸️ UITGESTELD (besluit Merel 2026-07-03: "leave for now")
 - Onderzocht: na FB6 hebben álle admin-pagina's al de centrale container (`max-w-6xl mx-auto px-4`) én kaarten met `p-5`-padding; op desktop ziet de teksten-pagina er correct uit (screenshot-geverifieerd). "Tegen de randen" was vanuit code/desktop niet te reproduceren — vermoedelijk device-specifiek of een "meer ademruimte"-wens. Merel: voorlopig laten staan. Als het terugkomt: mogelijke fix = smallere leeskolom voor forms (nu ~1150px breed) en/of iets meer padding.
+
+## 4d. Feedback ronde 4
+
+### FB14 · Spiekbriefje op de regelspagina ✅ AF (2026-10-07)
+Een collega van Merel maakte een voorbeeld (https://indexhtml-pi-flax.vercel.app/#cheatsheet-beeld, een AI-gegenereerde poster-PNG plus een uitlegpagina).
+- **Bewust nagebouwd in HTML, niet de PNG ingeplakt:** de poster is alleen NL, 2 MB, niet bewerkbaar, bevat een typfout ("ROLLIER DERBY") en een paar inhoudelijke fouten. Gecorrigeerd: pivot wordt jammer via een *star pass* (niet "als de jammer uit de baan gaat"); de lead jammer krijgt géén andere helmcover (de ref wijst aan); inhalen is van achter naar voor; tegenstanders de baan uit blokken mag wél, blokken met ellebogen/handen/hoofd of in de rug niet.
+- **`Cheatsheet`-sectie** bovenaan `src/app/[locale]/regels/page.tsx` (anker `#spiekbriefje`): belangrijkste spelregels (5, met iconen), tactieken in de pack (wall/pack/isoleren met mini-diagrammen), lead jammer, een jam in 5 stappen, en 2 YouTube-links (WFTDA "Roller Derby 101: Gameplay" + "The Rules of Roller Derby, Explained"). Links openen extern, geen embeds.
+- Nieuwe SVG's `TacticDiagram` + `CheatIcon` in `src/components/RulesIllustrations.tsx` (hergebruiken `PlayerToken`).
+- Teksten in `Rules.cheat.*` in beide `messages/*.json` → bewerkbaar via `/admin/teksten`. Lege regel/lead-items worden overgeslagen.
+- **Niet overgenomen uit het voorbeeld** (eventueel later): mini-quiz, begrippenlijst (uitklapbaar), "kijk-tip: volg eerst de jammers".
+- Geverifieerd: desktop + 375px (geen horizontale scroll), NL + EN, `npm run build` groen.
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
