@@ -2,25 +2,31 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { assertPageVisible } from "@/lib/page-visibility";
-import {
-  TrackDiagram,
-  HelmetCover,
-  ScoringDiagram,
-  PenaltyDiagram,
-  TacticDiagram,
-  CheatIcon,
-} from "@/components/RulesIllustrations";
+import { RulesSectionNav } from "@/components/RulesSectionNav";
+import { RulesQuiz, type QuizQuestion } from "@/components/RulesQuiz";
 
 export const dynamic = "force-dynamic";
 
-const WFTDA_RULES_URL = "https://rules.wftda.org/";
-const WFTDA_RESOURCES_URL = "https://resources.wftda.org/";
+// Beginner explainer, modelled on the "Roller derby simpel uitgelegd" page a club
+// member made. All copy lives in the `Rules` namespace (editable via /admin/teksten).
+
+const WFTDA_RULES_URL = "https://rules.wftda.com/";
+const CLUB_URL = "https://roadkillrollers.nl/";
 const VIDEO_URLS = [
   "https://www.youtube.com/watch?v=OId6gTd2LCM",
   "https://www.youtube.com/watch?v=sFC6YE8zLmY",
 ];
-const RULE_ICONS = ["clock", "team", "star", "contact", "penalty"] as const;
+// Index of the right answer per quiz question (answers come from q{n}a1..a4).
+const QUIZ_CORRECT = [0, 3, 0, 1, 1];
+
+const ROLES = [
+  { key: "jammer", icon: "⭐" },
+  { key: "blocker", icon: "🧱" },
+  { key: "pivot", icon: "▰" },
+] as const;
 const TACTICS = ["wall", "pack", "isolate"] as const;
+
+const range = (n: number) => Array.from({ length: n }, (_, i) => i + 1);
 
 export async function generateMetadata({
   params,
@@ -40,344 +46,359 @@ export default async function RegelsPage({
   await assertPageVisible("regels");
   setRequestLocale(locale);
   const t = await getTranslations("Rules");
+  const tA11y = await getTranslations("A11y");
 
-  const richTags = {
-    strong: (chunks: React.ReactNode) => (
-      <strong className="font-semibold">{chunks}</strong>
-    ),
-    em: (chunks: React.ReactNode) => <em>{chunks}</em>,
+  const rich = {
+    strong: (chunks: React.ReactNode) => <strong>{chunks}</strong>,
   };
 
-  // A field cleared via /admin/teksten should not render as empty markup.
-  const hasText = (key: string) => String(t.raw(key) ?? "").trim().length > 0;
+  const navItems = [
+    { id: "rollen", label: t("navRoles") },
+    { id: "basisregels", label: t("navRules") },
+    { id: "pass", label: t("navPass") },
+    { id: "jam", label: t("navJam") },
+    { id: "video", label: t("navVideo") },
+    { id: "quiz", label: t("navQuiz") },
+  ];
+
+  const questions: QuizQuestion[] = range(5).map((n) => ({
+    q: t(`q${n}`),
+    options: range(4).map((a) => t(`q${n}a${a}`)),
+    correct: QUIZ_CORRECT[n - 1],
+  }));
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-3">
-        <h1 className="font-display text-5xl">{t("title")}</h1>
-        {hasText("lead") && (
-          <p className="text-lg text-derby-ink/70 max-w-2xl">{t("lead")}</p>
-        )}
-      </header>
-
-      <Cheatsheet />
-
-      {/* De basis — track diagram */}
-      <ExplainerCard
-        heading={t("basicsHeading")}
-        illustration={
-          <TrackDiagram
-            className="w-full h-auto"
-            label={t("basicsHeading")}
-          />
-        }
-      >
-        <p>{t.rich("basicsBody", richTags)}</p>
-      </ExplainerCard>
-
-      {/* De rollen — helmet covers */}
-      <section className="bg-white rounded-2xl p-6 shadow space-y-5">
-        <div className="space-y-2">
-          <h2 className="font-display text-3xl">{t("rolesHeading")}</h2>
-          {hasText("rolesBody") && (
-            <p className="text-derby-ink/80">{t.rich("rolesBody", richTags)}</p>
-          )}
-        </div>
-        <div className="grid gap-5 sm:grid-cols-3">
-          <RoleCard
-            illustration={
-              <HelmetCover
-                variant="jammer"
-                className="h-24 w-24"
-                label={t("jammerLabel")}
-              />
-            }
-            label={t("jammerLabel")}
-          >
-            {t.rich("jammerDesc", richTags)}
-          </RoleCard>
-          <RoleCard
-            illustration={
-              <HelmetCover
-                variant="pivot"
-                className="h-24 w-24"
-                label={t("pivotLabel")}
-              />
-            }
-            label={t("pivotLabel")}
-          >
-            {t.rich("pivotDesc", richTags)}
-          </RoleCard>
-          <RoleCard
-            illustration={
-              <HelmetCover
-                variant="blocker"
-                className="h-24 w-24"
-                label={t("blockerLabel")}
-              />
-            }
-            label={t("blockerLabel")}
-          >
-            {t.rich("blockerDesc", richTags)}
-          </RoleCard>
+    <div className="space-y-2">
+      {/* Hero */}
+      <section className="pt-4 pb-6 space-y-4">
+        <span className="inline-block rounded-full bg-derby-ink px-3 py-1.5 text-[11px] font-black uppercase tracking-widest text-white">
+          {t("kicker")}
+        </span>
+        <h1 className="font-display text-5xl sm:text-7xl leading-[0.92]">
+          {t("titleLine1")}
+          <br />
+          <span className="text-derby-accent">{t("titleLine2")}</span>
+        </h1>
+        <p className="max-w-3xl text-lg text-derby-ink/75">{t("lead")}</p>
+        <div className="flex flex-wrap gap-2">
+          <a href="#rollen" className={BTN}>
+            {t("ctaStart")}
+          </a>
+          <a href="#jam" className={BTN_SECONDARY}>
+            {t("ctaJam")}
+          </a>
         </div>
       </section>
 
-      {/* Scoren — scoring diagram */}
-      <ExplainerCard
-        heading={t("scoringHeading")}
-        illustration={
-          <ScoringDiagram className="w-full h-auto" label={t("scoringHeading")} />
-        }
-        flip
+      <RulesSectionNav items={navItems} label={tA11y("navLabel")} />
+
+      {/* 01 Rollen */}
+      <Section
+        id="rollen"
+        eyebrow={t("rolesEyebrow")}
+        heading={t("rolesHeading")}
+        sub={t.rich("rolesSub", rich)}
       >
-        <p>{t.rich("scoringBody", richTags)}</p>
-      </ExplainerCard>
-
-      {/* Penalties — whistle + clock */}
-      <ExplainerCard
-        heading={t("penaltiesHeading")}
-        illustration={
-          <PenaltyDiagram
-            className="h-40 w-auto mx-auto"
-            label={t("penaltiesHeading")}
-          />
-        }
-      >
-        <p>{t.rich("penaltiesBody", richTags)}</p>
-      </ExplainerCard>
-
-      {/* Dit toernooi */}
-      {hasText("formatBody") && (
-        <section className="bg-derby-ink text-white rounded-2xl p-6 shadow space-y-2">
-          <h2 className="font-display text-3xl">{t("formatHeading")}</h2>
-          <p className="text-white/90">{t.rich("formatBody", richTags)}</p>
-        </section>
-      )}
-
-      {/* Bronnen */}
-      {hasText("sourcesBody") && (
-        <section className="rounded-2xl border border-derby-ink/15 p-6 space-y-3">
-          <h2 className="font-display text-2xl">{t("sourcesHeading")}</h2>
-          <p className="text-derby-ink/70 text-sm">{t("sourcesBody")}</p>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            <li>
-              <a
-                href={WFTDA_RULES_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-derby-accent underline"
-              >
-                {t("sourceRulesLabel")} →
-              </a>
-            </li>
-            <li>
-              <a
-                href={WFTDA_RESOURCES_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-derby-accent underline"
-              >
-                {t("sourceResourcesLabel")} →
-              </a>
-            </li>
-          </ul>
-        </section>
-      )}
-    </div>
-  );
-}
-
-function ExplainerCard({
-  heading,
-  illustration,
-  children,
-  flip = false,
-}: {
-  heading: string;
-  illustration: React.ReactNode;
-  children: React.ReactNode;
-  flip?: boolean;
-}) {
-  return (
-    <section className="bg-white rounded-2xl p-6 shadow">
-      <div className="grid gap-6 sm:grid-cols-2 sm:items-center">
-        <div className={`space-y-3 ${flip ? "sm:order-2" : ""}`}>
-          <h2 className="font-display text-3xl">{heading}</h2>
-          <div className="space-y-3 text-derby-ink/80">{children}</div>
-        </div>
-        <div
-          className={`rounded-xl bg-derby-bg p-4 ${flip ? "sm:order-1" : ""}`}
-        >
-          {illustration}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function RoleCard({
-  illustration,
-  label,
-  children,
-}: {
-  illustration: React.ReactNode;
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="rounded-xl bg-derby-bg p-4 text-center flex flex-col items-center gap-2">
-      {illustration}
-      <h3 className="font-display text-xl">{label}</h3>
-      <p className="text-sm text-derby-ink/75">{children}</p>
-    </div>
-  );
-}
-
-/** Compact one-card summary ("spiekbriefje") of the key rules, tactics and jam flow. */
-async function Cheatsheet() {
-  const t = await getTranslations("Rules.cheat");
-  const has = (key: string) => String(t.raw(key) ?? "").trim().length > 0;
-  const n = (count: number) => Array.from({ length: count }, (_, i) => i + 1);
-
-  return (
-    <section
-      id="spiekbriefje"
-      aria-labelledby="spiekbriefje-heading"
-      className="scroll-mt-24 rounded-2xl border-4 border-derby-ink bg-white shadow overflow-hidden"
-    >
-      <div className="bg-derby-ink text-white px-6 py-5 space-y-1">
-        <p className="text-xs font-bold uppercase tracking-widest text-derby-accent">
-          {t("eyebrow")}
-        </p>
-        <h2 id="spiekbriefje-heading" className="font-display text-4xl">
-          {t("heading")}
-        </h2>
-        {has("lead") && <p className="text-white/80 max-w-2xl">{t("lead")}</p>}
-      </div>
-
-      <div className="grid gap-px bg-derby-ink/15 lg:grid-cols-3">
-        <CheatBlock heading={t("rulesHeading")}>
-          <ul className="space-y-3">
-            {n(5)
-              .filter((i) => has(`rule${i}`))
-              .map((i) => (
-                <li key={i} className="flex gap-3 items-start">
-                  <CheatIcon
-                    kind={RULE_ICONS[i - 1]}
-                    className="h-8 w-8 shrink-0"
-                  />
-                  <span className="text-sm text-derby-ink/80">
-                    {t(`rule${i}`)}
-                  </span>
-                </li>
-              ))}
-          </ul>
-        </CheatBlock>
-
-        <CheatBlock heading={t("tacticsHeading")}>
-          <ul className="space-y-4">
-            {TACTICS.map((key) => (
-              <li key={key} className="flex gap-3 items-center">
-                <div className="w-32 shrink-0 rounded-lg bg-derby-bg p-1.5">
-                  <TacticDiagram
-                    variant={key}
-                    className="w-full h-auto"
-                    label={t(`${key}Label`)}
-                  />
+        <div className="grid gap-4 md:grid-cols-3">
+          {ROLES.map(({ key, icon }) => (
+            <article
+              key={key}
+              className={`${CARD} border-t-[6px] border-t-derby-accent`}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  aria-hidden="true"
+                  className="grid h-12 w-12 place-items-center rounded-xl bg-derby-accent/10 text-2xl"
+                >
+                  {icon}
                 </div>
+                <h3 className="text-xl font-bold">{t(`${key}Label`)}</h3>
+              </div>
+              <span className="mt-2 inline-block rounded-full bg-derby-ink px-2.5 py-1 text-xs font-black text-white">
+                {t(`${key}Count`)}
+              </span>
+              <p className="mt-3 text-derby-ink/75">
+                {t.rich(`${key}Desc`, rich)}
+              </p>
+              <p className="mt-3 text-sm text-derby-ink/60">
+                {t.rich(`${key}Note`, rich)}
+              </p>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      {/* 02 Basisregels */}
+      <Section
+        id="basisregels"
+        eyebrow={t("rulesEyebrow")}
+        heading={t("rulesHeading")}
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          <ol className="rounded-2xl bg-derby-ink p-5 text-white">
+            {range(4).map((n) => (
+              <li
+                key={n}
+                className="flex gap-3 border-b border-white/15 py-3.5 last:border-b-0"
+              >
+                <span
+                  aria-hidden="true"
+                  className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-derby-accent font-black"
+                >
+                  {n}
+                </span>
                 <div>
-                  <h4 className="font-display text-lg text-derby-accent leading-tight">
-                    {t(`${key}Label`)}
-                  </h4>
-                  <p className="text-sm text-derby-ink/80">{t(`${key}Desc`)}</p>
+                  <p className="font-bold">{t(`rule${n}Title`)}</p>
+                  <p className="text-sm text-white/75">{t(`rule${n}Body`)}</p>
                 </div>
               </li>
             ))}
-          </ul>
-        </CheatBlock>
-
-        <CheatBlock heading={t("leadHeading")}>
-          <div className="flex gap-4 items-start">
-            <HelmetCover
-              variant="jammer"
-              className="h-16 w-16 shrink-0"
-              label={t("leadHeading")}
-            />
-            <ul className="list-disc pl-4 space-y-2 text-sm text-derby-ink/80">
-              {n(3)
-                .filter((i) => has(`lead${i}`))
-                .map((i) => (
-                  <li key={i}>{t(`lead${i}`)}</li>
-                ))}
-            </ul>
+          </ol>
+          <div className={CARD}>
+            <h3 className="text-xl font-bold">{t("tipHeading")}</h3>
+            <p className="mt-3 text-derby-ink/75">{t.rich("tipBody", rich)}</p>
+            <p className="mt-3 text-sm text-derby-ink/60">{t("tipNote")}</p>
           </div>
-        </CheatBlock>
-      </div>
+        </div>
+      </Section>
 
-      <div className="border-t border-derby-ink/15 p-6 space-y-4">
-        <h3 className="font-display text-2xl">{t("stepsHeading")}</h3>
-        <ol className="grid gap-4 sm:grid-cols-5">
-          {n(5).map((i) => (
-            <li key={i} className="flex gap-3 sm:flex-col sm:gap-2">
-              <span
-                aria-hidden="true"
-                className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-derby-accent font-bold text-white"
+      {/* 03 Legal pass */}
+      <Section id="pass" eyebrow={t("passEyebrow")} heading={t("passHeading")}>
+        <div className="rounded-2xl border-2 border-derby-accent/30 bg-gradient-to-r from-derby-accent/10 to-white p-5">
+          <h3 className="text-2xl font-bold">{t("passTitle")}</h3>
+          <p className="mt-2 text-derby-ink/80">{t.rich("passBody", rich)}</p>
+          <div className="mt-4 grid gap-2 md:grid-cols-3">
+            {range(3).map((n) => (
+              <div
+                key={n}
+                className="rounded-xl border border-derby-ink/10 bg-white p-3.5"
               >
-                {i}
-              </span>
-              <div>
-                <h4 className="font-semibold">{t(`step${i}Title`)}</h4>
-                <p className="text-sm text-derby-ink/75">{t(`step${i}Body`)}</p>
+                <p className="font-bold text-derby-accent-dark">
+                  {t(`passStep${n}Title`)}
+                </p>
+                <p className="mt-1 text-sm text-derby-ink/65">
+                  {t(`passStep${n}Body`)}
+                </p>
               </div>
+            ))}
+          </div>
+          <p className="mt-3 rounded-lg border-l-[5px] border-green-600 bg-white px-4 py-3 text-sm">
+            {t.rich("passTip", rich)}
+          </p>
+        </div>
+      </Section>
+
+      {/* 04 Lead jammer */}
+      <Section id="lead" eyebrow={t("leadEyebrow")} heading={t("leadHeading")}>
+        <div className="space-y-3 rounded-2xl bg-derby-ink p-5 text-white">
+          <h3 className="text-2xl font-bold">{t("leadTitle")}</h3>
+          <p className="text-white/80">{t("leadBody1")}</p>
+          <p className="text-white/80">{t.rich("leadBody2", rich)}</p>
+          <p className="text-white/80">{t.rich("leadBody3", rich)}</p>
+        </div>
+      </Section>
+
+      {/* 05 Tactiek */}
+      <Section
+        id="tactiek"
+        eyebrow={t("tacticsEyebrow")}
+        heading={t("tacticsHeading")}
+      >
+        <div className="grid gap-4 md:grid-cols-3">
+          {TACTICS.map((key) => (
+            <article
+              key={key}
+              className="rounded-2xl border border-derby-ink/10 bg-white p-5"
+            >
+              <span className="inline-block rounded-full bg-derby-accent/10 px-2 py-1 text-[11px] font-black uppercase text-derby-accent-dark">
+                {t(`${key}Tag`)}
+              </span>
+              <h3 className="mt-2 text-lg font-bold">{t(`${key}Title`)}</h3>
+              <p className="mt-1 text-sm text-derby-ink/65">
+                {t(`${key}Body`)}
+              </p>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      {/* 06 Een jam in vijf stappen */}
+      <Section
+        id="jam"
+        eyebrow={t("jamEyebrow")}
+        heading={t("jamHeading")}
+        sub={t("jamSub")}
+      >
+        <ol className="grid overflow-hidden rounded-2xl border border-derby-ink/10 bg-white md:grid-cols-5">
+          {range(5).map((n) => (
+            <li
+              key={n}
+              className="border-b border-derby-ink/10 p-4 last:border-b-0 md:min-h-44 md:border-b-0 md:border-r md:last:border-r-0"
+            >
+              <p className="text-[11px] font-black uppercase text-derby-accent-dark">
+                {t("stepLabel", { n })}
+              </p>
+              <h3 className="mt-1.5 text-lg font-bold">{t(`step${n}Title`)}</h3>
+              <p className="mt-1 text-sm text-derby-ink/65">
+                {t(`step${n}Body`)}
+              </p>
             </li>
           ))}
         </ol>
-      </div>
+        <p className="mt-3 rounded-2xl bg-derby-ink p-4 text-white/85 [&_strong]:text-derby-accent">
+          {t.rich("example", rich)}
+        </p>
+      </Section>
 
-      <div className="bg-derby-ink text-white px-6 py-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-2">
-          <h3 className="font-display text-xl">{t("videosHeading")}</h3>
-          <ul className="flex flex-wrap gap-2">
-            {VIDEO_URLS.map((url, i) => (
-              <li key={url}>
+      {/* 07 Begrippen */}
+      <Section
+        id="begrippen"
+        eyebrow={t("glossaryEyebrow")}
+        heading={t("glossaryHeading")}
+        sub={t("glossarySub")}
+      >
+        <div className="grid gap-2 md:grid-cols-2 md:items-start">
+          {range(10).map((n) => (
+            <details
+              key={n}
+              className="rounded-xl border border-derby-ink/10 bg-white px-3.5 py-3"
+            >
+              <summary className="cursor-pointer font-bold">
+                {t(`term${n}Title`)}
+              </summary>
+              <p className="mt-2 text-sm text-derby-ink/65">
+                {t(`term${n}Body`)}
+              </p>
+            </details>
+          ))}
+        </div>
+      </Section>
+
+      {/* 08 Video */}
+      <Section
+        id="video"
+        eyebrow={t("videoEyebrow")}
+        heading={t("videoHeading")}
+        sub={t("videoSub")}
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          {VIDEO_URLS.map((url, i) => (
+            <article
+              key={url}
+              className="overflow-hidden rounded-2xl border border-derby-ink/10 bg-white shadow"
+            >
+              <div
+                aria-hidden="true"
+                className="grid aspect-video place-items-center bg-gradient-to-br from-derby-ink to-derby-accent-dark text-center text-white"
+              >
+                <div>
+                  <div className="text-5xl">▶</div>
+                  <div className="font-display text-2xl uppercase">
+                    {t("videoPoster", { n: i + 1 })}
+                  </div>
+                </div>
+              </div>
+              <div className="p-4">
+                <h3 className="text-lg font-bold">{t(`video${i + 1}Title`)}</h3>
+                <p className="mb-3 mt-1 text-sm text-derby-ink/65">
+                  {t(`video${i + 1}Body`)}
+                </p>
                 <a
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-derby-accent px-4 py-2 text-sm font-semibold text-white hover:bg-derby-accent-dark"
+                  className={BTN}
                 >
-                  <span aria-hidden="true">▶</span>
-                  {t(`video${i + 1}Label`)}
+                  {t("videoButton")}
                 </a>
-              </li>
-            ))}
-          </ul>
-          {has("videosNote") && (
-            <p className="text-xs text-white/70">{t("videosNote")}</p>
-          )}
+              </div>
+            </article>
+          ))}
         </div>
-        {has("tagline") && (
-          <p className="font-display text-2xl text-derby-accent -rotate-2 sm:text-right">
-            {t("tagline")}
-          </p>
-        )}
-      </div>
-    </section>
+      </Section>
+
+      {/* 09 Quiz */}
+      <Section id="quiz" eyebrow={t("quizEyebrow")} heading={t("quizHeading")}>
+        <RulesQuiz
+          questions={questions}
+          labels={{
+            correct: t("quizCorrect"),
+            wrong: t.raw("quizWrong"),
+            next: t("quizNext"),
+            showResult: t("quizShowResult"),
+            done: t("quizDone"),
+            final: t.raw("quizFinal"),
+            scoreLabel: t("quizScoreLabel"),
+            start: t("quizStart"),
+            restart: t("quizRestart"),
+            perfect: t("quizPerfect"),
+            good: t("quizGood"),
+            retry: t("quizRetry"),
+          }}
+        />
+      </Section>
+
+      {/* 10 Officiële bron */}
+      <section className="py-7">
+        <div className="rounded-2xl border border-derby-ink/10 bg-white p-5">
+          <p className={EYEBROW}>{t("sourceEyebrow")}</p>
+          <h2 className={H2}>{t("sourceHeading")}</h2>
+          <p className="max-w-3xl text-derby-ink/65">{t("sourceBody")}</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a
+              href={WFTDA_RULES_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={BTN}
+            >
+              {t("sourceRulesLabel")}
+            </a>
+            <a
+              href={CLUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={BTN_SECONDARY}
+            >
+              {t("sourceClubLabel")}
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
 
-function CheatBlock({
+const BTN =
+  "inline-block rounded-xl bg-derby-accent px-4 py-2.5 font-black text-white no-underline hover:bg-derby-accent-dark";
+const BTN_SECONDARY =
+  "inline-block rounded-xl border border-derby-ink/15 bg-white px-4 py-2.5 font-black text-derby-ink no-underline hover:bg-derby-bg";
+const CARD = "rounded-2xl border border-derby-ink/10 bg-white p-5 shadow";
+const EYEBROW =
+  "text-[11px] font-black uppercase tracking-widest text-derby-accent-dark";
+const H2 = "font-display text-3xl sm:text-4xl leading-none mt-1 mb-2";
+
+function Section({
+  id,
+  eyebrow,
   heading,
+  sub,
   children,
 }: {
+  id: string;
+  eyebrow: string;
   heading: string;
+  sub?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-white p-6 space-y-4">
-      <h3 className="font-display text-2xl">{heading}</h3>
-      {children}
-    </div>
+    <section
+      id={id}
+      className="py-7 scroll-mt-[calc(var(--rules-sticky-top,100px)+4rem)]"
+    >
+      <p className={EYEBROW}>{eyebrow}</p>
+      <h2 className={H2}>{heading}</h2>
+      {sub && <p className="max-w-3xl text-derby-ink/65">{sub}</p>}
+      <div className="mt-4">{children}</div>
+    </section>
   );
 }

@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-07**: FB14 (spiekbriefje op `/regels`, naar voorbeeld van een collega) gebouwd en live. Lighthouse-nulmeting gedraaid (F7, zie hieronder). Sinds de vorige update ook live: **branding** (echt Roadkill Rollers-logo + rood/zwart/wit palet, `ec825aa`, 2026-07-14) en het **draaiboek/vrijwilligersrooster** (`/draaiboek/[token]`, 2026-08-27, zie CLAUDE.md). Nog open: FB2 device-test, e-mail (§4b), FB13 (uitgesteld).
+Laatste update: **2026-10-07**: FB14: `/regels` vervangen door de uitlegpagina van een collega (met sticky sectiemenu en quiz), live. Lighthouse-nulmeting gedraaid (F7, zie hieronder). Sinds de vorige update ook live: **branding** (echt Roadkill Rollers-logo + rood/zwart/wit palet, `ec825aa`, 2026-07-14) en het **draaiboek/vrijwilligersrooster** (`/draaiboek/[token]`, 2026-08-27, zie CLAUDE.md). Nog open: FB2 device-test, e-mail (§4b), FB13 (uitgesteld).
 
 <details><summary>Vorige update (2026-07-03)</summary>
 
@@ -187,14 +187,15 @@ Nieuwe feedback van Merel (2026-07-03), nog **niet** geïmplementeerd.
 
 ## 4d. Feedback ronde 4
 
-### FB14 · Spiekbriefje op de regelspagina ✅ AF (2026-10-07)
-Een collega van Merel maakte een voorbeeld (https://indexhtml-pi-flax.vercel.app/#cheatsheet-beeld, een AI-gegenereerde poster-PNG plus een uitlegpagina).
-- **Bewust nagebouwd in HTML, niet de PNG ingeplakt:** de poster is alleen NL, 2 MB, niet bewerkbaar, bevat een typfout ("ROLLIER DERBY") en een paar inhoudelijke fouten. Gecorrigeerd: pivot wordt jammer via een *star pass* (niet "als de jammer uit de baan gaat"); de lead jammer krijgt géén andere helmcover (de ref wijst aan); inhalen is van achter naar voor; tegenstanders de baan uit blokken mag wél, blokken met ellebogen/handen/hoofd of in de rug niet.
-- **`Cheatsheet`-sectie** bovenaan `src/app/[locale]/regels/page.tsx` (anker `#spiekbriefje`): belangrijkste spelregels (5, met iconen), tactieken in de pack (wall/pack/isoleren met mini-diagrammen), lead jammer, een jam in 5 stappen, en 2 YouTube-links (WFTDA "Roller Derby 101: Gameplay" + "The Rules of Roller Derby, Explained"). Links openen extern, geen embeds.
-- Nieuwe SVG's `TacticDiagram` + `CheatIcon` in `src/components/RulesIllustrations.tsx` (hergebruiken `PlayerToken`).
-- Teksten in `Rules.cheat.*` in beide `messages/*.json` → bewerkbaar via `/admin/teksten`. Lege regel/lead-items worden overgeslagen.
-- **Niet overgenomen uit het voorbeeld** (eventueel later): mini-quiz, begrippenlijst (uitklapbaar), "kijk-tip: volg eerst de jammers".
-- Geverifieerd: desktop + 375px (geen horizontale scroll), NL + EN, `npm run build` groen.
+### FB14 · Regelspagina vervangen door de uitlegpagina van een collega ✅ AF (2026-10-07)
+Voorbeeld: https://indexhtml-pi-flax.vercel.app/ ("Roller derby simpel uitgelegd", gemaakt door een collega van Merel). **Besluit Merel:** alles zo letterlijk mogelijk overnemen, **behalve de posterafbeelding**, haar logobalk en de footer. Een eerste versie met alleen een nagebouwd spiekbriefje (`7093de2`) is daarmee vervangen.
+- **`src/app/[locale]/regels/page.tsx` volledig herschreven** in haar opbouw: hero (kicker, titel met rode tweede regel, 2 knoppen) → 01 rollen (3 kaarten met emoji) → 02 basisregels (zwarte genummerde lijst + kijk-tip) → 03 legal pass → 04 lead jammer → 05 tactiek → 06 jam in 5 stappen + voorbeeld → 07 begrippen (10× `<details>`) → 08 video's (2 YouTube-links, geen embeds) → 09 mini-quiz → 10 officiële bron (WFTDA + roadkillrollers.nl). Huisstijlkleuren van de site, haar layout.
+- **Sticky sectiemenu** (`src/components/RulesSectionNav.tsx`, client): gecentreerde pil-balk die onder de sticky site-header plakt (headerhoogte wordt gemeten, ook als CSS-var `--rules-sticky-top` voor `scroll-margin`), markeert de actieve sectie en schuift op mobiel mee naar het actieve item.
+- **Quiz** (`src/components/RulesQuiz.tsx`, client): 5 vragen, niets opgeslagen. Vragen/antwoorden bewerkbaar via `/admin/teksten` (`Rules.q1..q5`, `q{n}a1..a4`), **maar het juiste antwoord staat als index in `QUIZ_CORRECT` in page.tsx**: wie antwoorden van volgorde wisselt, moet dat daar ook aanpassen.
+- **Weg:** `src/components/RulesIllustrations.tsx` (baan/helm/scoren/penalty-SVG's uit FB9 t/m FB11, staat nog in git-history), de sectie "Dit toernooi" (staat al op `/toernooi`), en de hele oude `Rules`-namespace (oude overrides in prod waren al inert).
+- **Fix:** de WFTDA-link `rules.wftda.org` werkte niet meer (geen respons); nu `rules.wftda.com` zoals in haar versie.
+- Haar copy vrijwel letterlijk overgenomen; alleen "sterren" → "ster" (Star) en een dash in de quiz-uitslag weggehaald, plus de notitie over lokaal geopende HTML bij de video's. EN-vertaling toegevoegd.
+- Geverifieerd: desktop + 375px (geen horizontale scroll, sticky menu, quiz-flow), NL + EN, `npm run build` groen.
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
