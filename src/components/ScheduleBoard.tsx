@@ -20,6 +20,13 @@ const MIN = 60_000;
 const REFRESH_MS = 30_000;
 const UP_NEXT_WINDOW = 3 * 60 * MIN;
 
+const ROW_HOVER: Record<PouleStyle, string> = {
+  red: "hover:bg-black/25 focus-visible:bg-black/25",
+  ink: "hover:bg-white/20 focus-visible:bg-white/20",
+  stripes: "hover:bg-black/40 focus-visible:bg-black/40",
+  plain: "hover:bg-derby-ink/10 focus-visible:bg-derby-ink/10",
+};
+
 const BLOCK_STYLES: Record<PouleStyle, string> = {
   red: "bg-derby-accent text-white",
   ink: "bg-derby-ink text-white",
@@ -235,7 +242,7 @@ function TeamName({
   return (
     <Link
       href={`/teams/${team.id}`}
-      className={`${className} underline decoration-2 decoration-transparent underline-offset-4 hover:decoration-current`}
+      className={`${className} rounded-md -mx-1 px-1 transition-colors hover:bg-white/15 hover:text-derby-accent underline decoration-2 decoration-transparent underline-offset-4 hover:decoration-current`}
     >
       {team.name}
     </Link>
@@ -278,7 +285,7 @@ function Block({
   const showScore = block.status !== "scheduled" && block.scoreA != null && block.scoreB != null;
   return (
     <div
-      className={`relative h-full overflow-hidden rounded-xl shadow px-3 py-1.5 flex flex-col justify-between transition-transform hover:rotate-0 hover:scale-[1.01] ${tilt} ${
+      className={`relative h-full overflow-hidden rounded-xl shadow px-3 py-1.5 flex flex-col justify-between ${tilt} ${
         BLOCK_STYLES[style]
       } ${isLive ? "ring-4 ring-derby-ink ring-offset-2 ring-offset-derby-bg rotate-0" : ""}`}
     >
@@ -301,9 +308,9 @@ function Block({
           )}
         </span>
       </div>
-      <div className="relative space-y-1">
-        <TeamRow team={block.teamA} score={showScore ? block.scoreA : null} other={block.scoreB} link={linkTeams} />
-        <TeamRow team={block.teamB} score={showScore ? block.scoreB : null} other={block.scoreA} link={linkTeams} />
+      <div className="relative space-y-0.5">
+        <TeamRow team={block.teamA} score={showScore ? block.scoreA : null} other={block.scoreB} link={linkTeams} hover={ROW_HOVER[style]} />
+        <TeamRow team={block.teamB} score={showScore ? block.scoreB : null} other={block.scoreA} link={linkTeams} hover={ROW_HOVER[style]} />
       </div>
     </div>
   );
@@ -336,25 +343,42 @@ function TeamRow({
   score,
   other,
   link,
+  hover,
 }: {
   team: ScheduleTeam;
   score: number | null;
   other: number | null;
   link: boolean;
+  hover: string;
 }) {
   const behind = score != null && other != null && score < other;
-  return (
-    <div className="flex items-center justify-between gap-2">
+  const content = (
+    <>
       <span className="flex items-center gap-1.5 min-w-0">
         <TeamDot team={team} />
-        <TeamName team={team} link={link} className="font-display text-xl leading-none truncate" />
+        <span className="font-display text-xl leading-none truncate">{team.name}</span>
+        {link && (
+          <span
+            className="text-sm opacity-0 -translate-x-1 transition group-hover/team:opacity-100 group-hover/team:translate-x-0 group-focus-visible/team:opacity-100"
+            aria-hidden
+          >
+            →
+          </span>
+        )}
       </span>
       {score != null && (
         <span className={`font-display text-2xl leading-none tabular-nums ${behind ? "opacity-60" : ""}`}>
           {score}
         </span>
       )}
-    </div>
+    </>
+  );
+  const row = "flex items-center justify-between gap-2 -mx-1.5 px-1.5 py-0.5 rounded-md";
+  if (!link) return <div className={row}>{content}</div>;
+  return (
+    <Link href={`/teams/${team.id}`} className={`${row} group/team transition-colors ${hover}`}>
+      {content}
+    </Link>
   );
 }
 
