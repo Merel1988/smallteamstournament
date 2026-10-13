@@ -11,6 +11,7 @@ export async function createPlayer(formData: FormData) {
   const derbyName = String(formData.get("derbyName") || "").trim();
   const number = String(formData.get("number") || "").trim();
   if (!teamId || !derbyName || !number) return;
+  const pronouns = String(formData.get("pronouns") || "").trim() || null;
 
   const headshot = formData.get("headshot") as File | null;
 
@@ -20,7 +21,7 @@ export async function createPlayer(formData: FormData) {
   }
 
   await prisma.player.create({
-    data: { teamId, derbyName, number, headshotUrl },
+    data: { teamId, derbyName, number, pronouns, headshotUrl },
   });
   revalidatePath("/admin/spelers");
   revalidatePath(`/teams/${teamId}`);
@@ -31,6 +32,7 @@ export async function updatePlayer(id: string, formData: FormData) {
   const derbyName = String(formData.get("derbyName") || "").trim();
   const number = String(formData.get("number") || "").trim();
   if (!derbyName || !number) return;
+  const pronouns = String(formData.get("pronouns") || "").trim() || null;
 
   const teamId = String(formData.get("teamId") || "");
   const headshot = formData.get("headshot") as File | null;
@@ -38,9 +40,10 @@ export async function updatePlayer(id: string, formData: FormData) {
   const data: {
     derbyName: string;
     number: string;
+    pronouns: string | null;
     teamId?: string;
     headshotUrl?: string;
-  } = { derbyName, number };
+  } = { derbyName, number, pronouns };
 
   if (teamId) data.teamId = teamId;
   if (headshot && headshot.size > 0) {

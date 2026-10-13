@@ -9,7 +9,7 @@ Laatste update: **2026-10-13 (nacht)**: FB17 hamburgermenu en FB20 favicon (wiel
 1. ✅ Tijdcorrectie, prod-migratie infopack + placeholders en merge van `feature/finale-placeholders` zijn gedaan (2026-10-13).
 2. Live checken: `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.
 3. Content invullen in `/admin/infopack`: dagprogramma (deuren open, captains/officials meeting, warm-ups, prijsuitreiking, opruimen) en per wedstrijd de officials roster (kopieerknop voor een gelijke crew).
-4. Daarna verder met **FB18** (teampagina's), zie §4e.
+4. **FB18 live zetten**: migratie draaien vanaf `feature/team-portal`, dan mergen (zie §4e). Daarna per team een wachtwoord instellen in `/admin/teams` en link + wachtwoord naar de teams sturen.
 
 > ⚠️ **Lokaal `next start` praat met de productie-DB**: Next laadt dan `.env.production.local`. Gebruik voor lokaal testen `npm run dev` (lokale `dev.db`).
 
@@ -248,11 +248,15 @@ Besluit Merel: **gewoon in het menu** ("Infopack", na Toernooi), niet op de home
 ### FB20 · Favicon = wiel uit het logo ✅ AF (live, `f3673c4`)
 - `src/app/icon.svg`: het logo zonder de rode snelheidsstreep, vierkant bijgesneden; zwart wordt wit bij `prefers-color-scheme: dark` (donkere tabbladen). `src/app/favicon.ico` (16/32/48) als fallback. Gegenereerd uit de gerenderde `RoadkillLogo`. PWA-icons en `apple-icon.png` zijn ongewijzigd.
 
-### FB18 · Eigen teampagina met wachtwoord, roster zelf uploaden ⏳ todo
-- Wens Merel: elk team een eigen (beveiligde) pagina waar het zelf zijn roster aanlevert (spelers: derby name, nummer, voornaamwoorden, evt. headshot; plus bench staff). Nu doen organisatoren dat via `/admin/teams` + `/admin/spelers`.
-- Te beslissen bij de start: per team een eigen wachtwoord (gehasht opgeslagen op `Team`, door admin te zetten/resetten) of een geheime link met token zoals het draaiboek (`/draaiboek/[token]`)? Eis van Merel: **met wachtwoord beveiligd**. Voorstel: `/team/[id]` + wachtwoordformulier → HMAC-cookie per team (patroon van `src/lib/admin-auth.ts`), rate limiting op inlogpogingen, headshots via Vercel Blob (al in gebruik).
-- Deadline-velden uit de Dom City-template (roster + headshots vóór datum X) kunnen op die pagina als checklist.
-- Schemawijziging = nieuw migratiescript, alleen toevoegend (er staat live content).
+### FB18 · Teampagina met wachtwoord ✅ klaar op branch `feature/team-portal`, ⏳ wacht op prod-migratie
+Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen geheime link).
+- **Pagina** `/team/[id]` (`src/app/[locale]/team/[id]/`, NL/EN, `noindex`, `/team/` disallowed in robots, nergens gelinkt). Zonder wachtwoord: "nog niet geopend". Na inloggen: skaters (derby name, nummer, voornaamwoorden, headshot) en bench staff (naam, rol met suggesties, voornaamwoorden) toevoegen/wijzigen/verwijderen. Teksten in namespace `TeamPortal` (bewerkbaar via `/admin/teksten`, `intro` is de plek voor een deadline).
+- **Auth** `src/lib/team-auth.ts`: scrypt-hash op `Team.passwordHash`; cookie `derby_team` (30 dagen) met een eigen HMAC-sleutel (afgeleid van `ADMIN_SECRET`, maar nooit geldig als admin-cookie) en een vingerafdruk van de hash, dus wachtwoord wijzigen/sluiten logt het team uit. 5 foute pogingen → 15 min blokkade (`failedLogins`/`lockedUntil`). Ingelogde admins mogen elke teampagina bewerken.
+- **Headshots** via client-upload naar Blob (`/api/team-upload`, alleen met geldige team-sessie, pad `players/<teamId>/`); de server action accepteert alleen URL's uit die map. Oude headshot wordt bij vervangen verwijderd.
+- **Admin** `/admin/teams`: per team blok "Teampagina" met status, link, wachtwoord instellen/wijzigen (voorstel vooringevuld, eenmalig zichtbaar) en "Teampagina sluiten". `/admin/spelers` heeft nu ook voornaamwoorden.
+- **Publiek** `/teams/[id]`: voornaamwoorden bij spelers + blok Bench staff.
+- Lokaal end-to-end getest (instellen, fout/goed wachtwoord, blokkade, ander team geen toegang, uitgelogd na wijziging, toevoegen skater/bench, upload-route weigert zonder sessie). Echte headshot-upload niet lokaal getest (zou in de productie-Blob-store schrijven).
+- **Live zetten:** `git checkout feature/team-portal && node --env-file=.env.production.local scripts/migrate-teamportal-prod.mjs` (idempotent, alleen toevoegend), daarna mergen naar `main`. ⚠️ Niet eerder mergen: de code leest de nieuwe kolommen, zonder migratie faalt elke team-query.
 
 ### FB21 · Menu opgeschoond ✅ AF (live, `cf5ad86`)
 - **Aanmelden** uit het menu (pagina blijft bereikbaar via link en het blok op home).
