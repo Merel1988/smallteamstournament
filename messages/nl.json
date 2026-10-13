@@ -3,6 +3,7 @@
     "home": "Home",
     "aanmelden": "Aanmelden",
     "toernooi": "Toernooi",
+    "info": "Infopack",
     "teams": "Teams",
     "schema": "Schema",
     "bingo": "Bingo",
@@ -417,6 +418,10 @@
     "notificaties": {
       "title": "Notificaties",
       "description": "Ontvang meldingen over het Small Teams Tournament."
+    },
+    "info": {
+      "title": "Infopack",
+      "description": "Dagprogramma, officials roster en praktische info voor teams en officials van het Small Teams Tournament."
     }
   },
   "Toernooi": {
@@ -432,5 +437,46 @@
     "scheduleBody": "Voorlopig programma:\n11.00 uur: officials meeting\n12.00 uur: start van het toernooi\n18.00 uur: einde\n\nDe twee poules wisselen elkaar af, waardoor je tussen je wedstrijden minimaal 20 minuten pauze hebt. Daarnaast is er één keer een pauze van een half uur.",
     "officialsHeading": "Officials",
     "officialsBody": "Head Tournament Referee: Nat Safe For Work\nHead Tournament NSO: nog niet bekend"
+  },
+  "Info": {
+    "title": "Infopack",
+    "lead": "Alles voor teams en officials op één plek: het dagprogramma, de officials roster en waar je de rest van de info vindt.",
+    "jumpLabel": "Ga naar",
+    "linksHeading": "Al op de site",
+    "links": {
+      "toernooi": "Opzet van het toernooi en de wedstrijdregels",
+      "schema": "Live blokkenschema en standen",
+      "venue": "Adres, vloer en wielen, huisregels",
+      "regels": "Roller derby simpel uitgelegd"
+    },
+    "programHeading": "Dagprogramma",
+    "programNote": "Tijden onder voorbehoud. De wedstrijden uit het speelschema staan er automatisch tussen.",
+    "programEmpty": "Het dagprogramma volgt binnenkort.",
+    "filterLabel": "Toon programma voor",
+    "filter": {
+      "everything": "Alles",
+      "public": "Publiek",
+      "teams": "Teams",
+      "officials": "Officials"
+    },
+    "audience": {
+      "teams": "Teams",
+      "officials": "Officials"
+    },
+    "rosterHeading": "Officials roster",
+    "rosterEmpty": "De officials roster volgt binnenkort.",
+    "officialsHeading": "Dresscode",
+    "officialsBody": "Draag geen teamkleding of merchandise. Referees: zwart-wit gestreept shirt en een zwarte broek. NSO's: zwart shirt zonder teamlogo.",
+    "searchLabel": "Zoek je naam",
+    "searchPlaceholder": "Je derby name",
+    "found": "{count, plural, one {Je staat bij # wedstrijd ingeroosterd} other {Je staat bij # wedstrijden ingeroosterd}}",
+    "noneFound": "Geen posities gevonden voor deze naam.",
+    "groups": {
+      "referees": "Referees",
+      "nsos": "NSO's",
+      "other": "Overig"
+    },
+    "teamsHeading": "Voor teams",
+    "teamsBody": ""
   }
 }

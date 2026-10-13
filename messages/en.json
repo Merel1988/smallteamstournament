@@ -3,6 +3,7 @@
     "home": "Home",
     "aanmelden": "Register",
     "toernooi": "Tournament",
+    "info": "Info pack",
     "teams": "Teams",
     "schema": "Schedule",
     "bingo": "Bingo",
@@ -417,6 +418,10 @@
     "notificaties": {
       "title": "Notifications",
       "description": "Get notifications about the Small Teams Tournament."
+    },
+    "info": {
+      "title": "Info pack",
+      "description": "Day schedule, officials roster and practical info for teams and officials at the Small Teams Tournament."
     }
   },
   "Toernooi": {
@@ -432,5 +437,46 @@
     "scheduleBody": "Preliminary schedule:\n11.00: officials meeting\n12.00: tournament start\n18.00: tournament end\n\nThe two pools alternate, so you have at least 20 minutes between your games. There is also one half-hour break.",
     "officialsHeading": "Officials",
     "officialsBody": "Head Tournament Referee: Nat Safe For Work\nHead Tournament NSO: to be announced"
+  },
+  "Info": {
+    "title": "Info pack",
+    "lead": "Everything for teams and officials in one place: the day schedule, the officials roster and where to find the rest.",
+    "jumpLabel": "Jump to",
+    "linksHeading": "Already on the site",
+    "links": {
+      "toernooi": "Tournament format and game rules",
+      "schema": "Live timetable and standings",
+      "venue": "Address, floor and wheels, house rules",
+      "regels": "Roller derby explained simply"
+    },
+    "programHeading": "Day schedule",
+    "programNote": "Times are subject to change. Games from the schedule are added automatically.",
+    "programEmpty": "The day schedule will follow soon.",
+    "filterLabel": "Show schedule for",
+    "filter": {
+      "everything": "Everything",
+      "public": "Public",
+      "teams": "Teams",
+      "officials": "Officials"
+    },
+    "audience": {
+      "teams": "Teams",
+      "officials": "Officials"
+    },
+    "rosterHeading": "Officials roster",
+    "rosterEmpty": "The officials roster will follow soon.",
+    "officialsHeading": "Dress code",
+    "officialsBody": "Don't wear team clothing or merchandise. Referees: black and white striped shirt and black bottoms. NSOs: black shirt without team logos.",
+    "searchLabel": "Find your name",
+    "searchPlaceholder": "Your derby name",
+    "found": "{count, plural, one {You're rostered for # game} other {You're rostered for # games}}",
+    "noneFound": "No positions found for this name.",
+    "groups": {
+      "referees": "Referees",
+      "nsos": "NSOs",
+      "other": "Other"
+    },
+    "teamsHeading": "For teams",
+    "teamsBody": ""
   }
 }

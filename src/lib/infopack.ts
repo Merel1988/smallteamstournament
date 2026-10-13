@@ -1,0 +1,44 @@
+// Shared between server and client components: no Prisma imports here.
+
+export type Audience = "all" | "teams" | "officials";
+export const AUDIENCES: Audience[] = ["all", "teams", "officials"];
+
+export function toAudience(value: string): Audience {
+  return (AUDIENCES as string[]).includes(value) ? (value as Audience) : "all";
+}
+
+export type ProgramEntry = {
+  id: string;
+  start: number;
+  end: number | null;
+  title: string;
+  note: string | null;
+  audience: Audience;
+  kind: "item" | "match" | "break";
+};
+
+export const REFEREE_POSITIONS = ["HR", "IPR", "JR", "JR", "OPR", "OPR", "OPR", "ALT"];
+export const NSO_POSITIONS = ["HNSO", "JT", "PLT", "PLT", "PBM", "PBT", "PBT", "SBO", "SK", "SK"];
+export const DEFAULT_POSITIONS = [...REFEREE_POSITIONS, ...NSO_POSITIONS];
+
+const REF_SET = new Set(["HR", "IPR", "FIPR", "BIPR", "JR", "OPR", "ALT", "ALTR", "THR"]);
+const NSO_SET = new Set(["HNSO", "JT", "PLT", "EPLT", "PBM", "PBT", "SBO", "SK", "PW", "PT", "IWB", "LT", "ALTN", "SO"]);
+
+export type CrewGroup = "referees" | "nsos" | "other";
+
+export function crewGroup(position: string): CrewGroup {
+  const parts = position.toUpperCase().split(/[\s/]+/);
+  if (parts.some((p) => REF_SET.has(p))) return "referees";
+  if (parts.some((p) => NSO_SET.has(p))) return "nsos";
+  return "other";
+}
+
+export type Assignment = { id: string; position: string; name: string; pronouns: string | null };
+
+export type RosterMatch = {
+  id: string;
+  start: number;
+  label: string;
+  poule: string | null;
+  assignments: Assignment[];
+};

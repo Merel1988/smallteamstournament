@@ -51,3 +51,20 @@ export function eventTimeFormatter(locale: string): Intl.DateTimeFormat {
     minute: "2-digit",
   });
 }
+
+// Minutes since local midnight in the event time zone.
+export function eventMinutes(d: Date): number {
+  const p = zoneParts(d);
+  return p.hour * 60 + p.minute;
+}
+
+export function formatMinutes(min: number): string {
+  const h = Math.floor(min / 60) % 24;
+  return `${String(h).padStart(2, "0")}:${String(min % 60).padStart(2, "0")}`;
+}
+
+export function parseMinutes(value: string): number | null {
+  const m = /^(\d{1,2})[:.](\d{2})$/.exec(value.trim());
+  if (!m || +m[1] > 23 || +m[2] > 59) return null;
+  return +m[1] * 60 + +m[2];
+}

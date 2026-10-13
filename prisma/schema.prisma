@@ -49,6 +49,7 @@ model Match {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   mvpVotes  MvpVote[]
+  officials OfficialAssignment[]
 }
 
 model Photo {
@@ -200,4 +201,31 @@ model DraaiboekItem {
   datum     String  @default("")
   done      Boolean @default(false)
   sortOrder Int     @default(0)
+}
+
+// Day program on /info. Times are minutes since midnight on event day;
+// `audience` is "all", "teams" or "officials".
+model ProgramItem {
+  id        String   @id @default(cuid())
+  start     Int
+  end       Int?
+  titleNl   String
+  titleEn   String?
+  noteNl    String?
+  noteEn    String?
+  audience  String   @default("all")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OfficialAssignment {
+  id        String  @id @default(cuid())
+  matchId   String
+  match     Match   @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  position  String
+  name      String
+  pronouns  String?
+  sortOrder Int     @default(0)
+
+  @@index([matchId])
 }

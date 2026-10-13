@@ -7,6 +7,7 @@ const items = [
   { href: "/admin/teams", label: "Teams" },
   { href: "/admin/spelers", label: "Spelers" },
   { href: "/admin/schema", label: "Schema" },
+  { href: "/admin/infopack", label: "Infopack" },
   { href: "/admin/bingo", label: "Bingo" },
   { href: "/admin/regels", label: "Regels" },
   { href: "/admin/teksten", label: "Teksten" },

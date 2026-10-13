@@ -11,6 +11,7 @@ const STATIC_PATHS = [
   "",
   "aanmelden",
   "toernooi",
+  "info",
   "teams",
   "schema",
   "bingo",
