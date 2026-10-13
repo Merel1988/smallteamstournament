@@ -58,7 +58,10 @@ export default async function TeamDetailPage({
 
   const team = await prisma.team.findUnique({
     where: { id },
-    include: { players: { orderBy: { number: "asc" } } },
+    include: {
+      players: { orderBy: { number: "asc" } },
+      benchStaff: { orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] },
+    },
   });
 
   if (!team) notFound();
@@ -127,12 +130,32 @@ export default async function TeamDetailPage({
                 <div className="mt-2 font-display text-lg truncate">
                   {p.derbyName}
                 </div>
-                <div className="text-xs text-derby-ink/60">#{p.number}</div>
+                <div className="text-xs text-derby-ink/60">
+                  #{p.number}
+                  {p.pronouns && ` · ${p.pronouns}`}
+                </div>
               </li>
             ))}
           </ul>
         )}
       </section>
+
+      {team.benchStaff.length > 0 && (
+        <section>
+          <h2 className="font-display text-3xl mb-3">{t("bench")}</h2>
+          <ul className="grid sm:grid-cols-2 gap-3">
+            {team.benchStaff.map((b) => (
+              <li key={b.id} className="bg-white rounded-xl p-3 shadow">
+                <div className="font-display text-lg">{b.name}</div>
+                <div className="text-xs text-derby-ink/60">
+                  {b.role}
+                  {b.pronouns && ` · ${b.pronouns}`}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

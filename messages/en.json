@@ -72,7 +72,8 @@
     "playerCount": "{count, plural, =0 {no skaters} =1 {1 skater} other {# skaters}}",
     "backToAll": "← All teams",
     "roster": "Roster",
-    "rosterEmpty": "The roster hasn't been published yet."
+    "rosterEmpty": "The roster hasn't been published yet.",
+    "bench": "Bench staff"
   },
   "Schema": {
     "title": "Schedule",
@@ -480,5 +481,39 @@
     },
     "teamsHeading": "For teams",
     "teamsBody": ""
+  },
+  "TeamPortal": {
+    "title": "Team page",
+    "loginHeading": "Log in for {team}",
+    "loginIntro": "Enter the password you received from the organisers.",
+    "password": "Password",
+    "login": "Log in",
+    "errorWrong": "Wrong password.",
+    "errorLocked": "Too many attempts. Try again in {minutes} minutes.",
+    "closed": "This team page isn't open yet. Please contact the organisers.",
+    "intro": "Submit your team's roster here: skaters with derby name, number, pronouns and a headshot, plus your bench staff. Changes show up on the site right away.",
+    "loggedInAs": "You're logged in for {team}.",
+    "logout": "Log out",
+    "skatersHeading": "Skaters",
+    "skatersEmpty": "No skaters added yet.",
+    "benchHeading": "Bench staff",
+    "benchEmpty": "No bench staff added yet.",
+    "addSkater": "Add skater",
+    "addBench": "Add bench staff",
+    "derbyName": "Derby name",
+    "number": "Number",
+    "pronouns": "Pronouns (optional)",
+    "headshot": "Headshot (portrait photo, optional)",
+    "replaceHeadshot": "Replace headshot",
+    "name": "Name",
+    "role": "Role",
+    "add": "Add",
+    "save": "Save",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this?",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "errorInvalid": "Please check the fields and try again.",
+    "errorUpload": "Upload failed. Try another or smaller photo."
   }
 }

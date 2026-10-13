@@ -52,6 +52,7 @@ export default async function AdminSpelersPage() {
         </label>
         <TextField name="derbyName" label="Derby-naam" required />
         <TextField name="number" label="Nummer" required />
+        <TextField name="pronouns" label="Voornaamwoorden (optioneel)" />
         <label className="block">
           <span className="block text-sm mb-1">Headshot</span>
           <input type="file" name="headshot" accept="image/*" />
@@ -110,6 +111,11 @@ export default async function AdminSpelersPage() {
                   label="Nummer"
                   defaultValue={p.number}
                   required
+                />
+                <TextField
+                  name="pronouns"
+                  label="Voornaamwoorden (optioneel)"
+                  defaultValue={p.pronouns ?? ""}
                 />
                 <label className="block">
                   <span className="block text-sm mb-1">Headshot vervangen</span>

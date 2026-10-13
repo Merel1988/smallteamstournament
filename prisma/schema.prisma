@@ -8,18 +8,36 @@ datasource db {
 }
 
 model Team {
-  id          String   @id @default(cuid())
-  name        String
-  shortName   String?
-  logoUrl     String?
-  color       String?
+  id            String       @id @default(cuid())
+  name          String
+  shortName     String?
+  logoUrl       String?
+  color         String?
   descriptionNl String?
   descriptionEn String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  players     Player[]
-  matchesA    Match[]  @relation("TeamA")
-  matchesB    Match[]  @relation("TeamB")
+  passwordHash  String?
+  failedLogins  Int          @default(0)
+  lockedUntil   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  players       Player[]
+  benchStaff    BenchStaff[]
+  matchesA      Match[]      @relation("TeamA")
+  matchesB      Match[]      @relation("TeamB")
+}
+
+model BenchStaff {
+  id        String   @id @default(cuid())
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  name      String
+  role      String
+  pronouns  String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([teamId])
 }
 
 model Player {
@@ -28,6 +46,7 @@ model Player {
   team        Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   derbyName   String
   number      String
+  pronouns    String?
   headshotUrl String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -35,24 +54,24 @@ model Player {
 }
 
 model Match {
-  id        String    @id @default(cuid())
-  startsAt  DateTime
-  poule     String?
-  teamAId   String
-  teamBId   String
-  teamA     Team      @relation("TeamA", fields: [teamAId], references: [id])
-  teamB     Team      @relation("TeamB", fields: [teamBId], references: [id])
+  id         String               @id @default(cuid())
+  startsAt   DateTime
+  poule      String?
+  teamAId    String
+  teamBId    String
+  teamA      Team                 @relation("TeamA", fields: [teamAId], references: [id])
+  teamB      Team                 @relation("TeamB", fields: [teamBId], references: [id])
   // Shown instead of the team while it is unknown, e.g. "Winnaar poule A".
   teamALabel String?
   teamBLabel String?
-  scoreA    Int?
-  scoreB    Int?
-  status    String    @default("scheduled")
-  notes     String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  mvpVotes  MvpVote[]
-  officials OfficialAssignment[]
+  scoreA     Int?
+  scoreB     Int?
+  status     String               @default("scheduled")
+  notes      String?
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+  mvpVotes   MvpVote[]
+  officials  OfficialAssignment[]
 }
 
 model Photo {
@@ -134,7 +153,7 @@ model SentNotification {
   sentCount    Int      @default(0)
   removedCount Int      @default(0)
   failedCount  Int      @default(0)
-  errors       String?  // newline-joined failure summaries, null when none
+  errors       String? // newline-joined failure summaries, null when none
   createdAt    DateTime @default(now())
 }
 
@@ -156,7 +175,7 @@ model MessageOverride {
 // (no accounts); a signup links a volunteer to a shift.
 model VolunteerTask {
   id        String           @id @default(cuid())
-  area      String           // zaal | kantine | officials | algemeen
+  area      String // zaal | kantine | officials | algemeen
   name      String
   info      String           @default("[]")
   sortOrder Int              @default(0)
@@ -176,7 +195,7 @@ model VolunteerShift {
 model Volunteer {
   id        String            @id @default(cuid())
   name      String
-  teamId    String?           // Team.id when the volunteer skates in the tournament
+  teamId    String? // Team.id when the volunteer skates in the tournament
   createdAt DateTime          @default(now())
   signups   VolunteerSignup[]
 }
