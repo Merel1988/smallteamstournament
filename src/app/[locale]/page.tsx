@@ -7,6 +7,7 @@ import { EVENT } from "@/lib/event";
 import { prisma } from "@/lib/prisma";
 import { pageMetadata } from "@/lib/seo";
 import { getHiddenPageKeys } from "@/lib/page-visibility";
+import { eventTimeFormatter } from "@/lib/time";
 
 export const dynamic = "force-dynamic";
 
@@ -56,10 +57,7 @@ export default async function HomePage({
     : null;
 
   const beforeEvent = EVENT.date.getTime() > now.getTime();
-  const timeFormatter = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "nl-NL", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const timeFormatter = eventTimeFormatter(locale);
 
   return (
     <div className="space-y-8">

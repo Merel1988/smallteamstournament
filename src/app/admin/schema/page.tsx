@@ -1,15 +1,9 @@
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
+import { toEventLocalInput } from "@/lib/time";
 import { createMatch, deleteMatch, updateMatch } from "./actions";
 
 export const dynamic = "force-dynamic";
-
-function toInput(d: Date): string {
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
-    d.getHours(),
-  )}:${pad(d.getMinutes())}`;
-}
 
 export default async function AdminSchemaPage() {
   await requireAdmin();
@@ -86,7 +80,7 @@ export default async function AdminSchemaPage() {
               <input
                 type="datetime-local"
                 name="startsAt"
-                defaultValue={toInput(m.startsAt)}
+                defaultValue={toEventLocalInput(m.startsAt)}
                 className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
               />
             </label>

@@ -1,6 +1,8 @@
 // Types and constants shared between server (Prisma) and client components.
 // Keep this file free of server-only imports.
 
+import { MATCH_MINUTES } from "@/lib/event";
+
 export const AREAS = {
   zaal: "Zaal",
   kantine: "Kantine",
@@ -13,7 +15,7 @@ export type Area = keyof typeof AREAS;
 // as "tight" (they still can sign up, with a warning).
 export const PRE_GAME_MARGIN = 45;
 export const POST_GAME_MARGIN = 15;
-export const GAME_MINUTES = 20;
+export const GAME_MINUTES = MATCH_MINUTES;
 
 
 export type InfoItem = { text: string; done: boolean };

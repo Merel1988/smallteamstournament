@@ -3,10 +3,11 @@
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { parseEventLocal } from "@/lib/time";
 
 export async function createMatch(formData: FormData) {
   await requireAdmin();
-  const startsAt = new Date(String(formData.get("startsAt")));
+  const startsAt = parseEventLocal(String(formData.get("startsAt")));
   const teamAId = String(formData.get("teamAId") || "");
   const teamBId = String(formData.get("teamBId") || "");
   if (!teamAId || !teamBId || Number.isNaN(startsAt.getTime())) return;
@@ -23,7 +24,7 @@ export async function createMatch(formData: FormData) {
 
 export async function updateMatch(id: string, formData: FormData) {
   await requireAdmin();
-  const startsAt = new Date(String(formData.get("startsAt")));
+  const startsAt = parseEventLocal(String(formData.get("startsAt")));
   const scoreA = formData.get("scoreA");
   const scoreB = formData.get("scoreB");
   const status = String(formData.get("status") || "scheduled");

@@ -1,3 +1,5 @@
+export const MATCH_MINUTES = 20;
+
 export const EVENT = {
   name: "Small Teams Tournament",
   league: "Roadkill Rollers Nijmegen",
