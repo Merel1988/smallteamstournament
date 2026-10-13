@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-13 (avond)**: FB15 schema visueel (live), FB16 infopack `/info` (live, wacht op prod-migratie), finale-placeholders klaar op branch `feature/finale-placeholders` (wacht op migratie). Nieuwe todo's: FB17 hamburgermenu, FB18 teampagina's met wachtwoord.
+Laatste update: **2026-10-13 (nacht)**: FB17 hamburgermenu en FB20 favicon (wiel uit het logo) live. Stap 1 t/m 3 hieronder (prod-scripts) staan nog open: Claude mag de productie-DB niet aanraken, Merel draait ze zelf. Daarna FB18.
 
 ## ▶ Nu te doen (in deze volgorde)
 
@@ -14,7 +14,7 @@ Laatste update: **2026-10-13 (avond)**: FB15 schema visueel (live), FB16 infopac
 3. **Daarna pas** `feature/finale-placeholders` mergen naar `main` en pushen (`git checkout main && git merge feature/finale-placeholders && git push`). ⚠️ Niet eerder: die code leest `Match.teamALabel`/`teamBLabel`; zonder de kolommen faalt elke wedstrijd-query en tonen schema en homepage niets.
 4. Live checken: `/schema`, `/info`, `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.
 5. Content invullen in `/admin/infopack`: dagprogramma (deuren open, captains/officials meeting, warm-ups, prijsuitreiking, opruimen) en per wedstrijd de officials roster (kopieerknop voor een gelijke crew).
-6. Daarna verder met **FB17** (hamburgermenu) en **FB18** (teampagina's), zie §4e.
+6. Daarna verder met **FB18** (teampagina's), zie §4e.
 
 > ⚠️ **Lokaal `next start` praat met de productie-DB**: Next laadt dan `.env.production.local`. Gebruik voor lokaal testen `npm run dev` (lokale `dev.db`).
 
@@ -247,8 +247,11 @@ Besluit Merel: **gewoon in het menu** ("Infopack", na Toernooi), niet op de home
 - `/admin/schema`: placeholder-velden bij aanmaken én bewerken, en **teams zijn nu ook achteraf te wijzigen** (kon eerst alleen bij aanmaken).
 - Lokaal geverifieerd in dev (labels zichtbaar), `npm run build` groen. Migratie: zie "Nu te doen" stap 2–3.
 
-### FB17 · Hamburgermenu op mobiel ⏳ todo
-- Nav in `[locale]/layout.tsx` scrollt nu horizontaal op mobiel (12 items incl. Infopack). Vervangen door een hamburgerknop + uitklapmenu op kleine schermen (client component, `aria-expanded`, sluit bij navigatie en Escape); desktop blijft de rij. Taalwissel en Notificaties ook in het mobiele menu.
+### FB17 · Hamburgermenu op mobiel ✅ AF (live, `d997314`)
+- `src/components/MobileNav.tsx` (client): onder `lg` een hamburgerknop met uitklappaneel (`aria-expanded`/`aria-controls`, huidige pagina met `aria-current`, sluit bij navigatie en Escape, focus terug naar de knop). Notificaties en taalwissel staan onderin het paneel. Vanaf `lg` blijft de rij + rechtsboven taal/notificaties. Labels `A11y.openMenu`/`closeMenu`.
+
+### FB20 · Favicon = wiel uit het logo ✅ AF (live, `f3673c4`)
+- `src/app/icon.svg`: het logo zonder de rode snelheidsstreep, vierkant bijgesneden; zwart wordt wit bij `prefers-color-scheme: dark` (donkere tabbladen). `src/app/favicon.ico` (16/32/48) als fallback. Gegenereerd uit de gerenderde `RoadkillLogo`. PWA-icons en `apple-icon.png` zijn ongewijzigd.
 
 ### FB18 · Eigen teampagina met wachtwoord, roster zelf uploaden ⏳ todo
 - Wens Merel: elk team een eigen (beveiligde) pagina waar het zelf zijn roster aanlevert (spelers: derby name, nummer, voornaamwoorden, evt. headshot; plus bench staff). Nu doen organisatoren dat via `/admin/teams` + `/admin/spelers`.
