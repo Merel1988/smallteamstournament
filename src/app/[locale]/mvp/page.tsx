@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import MvpVoter from "@/components/MvpVoter";
 import { assertPageVisible } from "@/lib/page-visibility";
+import { sideName } from "@/lib/match-teams";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -73,7 +74,7 @@ export default async function MvpPage({
                 className="bg-white rounded-2xl p-5 shadow space-y-3"
               >
                 <h2 className="font-display text-2xl">
-                  {m.teamA.name} – {m.teamB.name}{" "}
+                  {sideName(m.teamA, m.teamALabel)} – {sideName(m.teamB, m.teamBLabel)}{" "}
                   <span className="text-derby-ink/40 text-lg">
                     ({m.scoreA ?? 0}-{m.scoreB ?? 0})
                   </span>

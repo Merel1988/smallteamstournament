@@ -108,7 +108,7 @@ export default function DagOverzicht({
                 </div>
               )}
               {S.games.map((g) => {
-                const lbl = `${short(teamName(S, g.teamAId))} · ${short(teamName(S, g.teamBId))}`;
+                const lbl = `${short(g.teamALabel || teamName(S, g.teamAId))} · ${short(g.teamBLabel || teamName(S, g.teamBId))}`;
                 return (
                   <div
                     key={g.id}

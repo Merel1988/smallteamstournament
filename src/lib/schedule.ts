@@ -19,6 +19,7 @@ export type ScheduleTeam = {
   name: string;
   color: string | null;
   players?: SchedulePlayer[];
+  placeholder?: boolean;
 };
 
 export type ScheduleMatch = {
@@ -64,6 +65,8 @@ export function toScheduleMatch(m: {
   poule: string | null;
   teamA: ScheduleTeam;
   teamB: ScheduleTeam;
+  teamALabel?: string | null;
+  teamBLabel?: string | null;
   scoreA: number | null;
   scoreB: number | null;
   status: string;
@@ -76,13 +79,19 @@ export function toScheduleMatch(m: {
     start,
     end: start + MATCH_MINUTES * MIN,
     poule: m.poule,
-    teamA: { id: m.teamA.id, name: m.teamA.name, color: m.teamA.color, players: m.teamA.players },
-    teamB: { id: m.teamB.id, name: m.teamB.name, color: m.teamB.color, players: m.teamB.players },
+    teamA: side(m.id, "A", m.teamA, m.teamALabel),
+    teamB: side(m.id, "B", m.teamB, m.teamBLabel),
     scoreA: m.scoreA,
     scoreB: m.scoreB,
     status,
     kind: kindOf(m.poule),
   };
+}
+
+function side(matchId: string, which: "A" | "B", team: ScheduleTeam, label?: string | null): ScheduleTeam {
+  const text = label?.trim();
+  if (text) return { id: `${matchId}-${which}`, name: text, color: null, placeholder: true };
+  return { id: team.id, name: team.name, color: team.color, players: team.players };
 }
 
 const MAX_ITEM_MINUTES = 60;
@@ -192,7 +201,7 @@ export type PouleStanding = { poule: string; rows: StandingRow[]; hasDraws: bool
 // single match (e.g. the final) are skipped.
 export function buildStandings(matches: ScheduleMatch[], other: string): PouleStanding[] {
   const byPoule = new Map<string, ScheduleMatch[]>();
-  for (const m of matches.filter((x) => x.kind === "match")) {
+  for (const m of matches.filter((x) => x.kind === "match" && !x.teamA.placeholder && !x.teamB.placeholder)) {
     const key = m.poule || other;
     byPoule.set(key, [...(byPoule.get(key) ?? []), m]);
   }

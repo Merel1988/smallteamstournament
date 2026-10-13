@@ -37,7 +37,15 @@ export type TaskDTO = {
 };
 export type VolunteerDTO = { id: string; name: string; teamId: string | null };
 export type TeamDTO = { id: string; name: string };
-export type GameDTO = { id: string; start: number; end: number; teamAId: string; teamBId: string };
+export type GameDTO = {
+  id: string;
+  start: number;
+  end: number;
+  teamAId: string;
+  teamBId: string;
+  teamALabel?: string | null;
+  teamBLabel?: string | null;
+};
 export type ItemDTO = {
   id: string;
   kind: "prep" | "issue" | "role";

@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { pageMetadata } from "@/lib/seo";
 import { getHiddenPageKeys } from "@/lib/page-visibility";
 import { eventTimeFormatter } from "@/lib/time";
+import { sideName } from "@/lib/match-teams";
 
 export const dynamic = "force-dynamic";
 
@@ -127,8 +128,8 @@ export default async function HomePage({
             {t("liveNow")}
           </p>
           <MatchRow
-            teamA={liveMatch.teamA.name}
-            teamB={liveMatch.teamB.name}
+            teamA={sideName(liveMatch.teamA, liveMatch.teamALabel)}
+            teamB={sideName(liveMatch.teamB, liveMatch.teamBLabel)}
             scoreA={liveMatch.scoreA}
             scoreB={liveMatch.scoreB}
             vsLabel={t("vs")}
@@ -143,8 +144,8 @@ export default async function HomePage({
             {t("nextMatch")}
           </p>
           <MatchRow
-            teamA={nextMatch.teamA.name}
-            teamB={nextMatch.teamB.name}
+            teamA={sideName(nextMatch.teamA, nextMatch.teamALabel)}
+            teamB={sideName(nextMatch.teamB, nextMatch.teamBLabel)}
             when={nextMatch.startsAt}
             vsLabel={t("vs")}
             timeFormatter={timeFormatter}

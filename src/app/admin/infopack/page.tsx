@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { DEFAULT_POSITIONS, type Audience } from "@/lib/infopack";
 import { kindOf } from "@/lib/schedule";
 import { eventMinutes, formatMinutes } from "@/lib/time";
+import { sideName } from "@/lib/match-teams";
 import {
   copyRoster,
   createProgramItem,
@@ -63,7 +64,7 @@ export default async function AdminInfopackPage({
     ...Array.from({ length: EXTRA_ROWS }, () => ({ position: "", name: "", pronouns: "" })),
   ];
   const label = (m: (typeof matches)[number]) =>
-    `${formatMinutes(eventMinutes(m.startsAt))} · ${m.poule ?? ""} · ${m.teamA.name} vs ${m.teamB.name}`;
+    `${formatMinutes(eventMinutes(m.startsAt))} · ${m.poule ?? ""} · ${sideName(m.teamA, m.teamALabel)} vs ${sideName(m.teamB, m.teamBLabel)}`;
 
   return (
     <div className="space-y-10">
