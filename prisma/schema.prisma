@@ -42,6 +42,9 @@ model Match {
   teamBId   String
   teamA     Team      @relation("TeamA", fields: [teamAId], references: [id])
   teamB     Team      @relation("TeamB", fields: [teamBId], references: [id])
+  // Shown instead of the team while it is unknown, e.g. "Winnaar poule A".
+  teamALabel String?
+  teamBLabel String?
   scoreA    Int?
   scoreB    Int?
   status    String    @default("scheduled")

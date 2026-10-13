@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/admin-auth";
+import { sideName } from "@/lib/match-teams";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -40,7 +41,7 @@ export default async function AdminMvpPage() {
               className="bg-white rounded-2xl p-5 shadow space-y-2"
             >
               <h2 className="font-display text-2xl">
-                {m.teamA.name} – {m.teamB.name}{" "}
+                {sideName(m.teamA, m.teamALabel)} – {sideName(m.teamB, m.teamBLabel)}{" "}
                 <span className="text-derby-ink/40 text-lg">
                   ({m.scoreA ?? "-"}–{m.scoreB ?? "-"}, {m.status})
                 </span>

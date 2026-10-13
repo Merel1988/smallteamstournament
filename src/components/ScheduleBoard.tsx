@@ -238,7 +238,7 @@ function TeamName({
   link: boolean;
   className: string;
 }) {
-  if (!link) return <span className={className}>{team.name}</span>;
+  if (!link || team.placeholder) return <span className={className}>{team.name}</span>;
   return (
     <Link
       href={`/teams/${team.id}`}
@@ -357,7 +357,7 @@ function TeamRow({
       <span className="flex items-center gap-1.5 min-w-0">
         <TeamDot team={team} />
         <span className="font-display text-xl leading-none truncate">{team.name}</span>
-        {link && (
+        {link && !team.placeholder && (
           <span
             className="text-sm opacity-0 -translate-x-1 transition group-hover/team:opacity-100 group-hover/team:translate-x-0 group-focus-visible/team:opacity-100"
             aria-hidden
@@ -374,7 +374,7 @@ function TeamRow({
     </>
   );
   const row = "flex items-center justify-between gap-2 -mx-1.5 px-1.5 py-0.5 rounded-md";
-  if (!link) return <div className={row}>{content}</div>;
+  if (!link || team.placeholder) return <div className={row}>{content}</div>;
   return (
     <Link href={`/teams/${team.id}`} className={`${row} group/team transition-colors ${hover}`}>
       {content}

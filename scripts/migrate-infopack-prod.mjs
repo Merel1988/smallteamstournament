@@ -1,4 +1,5 @@
-// One-off production migration (FB16): create ProgramItem and OfficialAssignment.
+// One-off production migration (FB16): create ProgramItem and OfficialAssignment,
+// and add the optional Match.teamALabel / Match.teamBLabel placeholder columns.
 // Idempotent and additive only (CREATE ... IF NOT EXISTS); existing data is untouched.
 // Run with: node --env-file=.env.production.local scripts/migrate-infopack-prod.mjs
 import { createClient } from "@libsql/client";
@@ -36,6 +37,16 @@ await db.execute(
   `CREATE INDEX IF NOT EXISTS "OfficialAssignment_matchId_idx" ON "OfficialAssignment"("matchId")`,
 );
 console.log("Ensured table: OfficialAssignment");
+
+const matchColumns = (await db.execute(`PRAGMA table_info("Match")`)).rows.map((r) => r.name);
+for (const column of ["teamALabel", "teamBLabel"]) {
+  if (matchColumns.includes(column)) {
+    console.log(`Column exists: Match.${column}`);
+  } else {
+    await db.execute(`ALTER TABLE "Match" ADD COLUMN "${column}" TEXT`);
+    console.log(`Added column: Match.${column}`);
+  }
+}
 
 for (const table of ["ProgramItem", "OfficialAssignment", "Match"]) {
   const rows = await db.execute(`SELECT COUNT(*) AS n FROM "${table}"`);

@@ -49,6 +49,7 @@ export default async function AdminSchemaPage() {
           </label>
           <TeamSelect name="teamAId" label="Team A" teams={teams} />
           <TeamSelect name="teamBId" label="Team B" teams={teams} />
+          <LabelInputs />
           <label className="block sm:col-span-2">
             <span className="block text-sm mb-1">Notities</span>
             <textarea
@@ -73,8 +74,11 @@ export default async function AdminSchemaPage() {
             className="bg-white rounded-2xl p-5 shadow grid gap-3 sm:grid-cols-2"
           >
             <div className="sm:col-span-2 font-display text-xl">
-              {m.teamA.name} – {m.teamB.name}
+              {m.teamALabel || m.teamA.name} – {m.teamBLabel || m.teamB.name}
             </div>
+            <TeamSelect name="teamAId" label="Team A" teams={teams} defaultValue={m.teamAId} />
+            <TeamSelect name="teamBId" label="Team B" teams={teams} defaultValue={m.teamBId} />
+            <LabelInputs a={m.teamALabel} b={m.teamBLabel} />
             <label className="block">
               <span className="block text-sm mb-1">Starttijd</span>
               <input
@@ -148,10 +152,12 @@ function TeamSelect({
   name,
   label,
   teams,
+  defaultValue,
 }: {
   name: string;
   label: string;
   teams: { id: string; name: string }[];
+  defaultValue?: string;
 }) {
   return (
     <label className="block">
@@ -159,6 +165,7 @@ function TeamSelect({
       <select
         name={name}
         required
+        defaultValue={defaultValue}
         className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
       >
         {teams.map((t) => (
@@ -168,5 +175,34 @@ function TeamSelect({
         ))}
       </select>
     </label>
+  );
+}
+
+function LabelInputs({ a, b }: { a?: string | null; b?: string | null }) {
+  return (
+    <>
+      <label className="block">
+        <span className="block text-sm mb-1">Placeholder team A (optioneel)</span>
+        <input
+          name="teamALabel"
+          defaultValue={a ?? ""}
+          placeholder="bv. Winnaar poule A"
+          className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
+        />
+      </label>
+      <label className="block">
+        <span className="block text-sm mb-1">Placeholder team B (optioneel)</span>
+        <input
+          name="teamBLabel"
+          defaultValue={b ?? ""}
+          placeholder="bv. Winnaar poule B"
+          className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
+        />
+      </label>
+      <p className="text-xs text-derby-ink/60 sm:col-span-2">
+        Zolang een placeholder is ingevuld, toont de site die tekst in plaats van het gekozen team.
+        Maak hem leeg zodra het echte team bekend is.
+      </p>
+    </>
   );
 }

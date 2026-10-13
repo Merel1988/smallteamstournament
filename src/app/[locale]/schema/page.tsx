@@ -38,7 +38,10 @@ export default async function SchemaPage({
 
   // Rosters are only needed for live matches, and only when the teams page is public.
   const liveTeamIds = teamsVisible
-    ? rows.filter((m) => m.status === "live").flatMap((m) => [m.teamAId, m.teamBId])
+    ? rows
+        .filter((m) => m.status === "live")
+        .flatMap((m) => [m.teamALabel ? "" : m.teamAId, m.teamBLabel ? "" : m.teamBId])
+        .filter(Boolean)
     : [];
   const players = liveTeamIds.length
     ? await prisma.player

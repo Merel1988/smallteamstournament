@@ -5,6 +5,10 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { parseEventLocal } from "@/lib/time";
 
+function label(formData: FormData, key: string): string | null {
+  return String(formData.get(key) || "").trim() || null;
+}
+
 export async function createMatch(formData: FormData) {
   await requireAdmin();
   const startsAt = parseEventLocal(String(formData.get("startsAt")));
@@ -15,7 +19,16 @@ export async function createMatch(formData: FormData) {
   const notes = String(formData.get("notes") || "").trim() || null;
 
   await prisma.match.create({
-    data: { startsAt, teamAId, teamBId, poule, notes, status: "scheduled" },
+    data: {
+      startsAt,
+      teamAId,
+      teamBId,
+      teamALabel: label(formData, "teamALabel"),
+      teamBLabel: label(formData, "teamBLabel"),
+      poule,
+      notes,
+      status: "scheduled",
+    },
   });
   revalidatePath("/admin/schema");
   revalidatePath("/schema");
@@ -29,6 +42,8 @@ export async function updateMatch(id: string, formData: FormData) {
   const scoreB = formData.get("scoreB");
   const status = String(formData.get("status") || "scheduled");
   const poule = String(formData.get("poule") || "").trim() || null;
+  const teamAId = String(formData.get("teamAId") || "") || undefined;
+  const teamBId = String(formData.get("teamBId") || "") || undefined;
 
   await prisma.match.update({
     where: { id },
@@ -38,6 +53,10 @@ export async function updateMatch(id: string, formData: FormData) {
       scoreB: scoreB === "" || scoreB == null ? null : Number(scoreB),
       status,
       poule,
+      teamAId,
+      teamBId,
+      teamALabel: label(formData, "teamALabel"),
+      teamBLabel: label(formData, "teamBLabel"),
     },
   });
   revalidatePath("/admin/schema");

@@ -11,6 +11,7 @@ import { prisma } from "@/lib/prisma";
 import { kindOf } from "@/lib/schedule";
 import { pageMetadata } from "@/lib/seo";
 import { eventMinutes } from "@/lib/time";
+import { sideName } from "@/lib/match-teams";
 
 export const dynamic = "force-dynamic";
 
@@ -74,7 +75,7 @@ export default async function InfoPage({
         end: kind === "match" ? start + MATCH_MINUTES : null,
         title:
           kind === "match"
-            ? `${m.poule ? `${m.poule} · ` : ""}${m.teamA.name} vs ${m.teamB.name}`
+            ? `${m.poule ? `${m.poule} · ` : ""}${sideName(m.teamA, m.teamALabel)} vs ${sideName(m.teamB, m.teamBLabel)}`
             : (m.poule ?? ""),
         note: null,
         audience: "all" as const,
@@ -88,7 +89,7 @@ export default async function InfoPage({
     .map((m) => ({
       id: m.id,
       start: eventMinutes(m.startsAt),
-      label: `${m.teamA.name} vs ${m.teamB.name}`,
+      label: `${sideName(m.teamA, m.teamALabel)} vs ${sideName(m.teamB, m.teamBLabel)}`,
       poule: m.poule,
       assignments: m.officials.map((a) => ({
         id: a.id,

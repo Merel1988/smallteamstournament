@@ -83,7 +83,7 @@ export async function loadState(): Promise<DraaiboekState> {
     prisma.volunteer.findMany({ orderBy: { name: "asc" } }),
     prisma.team.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } }),
     prisma.match.findMany({
-      select: { id: true, startsAt: true, teamAId: true, teamBId: true },
+      select: { id: true, startsAt: true, teamAId: true, teamBId: true, teamALabel: true, teamBLabel: true },
       orderBy: { startsAt: "asc" },
     }),
     prisma.draaiboekItem.findMany({ orderBy: { sortOrder: "asc" } }),
@@ -119,7 +119,16 @@ export async function loadState(): Promise<DraaiboekState> {
     teams,
     games: matches.map((m) => {
       const start = localMinutes(m.startsAt);
-      return { id: m.id, start, end: start + GAME_MINUTES, teamAId: m.teamAId, teamBId: m.teamBId };
+      // A placeholder side is not the selected team yet, so it must not block its volunteers.
+      return {
+        id: m.id,
+        start,
+        end: start + GAME_MINUTES,
+        teamAId: m.teamALabel ? "" : m.teamAId,
+        teamBId: m.teamBLabel ? "" : m.teamBId,
+        teamALabel: m.teamALabel,
+        teamBLabel: m.teamBLabel,
+      };
     }),
     pre: PRE_GAME_MARGIN,
     post: POST_GAME_MARGIN,
