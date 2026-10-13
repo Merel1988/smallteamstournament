@@ -9,7 +9,7 @@ Laatste update: **2026-10-13 (nacht)**: FB17 hamburgermenu en FB20 favicon (wiel
 1. ✅ Tijdcorrectie, prod-migratie infopack + placeholders en merge van `feature/finale-placeholders` zijn gedaan (2026-10-13).
 2. Live checken: `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.
 3. Content invullen in `/admin/infopack`: dagprogramma (deuren open, captains/officials meeting, warm-ups, prijsuitreiking, opruimen) en per wedstrijd de officials roster (kopieerknop voor een gelijke crew).
-4. **FB18 live zetten**: migratie draaien vanaf `feature/team-portal`, dan mergen (zie §4e). Daarna per team een wachtwoord instellen in `/admin/teams` en link + wachtwoord naar de teams sturen.
+4. **FB18 is live**: per team een wachtwoord instellen in `/admin/teams` en link + wachtwoord naar de teams sturen.
 
 > ⚠️ **Lokaal `next start` praat met de productie-DB**: Next laadt dan `.env.production.local`. Gebruik voor lokaal testen `npm run dev` (lokale `dev.db`).
 
@@ -248,7 +248,7 @@ Besluit Merel: **gewoon in het menu** ("Infopack", na Toernooi), niet op de home
 ### FB20 · Favicon = wiel uit het logo ✅ AF (live, `f3673c4`)
 - `src/app/icon.svg`: het logo zonder de rode snelheidsstreep, vierkant bijgesneden; zwart wordt wit bij `prefers-color-scheme: dark` (donkere tabbladen). `src/app/favicon.ico` (16/32/48) als fallback. Gegenereerd uit de gerenderde `RoadkillLogo`. PWA-icons en `apple-icon.png` zijn ongewijzigd.
 
-### FB18 · Teampagina met wachtwoord ✅ klaar op branch `feature/team-portal`, ⏳ wacht op prod-migratie
+### FB18 · Teampagina met wachtwoord ✅ AF (live, prod-migratie gedaan 2026-10-13)
 Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen geheime link).
 - **Pagina** `/team/[id]` (`src/app/[locale]/team/[id]/`, NL/EN, `noindex`, `/team/` disallowed in robots, nergens gelinkt). Zonder wachtwoord: "nog niet geopend". Na inloggen: skaters (derby name, nummer, voornaamwoorden, headshot) en bench staff (naam, rol met suggesties, voornaamwoorden) toevoegen/wijzigen/verwijderen. Teksten in namespace `TeamPortal` (bewerkbaar via `/admin/teksten`, `intro` is de plek voor een deadline).
 - **Auth** `src/lib/team-auth.ts`: scrypt-hash op `Team.passwordHash`; cookie `derby_team` (30 dagen) met een eigen HMAC-sleutel (afgeleid van `ADMIN_SECRET`, maar nooit geldig als admin-cookie) en een vingerafdruk van de hash, dus wachtwoord wijzigen/sluiten logt het team uit. 5 foute pogingen → 15 min blokkade (`failedLogins`/`lockedUntil`). Ingelogde admins mogen elke teampagina bewerken.
