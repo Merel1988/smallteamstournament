@@ -2,7 +2,13 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-07**: FB14: `/regels` vervangen door de uitlegpagina van een collega (met sticky sectiemenu en quiz), live. Lighthouse-nulmeting gedraaid (F7, zie hieronder). Sinds de vorige update ook live: **branding** (echt Roadkill Rollers-logo + rood/zwart/wit palet, `ec825aa`, 2026-07-14) en het **draaiboek/vrijwilligersrooster** (`/draaiboek/[token]`, 2026-08-27, zie CLAUDE.md). Nog open: FB2 device-test, e-mail (§4b), FB13 (uitgesteld).
+Laatste update: **2026-10-13**: FB15: `/schema` visueel gemaakt (blokkenschema, live-balkje, pauzes, standen, spelers bij live wedstrijd) + tijdzonefix voor wedstrijdtijden, live. **Openstaand: tijdcorrectie-script op prod draaien (zie FB15).** Volgende: FB16 deelnemersgids (wacht op info van collega), FB17 hamburgermenu. Nog open: FB2 device-test, e-mail (§4b), FB13 (uitgesteld).
+
+<details><summary>Vorige update (2026-10-07)</summary>
+
+**2026-10-07**: FB14: `/regels` vervangen door de uitlegpagina van een collega (met sticky sectiemenu en quiz), live. Lighthouse-nulmeting gedraaid (F7, zie hieronder). Sinds de vorige update ook live: **branding** (echt Roadkill Rollers-logo + rood/zwart/wit palet, `ec825aa`, 2026-07-14) en het **draaiboek/vrijwilligersrooster** (`/draaiboek/[token]`, 2026-08-27, zie CLAUDE.md). Nog open: FB2 device-test, e-mail (§4b), FB13 (uitgesteld).
+
+</details>
 
 <details><summary>Vorige update (2026-07-03)</summary>
 
@@ -196,6 +202,32 @@ Voorbeeld: https://indexhtml-pi-flax.vercel.app/ ("Roller derby simpel uitgelegd
 - **Fix:** de WFTDA-link `rules.wftda.org` werkte niet meer (geen respons); nu `rules.wftda.com` zoals in haar versie.
 - Haar copy vrijwel letterlijk overgenomen; alleen "sterren" → "ster" (Star) en een dash in de quiz-uitslag weggehaald, plus de notitie over lokaal geopende HTML bij de video's. EN-vertaling toegevoegd.
 - Geverifieerd: desktop + 375px (geen horizontale scroll, sticky menu, quiz-flow), NL + EN, `npm run build` groen.
+
+## 4e. Feedback ronde 5 (2026-10-13)
+
+### FB15 · Speelschema visueler ✅ AF (live, `ddd7458`)
+- **`/schema`** herschreven: server-pagina (`src/app/[locale]/schema/page.tsx`) + client-component `src/components/ScheduleBoard.tsx`; layout/standen-logica in `src/lib/schedule.ts` (geen Prisma-import, client-safe).
+  - **Live-kaart**: score groot, voortgangsbalk met 🛼 (`(now - start) / 20 min`, daarna "Laatste jam!"), spelers van beide teams. Niets live → "Hierna, begint over x min" (binnen 3 uur). Pagina doet `router.refresh()` elke 30 s rond de speeltijden.
+  - **Blokkenschema**: hoogte = duur (`PX_PER_MIN`), begin → eindtijd, poule-kleuren (1e poule rood, 2e zwart, naam met "final" gestreept), rode NU-lijn. Overlappende wedstrijden krijgen naast elkaar een baan.
+  - **Pauzes automatisch**: gat ≥ 10 min tussen wedstrijden = gestippeld pauzeblok (lange gaten visueel ingekort tot 40 min).
+  - **Standen per poule** uit `status = finished` + beide scores: winst, dan puntsaldo, dan gescoorde punten. Poules met 1 wedstrijd (finale) overgeslagen. Kolom "Gelijk" alleen als er gelijkspel is.
+  - **Teamlinks + spelers alleen als de teams-pagina zichtbaar is** (FB5: nu uit), anders 404-links / lekken van spelers.
+- Eindtijd = start + `MATCH_MINUTES` (20) uit `src/lib/event.ts`; `GAME_MINUTES` in het draaiboek leest die nu ook.
+- **Tijdzonefix:** admin `datetime-local` werd op Vercel (UTC) als UTC geparsed; 13:00 typen = 14:00 NL opgeslagen. Nu `parseEventLocal`/`toEventLocalInput`/`eventTimeFormatter` in `src/lib/time.ts` (Europe/Amsterdam), ook op de homepage. Het draaiboek rekende al in Amsterdam-tijd en zat dus een uur mis; dat klopt nu ook.
+- [ ] **Bestaande prod-wedstrijden corrigeren** (tonen na de deploy een uur te laat). Fix-deploy `derbyapp-6d0pit7d7` ging live op 2026-10-13 16:32:24Z (+59 s build). Eerst dry run, dan apply (marker in tabel `ScriptRun` voorkomt dubbel draaien; rijen die na de cutoff zijn opgeslagen worden overgeslagen):
+  `node --env-file=.env.production.local scripts/fix-match-timezone-prod.mjs --before=2026-10-13T16:33:30Z` → controleren → zelfde met `--apply`.
+  Tot dan het schema in de admin niet bewerken: opslaan zet een verkeerde tijd vast.
+
+### FB16 · Deelnemersgids `/info` ⏳ wacht op content (collega van Merel levert aan)
+Besluit Merel: **gewoon in het menu** (niet op de homepage). Onderdelen (alle vier):
+- **Dagprogramma**: deuren open, officials meeting, warm-ups, prijsuitreiking. Idee: deze momenten ook als grijze blokken in het publieke blokkenschema.
+- **Officials roster**: per wedstrijd wie HR, IPR, JR, NSO's enz. is.
+- **Teaminfo / infopack**: check-in, kleedkamers, wat mee te nemen; bewerkbare tekst + optionele PDF (Vercel Blob).
+- **Praktisch / contact**: parkeren, eten en drinken, contactpersonen op de dag.
+- Vraagt nieuwe tabellen: **alleen toevoegende migratie** (CREATE TABLE IF NOT EXISTS), er wordt op dit moment content gevuld op prod, die mag niet verloren gaan.
+
+### FB17 · Hamburgermenu op mobiel ⏳ todo
+- Nav in `[locale]/layout.tsx` scrollt nu horizontaal op mobiel (11 items, wordt met `/info` nog meer). Vervangen door een hamburgerknop + uitklapmenu op kleine schermen; desktop blijft de rij.
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
