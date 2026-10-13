@@ -2,7 +2,21 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-13**: FB15: `/schema` visueel gemaakt (blokkenschema, live-balkje, pauzes, standen, spelers bij live wedstrijd) + tijdzonefix voor wedstrijdtijden, live. **Openstaand: tijdcorrectie-script op prod draaien (zie FB15).** Volgende: FB16 deelnemersgids (wacht op info van collega), FB17 hamburgermenu. Nog open: FB2 device-test, e-mail (§4b), FB13 (uitgesteld).
+Laatste update: **2026-10-13 (avond)**: FB15 schema visueel (live), FB16 infopack `/info` (live, wacht op prod-migratie), finale-placeholders klaar op branch `feature/finale-placeholders` (wacht op migratie). Nieuwe todo's: FB17 hamburgermenu, FB18 teampagina's met wachtwoord.
+
+## ▶ Nu te doen (in deze volgorde)
+
+1. **Tijdcorrectie wedstrijden (FB15) afronden.** Dry run is gedraaid en klopte (16 rijen, typed 12:00 → 12:00). Controleer of `--apply` ook gedraaid is: opnieuw draaien geeft `Already applied ...` als dat zo is.
+   `node --env-file=.env.production.local scripts/fix-match-timezone-prod.mjs --before=2026-10-13T16:33:30Z --apply`
+2. **Prod-migratie infopack + placeholders draaien**, vanaf de branch (daar zit de complete versie van het script: 2 tabellen + 2 kolommen, idempotent, alleen toevoegend):
+   `git checkout feature/finale-placeholders && node --env-file=.env.production.local scripts/migrate-infopack-prod.mjs`
+   Verwacht: `Ensured table: ProgramItem`, `Ensured table: OfficialAssignment`, `Added column: Match.teamALabel/teamBLabel`, plus rij-aantallen.
+3. **Daarna pas** `feature/finale-placeholders` mergen naar `main` en pushen (`git checkout main && git merge feature/finale-placeholders && git push`). ⚠️ Niet eerder: die code leest `Match.teamALabel`/`teamBLabel`; zonder de kolommen faalt elke wedstrijd-query en tonen schema en homepage niets.
+4. Live checken: `/schema`, `/info`, `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.
+5. Content invullen in `/admin/infopack`: dagprogramma (deuren open, captains/officials meeting, warm-ups, prijsuitreiking, opruimen) en per wedstrijd de officials roster (kopieerknop voor een gelijke crew).
+6. Daarna verder met **FB17** (hamburgermenu) en **FB18** (teampagina's), zie §4e.
+
+> ⚠️ **Lokaal `next start` praat met de productie-DB**: Next laadt dan `.env.production.local`. Gebruik voor lokaal testen `npm run dev` (lokale `dev.db`).
 
 <details><summary>Vorige update (2026-10-07)</summary>
 
@@ -212,22 +226,35 @@ Voorbeeld: https://indexhtml-pi-flax.vercel.app/ ("Roller derby simpel uitgelegd
   - **Pauzes automatisch**: gat ≥ 10 min tussen wedstrijden = gestippeld pauzeblok (lange gaten visueel ingekort tot 40 min).
   - **Standen per poule** uit `status = finished` + beide scores: winst, dan puntsaldo, dan gescoorde punten. Poules met 1 wedstrijd (finale) overgeslagen. Kolom "Gelijk" alleen als er gelijkspel is.
   - **Teamlinks + spelers alleen als de teams-pagina zichtbaar is** (FB5: nu uit), anders 404-links / lekken van spelers.
+- Na de eerste versie ook live: pauzes/uitloop/prijsuitreiking die als "wedstrijd" zijn ingevoerd worden herkend aan de poulenaam (`kindOf` in `schedule.ts`: pauze/uitloop/break → pauzeblok; prijs/ceremonie/opening/warm/deuren → 🏆-blok) en duren tot het volgende item (max 60 min). Ze tellen niet mee in standen/legenda. Teamregels in de blokken zijn hele klikvakken met hover + pijltje (`85acbc4`).
 - Eindtijd = start + `MATCH_MINUTES` (20) uit `src/lib/event.ts`; `GAME_MINUTES` in het draaiboek leest die nu ook.
 - **Tijdzonefix:** admin `datetime-local` werd op Vercel (UTC) als UTC geparsed; 13:00 typen = 14:00 NL opgeslagen. Nu `parseEventLocal`/`toEventLocalInput`/`eventTimeFormatter` in `src/lib/time.ts` (Europe/Amsterdam), ook op de homepage. Het draaiboek rekende al in Amsterdam-tijd en zat dus een uur mis; dat klopt nu ook.
-- [ ] **Bestaande prod-wedstrijden corrigeren** (tonen na de deploy een uur te laat). Fix-deploy `derbyapp-6d0pit7d7` ging live op 2026-10-13 16:32:24Z (+59 s build). Eerst dry run, dan apply (marker in tabel `ScriptRun` voorkomt dubbel draaien; rijen die na de cutoff zijn opgeslagen worden overgeslagen):
+- [ ] **Bestaande prod-wedstrijden corrigeren** (tonen na de deploy een uur te laat). Dry run gedaan en correct; apply nog bevestigen (zie "Nu te doen"). Fix-deploy `derbyapp-6d0pit7d7` ging live op 2026-10-13 16:32:24Z (+59 s build). Eerst dry run, dan apply (marker in tabel `ScriptRun` voorkomt dubbel draaien; rijen die na de cutoff zijn opgeslagen worden overgeslagen):
   `node --env-file=.env.production.local scripts/fix-match-timezone-prod.mjs --before=2026-10-13T16:33:30Z` → controleren → zelfde met `--apply`.
   Tot dan het schema in de admin niet bewerken: opslaan zet een verkeerde tijd vast.
 
-### FB16 · Deelnemersgids `/info` ⏳ wacht op content (collega van Merel levert aan)
-Besluit Merel: **gewoon in het menu** (niet op de homepage). Onderdelen (alle vier):
-- **Dagprogramma**: deuren open, officials meeting, warm-ups, prijsuitreiking. Idee: deze momenten ook als grijze blokken in het publieke blokkenschema.
-- **Officials roster**: per wedstrijd wie HR, IPR, JR, NSO's enz. is.
-- **Teaminfo / infopack**: check-in, kleedkamers, wat mee te nemen; bewerkbare tekst + optionele PDF (Vercel Blob).
-- **Praktisch / contact**: parkeren, eten en drinken, contactpersonen op de dag.
-- Vraagt nieuwe tabellen: **alleen toevoegende migratie** (CREATE TABLE IF NOT EXISTS), er wordt op dit moment content gevuld op prod, die mag niet verloren gaan.
+### FB16 · Infopack `/info` ✅ gebouwd + live (`dadd636`), ⏳ prod-migratie
+Besluit Merel: **gewoon in het menu** ("Infopack", na Toernooi), niet op de homepage. Voorbeelden waarop het gebaseerd is: "Small Teams Game Planning" (Dom City-template) en "Info Pack Spring Fling Scrimmage" (AFA), allebei in Merel's Downloads.
+- **Pagina** `src/app/[locale]/info/page.tsx` (togglebaar via `/admin/zichtbaarheid`, key `info`; in sitemap). Onderdelen: snelkoppelingen naar toernooi/schema/venue/regels (info staat daar al, niet dupliceren), **dagprogramma**, **officials roster**, dresscode-blok (`Info.officialsBody`) en een optioneel blok "Voor teams" (`Info.teamsBody`, nu leeg = verborgen). Alle teksten in namespace `Info`, bewerkbaar via `/admin/teksten`.
+- **Dagprogramma** (`src/components/DayProgram.tsx`): `ProgramItem`-rijen (tijd in minuten sinds middernacht, zoals het draaiboek; NL/EN titel + toelichting; `audience` all/teams/officials) gemengd met de wedstrijden uit Schema. Filterknoppen Alles / Publiek / Teams / Officials.
+- **Officials roster** (`src/components/OfficialsRoster.tsx`): `OfficialAssignment` per wedstrijd (positie, naam, voornaamwoorden; cascade bij verwijderen wedstrijd). Kaart per wedstrijd met Referees / NSO's / Overig (`crewGroup` in `src/lib/infopack.ts`). Zoekveld "Zoek je naam" toont meteen "je staat bij x wedstrijden: 12:00 HR, ..." en markeert je posities.
+- **Admin** `/admin/infopack` (+ AdminNav): CRUD dagprogramma; roster per wedstrijd met standaardposities voorgevuld (HR, IPR, JR×2, OPR×3, ALT, HNSO, JT, PLT×2, PBM, PBT×2, SBO, SK×2) + 4 vrije regels; lege namen worden niet opgeslagen; "Kopieer roster van".
+- **Zolang de migratie niet gedraaid is:** `/info` toont "volgt binnenkort" (queries in `.catch`), `/admin/infopack` geeft een fout. Rest van de site onaangetast.
+- Idee, nog niet gedaan: publieke programma-onderdelen (deuren open, prijsuitreiking) ook als blokken in het blokkenschema op `/schema`.
+
+### FB19 · Placeholders voor onbekende teams (finale) ✅ klaar op branch `feature/finale-placeholders` (`7fc6849`), ⏳ wacht op migratie
+- `Match.teamALabel` / `teamBLabel` (optioneel). Ingevuld = die tekst ("Winnaar poule A") verschijnt overal in plaats van het gekozen team: schema (zonder link/kleur/spelers, niet in standen), homepage live/volgende, infopack, MVP (publiek + admin), draaiboek (blokkeert dan ook niet de vrijwilligers van het "dummy"-team). Helper `sideName` in `src/lib/match-teams.ts`.
+- `/admin/schema`: placeholder-velden bij aanmaken én bewerken, en **teams zijn nu ook achteraf te wijzigen** (kon eerst alleen bij aanmaken).
+- Lokaal geverifieerd in dev (labels zichtbaar), `npm run build` groen. Migratie: zie "Nu te doen" stap 2–3.
 
 ### FB17 · Hamburgermenu op mobiel ⏳ todo
-- Nav in `[locale]/layout.tsx` scrollt nu horizontaal op mobiel (11 items, wordt met `/info` nog meer). Vervangen door een hamburgerknop + uitklapmenu op kleine schermen; desktop blijft de rij.
+- Nav in `[locale]/layout.tsx` scrollt nu horizontaal op mobiel (12 items incl. Infopack). Vervangen door een hamburgerknop + uitklapmenu op kleine schermen (client component, `aria-expanded`, sluit bij navigatie en Escape); desktop blijft de rij. Taalwissel en Notificaties ook in het mobiele menu.
+
+### FB18 · Eigen teampagina met wachtwoord, roster zelf uploaden ⏳ todo
+- Wens Merel: elk team een eigen (beveiligde) pagina waar het zelf zijn roster aanlevert (spelers: derby name, nummer, voornaamwoorden, evt. headshot; plus bench staff). Nu doen organisatoren dat via `/admin/teams` + `/admin/spelers`.
+- Te beslissen bij de start: per team een eigen wachtwoord (gehasht opgeslagen op `Team`, door admin te zetten/resetten) of een geheime link met token zoals het draaiboek (`/draaiboek/[token]`)? Eis van Merel: **met wachtwoord beveiligd**. Voorstel: `/team/[id]` + wachtwoordformulier → HMAC-cookie per team (patroon van `src/lib/admin-auth.ts`), rate limiting op inlogpogingen, headshots via Vercel Blob (al in gebruik).
+- Deadline-velden uit de Dom City-template (roster + headshots vóór datum X) kunnen op die pagina als checklist.
+- Schemawijziging = nieuw migratiescript, alleen toevoegend (er staat live content).
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
@@ -251,5 +278,5 @@ Besluit: gedeelde postbus via **Purelymail** (~€9/jaar), minstens **2 organisa
 
 1. Lees dit document (§1 status, §4 plan) en `CLAUDE.md`.
 2. `npm install && npm run dev`, open http://localhost:3000. Voor data: `SEED_DEMO=1 npm run db:seed`.
-3. Pak de eerste niet-afgevinkte taak in §4. Schemawijziging? → `npm run db:push`.
+3. Begin bij **"▶ Nu te doen"** bovenaan, daarna de open punten in §4e. Schemawijziging? → lokaal `npm run db:push`, voor prod een idempotent migratiescript dat alleen toevoegt (zie `scripts/migrate-*-prod.mjs`).
 4. Aan het eind: vink af in §4, werk §1 en §3 bij, update "Laatste update".
