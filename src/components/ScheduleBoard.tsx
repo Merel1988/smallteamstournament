@@ -78,11 +78,11 @@ export default function ScheduleBoard({
     return () => clearInterval(id);
   }, [first, last, router]);
 
-  const live = matches.filter((m) => m.status === "live");
+  const live = matches.filter((m) => m.kind === "match" && m.status === "live");
   const next =
     live.length === 0 && now != null
       ? matches.find(
-          (m) => m.status === "scheduled" && m.start > now - 5 * MIN && m.start - now < UP_NEXT_WINDOW,
+          (m) => m.kind === "match" && m.status === "scheduled" && m.start > now - 5 * MIN && m.start - now < UP_NEXT_WINDOW,
         )
       : undefined;
   const showNow = now != null && first != null && last != null && now >= first && now <= last;
@@ -133,7 +133,7 @@ export default function ScheduleBoard({
                 {poule}
               </li>
             ))}
-            {board.pauses.length > 0 && (
+            {(board.pauses.length > 0 || matches.some((m) => m.kind === "break")) && (
               <li className="flex items-center gap-1.5 bg-white rounded-full pl-1.5 pr-3 py-1 shadow-sm">
                 <span
                   className="w-4 h-4 rounded-full border-2 border-dashed border-derby-ink/40"
@@ -164,17 +164,25 @@ export default function ScheduleBoard({
                 >
                   {time.format(b.start)}
                 </span>
-                <Block
-                  block={b}
-                  style={styleMap.get(b.poule || otherLabel) ?? "plain"}
-                  progress={progressOf(b, now)}
-                  tilt={i % 2 === 0 ? "-rotate-[0.4deg]" : "rotate-[0.4deg]"}
-                  timeRange={`${time.format(b.start)} → ${time.format(b.end)}`}
-                  poule={b.poule || otherLabel}
-                  liveLabel={t("live")}
-                  finishedLabel={t("finished")}
-                  linkTeams={linkTeams}
-                />
+                {b.kind !== "match" ? (
+                  <ItemBlock
+                    kind={b.kind}
+                    label={b.poule ?? ""}
+                    timeRange={`${time.format(b.start)} → ${time.format(b.end)}`}
+                  />
+                ) : (
+                  <Block
+                    block={b}
+                    style={styleMap.get(b.poule || otherLabel) ?? "plain"}
+                    progress={progressOf(b, now)}
+                    tilt={i % 2 === 0 ? "-rotate-[0.4deg]" : "rotate-[0.4deg]"}
+                    timeRange={`${time.format(b.start)} → ${time.format(b.end)}`}
+                    poule={b.poule || otherLabel}
+                    liveLabel={t("live")}
+                    finishedLabel={t("finished")}
+                    linkTeams={linkTeams}
+                  />
+                )}
               </li>
             ))}
           </ol>
@@ -297,6 +305,28 @@ function Block({
         <TeamRow team={block.teamA} score={showScore ? block.scoreA : null} other={block.scoreB} link={linkTeams} />
         <TeamRow team={block.teamB} score={showScore ? block.scoreB : null} other={block.scoreA} link={linkTeams} />
       </div>
+    </div>
+  );
+}
+
+function ItemBlock({
+  kind,
+  label,
+  timeRange,
+}: {
+  kind: "break" | "program";
+  label: string;
+  timeRange: string;
+}) {
+  const box =
+    kind === "break"
+      ? "border-2 border-dashed border-derby-ink/25 bg-white/50 text-derby-ink/70"
+      : "bg-white text-derby-ink ring-2 ring-derby-ink shadow";
+  return (
+    <div className={`h-full rounded-xl px-3 py-1.5 flex items-center justify-center gap-2 text-center ${box}`}>
+      <span aria-hidden>{kind === "break" ? "☕" : "🏆"}</span>
+      <span className="font-display text-xl leading-none">{label}</span>
+      <span className="text-xs tabular-nums opacity-80">{timeRange}</span>
     </div>
   );
 }

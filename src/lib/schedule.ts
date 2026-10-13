@@ -2,6 +2,16 @@ import { MATCH_MINUTES } from "@/lib/event";
 
 export type MatchStatus = "scheduled" | "live" | "finished";
 
+// Organisers enter breaks and ceremonies as matches; the poule name tells them apart.
+export type ItemKind = "match" | "break" | "program";
+
+export function kindOf(poule: string | null): ItemKind {
+  if (!poule) return "match";
+  if (/pauze|pause|break|uitloop/i.test(poule)) return "break";
+  if (/prijs|ceremon|award|opening|warm|deuren|doors|meeting/i.test(poule)) return "program";
+  return "match";
+}
+
 export type SchedulePlayer = { id: string; derbyName: string; number: string; headshotUrl: string | null };
 
 export type ScheduleTeam = {
@@ -21,6 +31,7 @@ export type ScheduleMatch = {
   scoreA: number | null;
   scoreB: number | null;
   status: MatchStatus;
+  kind: ItemKind;
 };
 
 export type PouleStyle = "red" | "ink" | "stripes" | "plain";
@@ -70,7 +81,21 @@ export function toScheduleMatch(m: {
     scoreA: m.scoreA,
     scoreB: m.scoreB,
     status,
+    kind: kindOf(m.poule),
   };
+}
+
+const MAX_ITEM_MINUTES = 60;
+
+// Non-match items have no fixed length: they last until the next item starts.
+export function fitItemDurations(matches: ScheduleMatch[]): ScheduleMatch[] {
+  const sorted = [...matches].sort((a, b) => a.start - b.start);
+  return sorted.map((m, i) => {
+    if (m.kind === "match") return m;
+    const next = sorted.slice(i + 1).find((n) => n.start > m.start);
+    const end = next ? Math.min(next.start, m.start + MAX_ITEM_MINUTES * MIN) : m.end;
+    return { ...m, end };
+  });
 }
 
 export function pouleStyles(matches: ScheduleMatch[], other: string): Map<string, PouleStyle> {
@@ -79,7 +104,7 @@ export function pouleStyles(matches: ScheduleMatch[], other: string): Map<string
   let i = 0;
   for (const m of matches) {
     const key = m.poule || other;
-    if (styles.has(key)) continue;
+    if (m.kind !== "match" || styles.has(key)) continue;
     styles.set(key, /final/i.test(key) ? "stripes" : cycle[i++ % cycle.length]);
   }
   return styles;
@@ -167,7 +192,7 @@ export type PouleStanding = { poule: string; rows: StandingRow[]; hasDraws: bool
 // single match (e.g. the final) are skipped.
 export function buildStandings(matches: ScheduleMatch[], other: string): PouleStanding[] {
   const byPoule = new Map<string, ScheduleMatch[]>();
-  for (const m of matches) {
+  for (const m of matches.filter((x) => x.kind === "match")) {
     const key = m.poule || other;
     byPoule.set(key, [...(byPoule.get(key) ?? []), m]);
   }

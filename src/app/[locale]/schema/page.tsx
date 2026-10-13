@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { pageMetadata } from "@/lib/seo";
 import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
 import { prisma } from "@/lib/prisma";
-import { buildStandings, pouleStyles, toScheduleMatch, type PouleStanding } from "@/lib/schedule";
+import { buildStandings, fitItemDurations, pouleStyles, toScheduleMatch, type PouleStanding } from "@/lib/schedule";
 
 export const dynamic = "force-dynamic";
 
@@ -56,12 +56,14 @@ export default async function SchemaPage({
       .map(({ id, derbyName, number, headshotUrl }) => ({ id, derbyName, number, headshotUrl }));
   };
 
-  const matches = rows.map((m) =>
-    toScheduleMatch({
+  const matches = fitItemDurations(
+    rows.map((m) =>
+      toScheduleMatch({
       ...m,
       teamA: { ...m.teamA, players: rosterOf(m.teamAId) },
-      teamB: { ...m.teamB, players: rosterOf(m.teamBId) },
-    }),
+        teamB: { ...m.teamB, players: rosterOf(m.teamBId) },
+      }),
+    ),
   );
   const otherLabel = t("otherPoule");
   const styles = [...pouleStyles(matches, otherLabel)];
