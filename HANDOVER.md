@@ -254,6 +254,13 @@ Besluit Merel: **gewoon in het menu** ("Infopack", na Toernooi), niet op de home
 - Deadline-velden uit de Dom City-template (roster + headshots vóór datum X) kunnen op die pagina als checklist.
 - Schemawijziging = nieuw migratiescript, alleen toevoegend (er staat live content).
 
+### FB21 · Menu opgeschoond ✅ AF (live, `cf5ad86`)
+- **Aanmelden** uit het menu (pagina blijft bereikbaar via link en het blok op home).
+- **Fun ▾**: Bingo, Derby name, Foto's en MVP onder één uitklapmenu (`src/components/NavGroup.tsx`; mobiel als kopje in het hamburgermenu). Menu is nu Home · Toernooi · Infopack · Teams · Schema · Regels · Venue · Fun. Groepen zijn data in `[locale]/layout.tsx` (`NavEntry` uit `src/lib/nav.ts`), een tweede groep is één regel extra. Een groep verdwijnt als al zijn pagina's verborgen zijn.
+
+### FB22 · Meer ruimte rond pauzeblokken in het schema ✅ AF (live)
+- Pauze/ceremonie-blokken (ingevoerd als wedstrijd) en automatische pauzes krijgen 10px marge boven en onder, zodat de scheve wedstrijdblokken er niet meer tegenaan schuren.
+
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
 

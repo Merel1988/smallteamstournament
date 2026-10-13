@@ -157,7 +157,7 @@ export default function ScheduleBoard({
             {board.blocks.map((b, i) => (
               <li
                 key={b.id}
-                className="absolute pr-1 py-0.5"
+                className={`absolute pr-1 ${b.kind === "match" ? "py-0.5" : "py-2.5"}`}
                 style={{
                   top: b.top,
                   height: b.height,
@@ -197,7 +197,7 @@ export default function ScheduleBoard({
           {board.pauses.map((p) => (
             <div
               key={p.start}
-              className="absolute left-14 right-1 flex items-center justify-center py-1"
+              className="absolute left-14 right-1 flex items-center justify-center py-2.5"
               style={{ top: p.top, height: p.height }}
             >
               <div className="h-full w-full rounded-xl border-2 border-dashed border-derby-ink/25 bg-white/50 flex items-center justify-center gap-2 text-sm font-bold text-derby-ink/70">
