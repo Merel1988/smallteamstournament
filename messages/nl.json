@@ -368,7 +368,9 @@
     "skipToContent": "Ga naar de inhoud",
     "closePhoto": "Foto sluiten",
     "mainLabel": "Hoofdinhoud",
-    "navLabel": "Hoofdnavigatie"
+    "navLabel": "Hoofdnavigatie",
+    "openMenu": "Menu openen",
+    "closeMenu": "Menu sluiten"
   },
   "PageMeta": {
     "home": {

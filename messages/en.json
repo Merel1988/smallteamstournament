@@ -368,7 +368,9 @@
     "skipToContent": "Skip to content",
     "closePhoto": "Close photo",
     "mainLabel": "Main content",
-    "navLabel": "Main navigation"
+    "navLabel": "Main navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "PageMeta": {
     "home": {

@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import RoadkillLogo from "@/components/RoadkillLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import LanguageHintBar from "@/components/LanguageHintBar";
+import MobileNav from "@/components/MobileNav";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { getHiddenPageKeys } from "@/lib/page-visibility";
 
@@ -95,7 +96,7 @@ export default async function LocaleLayout({
               Small Teams Tournament
             </span>
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3">
             <LanguageSwitcher />
             <Link
               href="/notificaties"
@@ -104,10 +105,17 @@ export default async function LocaleLayout({
               {tNav("notifications")}
             </Link>
           </div>
+          <MobileNav
+            items={navItems.map(({ href, label }) => ({ href, label }))}
+            navLabel={tA11y("navLabel")}
+            openLabel={tA11y("openMenu")}
+            closeLabel={tA11y("closeMenu")}
+            notificationsLabel={tNav("notifications")}
+          />
         </div>
         <nav
           aria-label={tA11y("navLabel")}
-          className="max-w-6xl mx-auto px-2 pb-2 flex gap-1 overflow-x-auto"
+          className="hidden lg:flex max-w-6xl mx-auto px-2 pb-2 gap-1 overflow-x-auto"
         >
           {navItems.map((item) => (
             <Link
