@@ -8,6 +8,8 @@ import RoadkillLogo from "@/components/RoadkillLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import LanguageHintBar from "@/components/LanguageHintBar";
 import MobileNav from "@/components/MobileNav";
+import NavGroup from "@/components/NavGroup";
+import { isGroup, type NavEntry } from "@/lib/nav";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { getHiddenPageKeys } from "@/lib/page-visibility";
 
@@ -68,20 +70,24 @@ export default async function LocaleLayout({
   });
 
   const hidden = await getHiddenPageKeys();
-  const navItems = [
-    { key: "home", href: "/", label: tNav("home") },
-    { key: "aanmelden", href: "/aanmelden", label: tNav("aanmelden") },
-    { key: "toernooi", href: "/toernooi", label: tNav("toernooi") },
-    { key: "info", href: "/info", label: tNav("info") },
-    { key: "teams", href: "/teams", label: tNav("teams") },
-    { key: "schema", href: "/schema", label: tNav("schema") },
-    { key: "bingo", href: "/bingo", label: tNav("bingo") },
-    { key: "fotos", href: "/fotos", label: tNav("photos") },
-    { key: "mvp", href: "/mvp", label: tNav("mvp") },
-    { key: "regels", href: "/regels", label: tNav("rules") },
-    { key: "venue", href: "/venue", label: tNav("venue") },
-    { key: "nickname", href: "/nickname", label: tNav("nickname") },
-  ].filter((item) => !hidden.has(item.key));
+  const link = (key: string, href: string, label: string) =>
+    hidden.has(key) ? [] : [{ href, label }];
+  const funItems = [
+    ...link("bingo", "/bingo", tNav("bingo")),
+    ...link("nickname", "/nickname", tNav("nickname")),
+    ...link("fotos", "/fotos", tNav("photos")),
+    ...link("mvp", "/mvp", tNav("mvp")),
+  ];
+  const navItems: NavEntry[] = [
+    ...link("home", "/", tNav("home")),
+    ...link("toernooi", "/toernooi", tNav("toernooi")),
+    ...link("info", "/info", tNav("info")),
+    ...link("teams", "/teams", tNav("teams")),
+    ...link("schema", "/schema", tNav("schema")),
+    ...link("regels", "/regels", tNav("rules")),
+    ...link("venue", "/venue", tNav("venue")),
+    ...(funItems.length > 0 ? [{ label: tNav("fun"), children: funItems }] : []),
+  ];
 
   return (
     <NextIntlClientProvider>
@@ -106,7 +112,7 @@ export default async function LocaleLayout({
             </Link>
           </div>
           <MobileNav
-            items={navItems.map(({ href, label }) => ({ href, label }))}
+            items={navItems}
             navLabel={tA11y("navLabel")}
             openLabel={tA11y("openMenu")}
             closeLabel={tA11y("closeMenu")}
@@ -115,17 +121,21 @@ export default async function LocaleLayout({
         </div>
         <nav
           aria-label={tA11y("navLabel")}
-          className="hidden lg:flex max-w-6xl mx-auto px-2 pb-2 gap-1 overflow-x-auto"
+          className="hidden lg:flex max-w-6xl mx-auto px-2 pb-2 gap-1"
         >
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="whitespace-nowrap rounded-full px-3 py-1 text-sm hover:bg-derby-accent hover:text-white transition"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map((item) =>
+            isGroup(item) ? (
+              <NavGroup key={item.label} label={item.label} items={item.children} />
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="whitespace-nowrap rounded-full px-3 py-1 text-sm hover:bg-derby-accent hover:text-white transition"
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
       </header>
 

@@ -13,7 +13,8 @@
     "venue": "Venue",
     "nickname": "Derby name",
     "notifications": "Notifications",
-    "admin": "Admin"
+    "admin": "Admin",
+    "fun": "Fun"
   },
   "Event": {
     "league": "Roadkill Rollers Nijmegen",

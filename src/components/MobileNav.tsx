@@ -3,8 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-
-type NavItem = { href: string; label: string };
+import { isGroup, type NavEntry, type NavLink } from "@/lib/nav";
 
 export default function MobileNav({
   items,
@@ -13,7 +12,7 @@ export default function MobileNav({
   closeLabel,
   notificationsLabel,
 }: {
-  items: NavItem[];
+  items: NavEntry[];
   navLabel: string;
   openLabel: string;
   closeLabel: string;
@@ -42,6 +41,22 @@ export default function MobileNav({
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
+
+  function renderLink(item: NavLink) {
+    const current = pathname === item.href;
+    return (
+      <Link
+        href={item.href}
+        aria-current={current ? "page" : undefined}
+        onClick={() => setOpen(false)}
+        className={`block rounded-md px-3 py-2 text-base hover:bg-derby-accent hover:text-white ${
+          current ? "bg-white/10 font-semibold" : ""
+        }`}
+      >
+        {item.label}
+      </Link>
+    );
+  }
 
   return (
     <div className="lg:hidden">
@@ -78,23 +93,22 @@ export default function MobileNav({
       >
         <nav aria-label={navLabel} className="px-4 py-3">
           <ul className="grid gap-1">
-            {items.map((item) => {
-              const current = pathname === item.href;
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    aria-current={current ? "page" : undefined}
-                    onClick={() => setOpen(false)}
-                    className={`block rounded-md px-3 py-2 text-base hover:bg-derby-accent hover:text-white ${
-                      current ? "bg-white/10 font-semibold" : ""
-                    }`}
-                  >
+            {items.map((item) =>
+              isGroup(item) ? (
+                <li key={item.label}>
+                  <span className="block px-3 pt-3 pb-1 text-xs font-bold uppercase tracking-wide text-white/60">
                     {item.label}
-                  </Link>
+                  </span>
+                  <ul className="grid gap-1 pl-3">
+                    {item.children.map((child) => (
+                      <li key={child.href}>{renderLink(child)}</li>
+                    ))}
+                  </ul>
                 </li>
-              );
-            })}
+              ) : (
+                <li key={item.href}>{renderLink(item)}</li>
+              ),
+            )}
           </ul>
           <div className="mt-3 flex items-center justify-between gap-3 border-t border-white/10 px-3 pt-3">
             <Link
