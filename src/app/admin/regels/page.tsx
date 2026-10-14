@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -68,12 +69,12 @@ export default async function AdminRegelsPage() {
           defaultValue={rules.length}
           className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
         />
-        <button
+        <SubmitButton
           type="submit"
           className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
         >
           Toevoegen
-        </button>
+        </SubmitButton>
       </form>
 
       <ul className="space-y-3">
@@ -101,19 +102,19 @@ export default async function AdminRegelsPage() {
                 className="w-24 border border-derby-ink/20 rounded-lg px-3 py-2"
               />
               <div className="flex gap-2">
-                <button
+                <SubmitButton
                   type="submit"
                   className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
                 >
                   Opslaan
-                </button>
-                <button
+                </SubmitButton>
+                <SubmitButton
                   type="submit"
                   formAction={deleteRule.bind(null, r.id)}
                   className="bg-white border border-derby-accent text-derby-accent rounded-full px-4 py-2 font-bold"
                 >
                   Verwijder
-                </button>
+                </SubmitButton>
               </div>
             </form>
           </li>

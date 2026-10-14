@@ -3,6 +3,7 @@ import { deleteFromBlob } from "@/lib/blob";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import { revalidatePath } from "next/cache";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -49,12 +50,12 @@ export default async function AdminFotosPage() {
                 {p.caption && <div>{p.caption}</div>}
               </div>
               <form action={deletePhoto.bind(null, p.id)} className="mt-2">
-                <button
+                <SubmitButton
                   type="submit"
                   className="w-full bg-white border border-derby-accent text-derby-accent rounded-full px-3 py-1 text-sm font-bold"
                 >
                   Verwijder
-                </button>
+                </SubmitButton>
               </form>
             </div>
           ))}

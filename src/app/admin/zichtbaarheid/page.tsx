@@ -2,6 +2,7 @@ import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { TOGGLABLE_PAGES } from "@/lib/pages";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -79,12 +80,12 @@ export default async function AdminZichtbaarheidPage() {
             );
           })}
         </ul>
-        <button
+        <SubmitButton
           type="submit"
           className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
         >
           Opslaan
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );

@@ -87,3 +87,58 @@ summary:focus-visible,
     var(--derby-accent-dark) 10px 20px
   );
 }
+
+button:not(:disabled),
+[role="button"],
+summary,
+select,
+input[type="checkbox"],
+input[type="radio"],
+input[type="file"],
+label:has(> input[type="checkbox"]),
+label:has(> input[type="radio"]) {
+  cursor: pointer;
+}
+
+button,
+input[type="file"]::file-selector-button {
+  transition:
+    opacity 150ms,
+    transform 100ms,
+    box-shadow 150ms;
+}
+
+button:not(:disabled):hover {
+  opacity: 0.85;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+}
+
+button:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button[aria-busy="true"] {
+  cursor: progress;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+input[type="file"]::file-selector-button {
+  margin-right: 0.75rem;
+  border: 2px solid var(--derby-ink);
+  border-radius: 9999px;
+  background: white;
+  color: var(--derby-ink);
+  padding: 0.35rem 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: var(--derby-ink);
+  color: white;
+}

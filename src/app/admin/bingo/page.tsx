@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -62,12 +63,12 @@ export default async function AdminBingoPage() {
           placeholder="categorie (optioneel)"
           className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
         />
-        <button
+        <SubmitButton
           type="submit"
           className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
         >
           Toevoegen
-        </button>
+        </SubmitButton>
       </form>
 
       <ul className="space-y-2">
@@ -77,7 +78,7 @@ export default async function AdminBingoPage() {
             className="bg-white rounded-xl p-3 shadow flex items-center gap-3"
           >
             <form action={togglePrompt.bind(null, p.id)}>
-              <button
+              <SubmitButton
                 type="submit"
                 aria-label={p.active ? "Uitzetten" : "Aanzetten"}
                 className={`w-10 h-6 rounded-full transition ${
@@ -89,7 +90,7 @@ export default async function AdminBingoPage() {
                     p.active ? "left-[18px]" : "left-0.5"
                   }`}
                 />
-              </button>
+              </SubmitButton>
             </form>
             <div className="flex-1">
               <div className={p.active ? "" : "line-through opacity-50"}>
@@ -100,12 +101,12 @@ export default async function AdminBingoPage() {
               )}
             </div>
             <form action={deletePrompt.bind(null, p.id)}>
-              <button
+              <SubmitButton
                 type="submit"
                 className="text-sm text-derby-accent underline"
               >
                 verwijder
-              </button>
+              </SubmitButton>
             </form>
           </li>
         ))}

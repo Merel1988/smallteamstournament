@@ -2,6 +2,7 @@ import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { toEventLocalInput } from "@/lib/time";
 import { createMatch, deleteMatch, updateMatch } from "./actions";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -57,12 +58,12 @@ export default async function AdminSchemaPage() {
               className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
             />
           </label>
-          <button
+          <SubmitButton
             type="submit"
             className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold justify-self-start"
           >
             Toevoegen
-          </button>
+          </SubmitButton>
         </form>
       )}
 
@@ -127,19 +128,19 @@ export default async function AdminSchemaPage() {
               </select>
             </label>
             <div className="sm:col-span-2 flex gap-2">
-              <button
+              <SubmitButton
                 type="submit"
                 className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
               >
                 Opslaan
-              </button>
-              <button
+              </SubmitButton>
+              <SubmitButton
                 type="submit"
                 formAction={deleteMatch.bind(null, m.id)}
                 className="bg-white border border-derby-accent text-derby-accent rounded-full px-4 py-2 font-bold"
               >
                 Verwijder
-              </button>
+              </SubmitButton>
             </div>
           </form>
         ))}

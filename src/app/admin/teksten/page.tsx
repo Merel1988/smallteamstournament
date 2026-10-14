@@ -8,6 +8,7 @@ import {
 } from "@/lib/messages";
 import { routing } from "@/i18n/routing";
 import Link from "next/link";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -166,25 +167,25 @@ export default async function AdminTekstenPage({
                     <span className="truncate">
                       Standaard: <span className="italic">{baseVal}</span>
                     </span>
-                    <button
+                    <SubmitButton
                       type="submit"
                       formAction={resetKey.bind(null, locale, key)}
                       className="shrink-0 text-derby-accent font-bold hover:underline"
                     >
                       Herstel
-                    </button>
+                    </SubmitButton>
                   </div>
                 )}
               </div>
             );
           })}
 
-          <button
+          <SubmitButton
             type="submit"
             className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
           >
             {ns} opslaan
-          </button>
+          </SubmitButton>
         </form>
       ))}
     </div>

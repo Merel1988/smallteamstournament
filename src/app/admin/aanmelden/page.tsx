@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -83,9 +84,9 @@ export default async function AdminAanmeldenPage() {
             <input type="checkbox" name="visible" className="h-4 w-4" />
             Zichtbaar
           </label>
-          <button type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold ml-auto">
+          <SubmitButton type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold ml-auto">
             Toevoegen
-          </button>
+          </SubmitButton>
         </div>
       </form>
 
@@ -120,16 +121,16 @@ export default async function AdminAanmeldenPage() {
                   Zichtbaar
                 </label>
                 <div className="flex gap-2 ml-auto">
-                  <button type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold">
+                  <SubmitButton type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold">
                     Opslaan
-                  </button>
-                  <button
+                  </SubmitButton>
+                  <SubmitButton
                     type="submit"
                     formAction={deleteLink.bind(null, link.id)}
                     className="bg-white border border-derby-accent text-derby-accent rounded-full px-4 py-2 font-bold"
                   >
                     Verwijder
-                  </button>
+                  </SubmitButton>
                 </div>
               </div>
             </form>

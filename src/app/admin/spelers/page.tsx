@@ -2,6 +2,7 @@ import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import { createPlayer, deletePlayer, updatePlayer } from "./actions";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -57,12 +58,12 @@ export default async function AdminSpelersPage() {
           <span className="block text-sm mb-1">Headshot</span>
           <input type="file" name="headshot" accept="image/*" />
         </label>
-        <button
+        <SubmitButton
           type="submit"
           className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
         >
           Aanmaken
-        </button>
+        </SubmitButton>
       </form>
 
       <section className="space-y-4">
@@ -124,19 +125,19 @@ export default async function AdminSpelersPage() {
               </div>
             </div>
             <div className="flex gap-2 mt-3">
-              <button
+              <SubmitButton
                 type="submit"
                 className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
               >
                 Opslaan
-              </button>
-              <button
+              </SubmitButton>
+              <SubmitButton
                 type="submit"
                 formAction={deletePlayer.bind(null, p.id)}
                 className="bg-white border border-derby-accent text-derby-accent rounded-full px-4 py-2 font-bold"
               >
                 Verwijder
-              </button>
+              </SubmitButton>
             </div>
           </form>
         ))}

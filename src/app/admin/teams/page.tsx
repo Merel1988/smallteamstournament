@@ -11,6 +11,7 @@ import {
   setTeamPassword,
   updateTeam,
 } from "./actions";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -40,12 +41,12 @@ export default async function AdminTeamsPage() {
           <span className="block text-sm mb-1">Logo</span>
           <input type="file" name="logo" accept="image/*" />
         </label>
-        <button
+        <SubmitButton
           type="submit"
           className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
         >
           Aanmaken
-        </button>
+        </SubmitButton>
       </form>
 
       <section className="space-y-4">
@@ -96,19 +97,19 @@ export default async function AdminTeamsPage() {
                 </div>
               </div>
               <div className="flex gap-2 mt-3">
-                <button
+                <SubmitButton
                   type="submit"
                   className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
                 >
                   Opslaan
-                </button>
-                <button
+                </SubmitButton>
+                <SubmitButton
                   type="submit"
                   formAction={deleteTeam.bind(null, t.id)}
                   className="bg-white border border-derby-accent text-derby-accent rounded-full px-4 py-2 font-bold"
                 >
                   Verwijder
-                </button>
+                </SubmitButton>
               </div>
             </form>
             <TeamPortalAdmin
@@ -169,21 +170,21 @@ function TeamPortalAdmin({
             className="w-full border border-derby-ink/20 rounded-lg px-3 py-2 font-mono"
           />
         </label>
-        <button
+        <SubmitButton
           type="submit"
           className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
         >
           {hasPassword ? "Wachtwoord wijzigen" : "Wachtwoord instellen"}
-        </button>
+        </SubmitButton>
         {hasPassword && (
-          <button
+          <SubmitButton
             type="submit"
             formAction={clearTeamPassword.bind(null, id)}
             formNoValidate
             className="bg-white border border-derby-accent text-derby-accent rounded-full px-4 py-2 font-bold"
           >
             Teampagina sluiten
-          </button>
+          </SubmitButton>
         )}
       </form>
       <p className="text-xs text-derby-ink/60">
