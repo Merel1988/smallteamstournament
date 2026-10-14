@@ -260,7 +260,7 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 
 ### FB21 · Menu opgeschoond ✅ AF (live, `cf5ad86`)
 - **Aanmelden** uit het menu (pagina blijft bereikbaar via link en het blok op home).
-- **Fun ▾**: Bingo, Derby name, Foto's en MVP onder één uitklapmenu (`src/components/NavGroup.tsx`; mobiel als kopje in het hamburgermenu). Menu is nu Home · Toernooi · Infopack · Teams · Schema · Regels · Venue · Fun. Groepen zijn data in `[locale]/layout.tsx` (`NavEntry` uit `src/lib/nav.ts`), een tweede groep is één regel extra. Een groep verdwijnt als al zijn pagina's verborgen zijn.
+- **Fun ▾**: Bingo, Derby name, Foto's en MVP onder één uitklapmenu (`src/components/NavGroup.tsx`; mobiel als kopje in het hamburgermenu). Daarna ook **Info ▾** (Toernooi, Infopack, Regels, Venue); menu is nu Home · Teams · Schema · Info ▾ · Fun ▾. Groepen zijn data in `[locale]/layout.tsx` (`NavEntry` uit `src/lib/nav.ts`), een tweede groep is één regel extra. Een groep verdwijnt als al zijn pagina's verborgen zijn.
 
 ### FB22 · Meer ruimte rond pauzeblokken in het schema ✅ AF (live)
 - Pauze/ceremonie-blokken (ingevoerd als wedstrijd) en automatische pauzes krijgen 10px marge boven en onder, zodat de scheve wedstrijdblokken er niet meer tegenaan schuren.

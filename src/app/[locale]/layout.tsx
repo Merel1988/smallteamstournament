@@ -9,7 +9,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import LanguageHintBar from "@/components/LanguageHintBar";
 import MobileNav from "@/components/MobileNav";
 import NavGroup from "@/components/NavGroup";
-import { isGroup, type NavEntry } from "@/lib/nav";
+import { isGroup, type NavEntry, type NavLink } from "@/lib/nav";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { getHiddenPageKeys } from "@/lib/page-visibility";
 
@@ -78,15 +78,20 @@ export default async function LocaleLayout({
     ...link("fotos", "/fotos", tNav("photos")),
     ...link("mvp", "/mvp", tNav("mvp")),
   ];
-  const navItems: NavEntry[] = [
-    ...link("home", "/", tNav("home")),
+  const infoItems = [
     ...link("toernooi", "/toernooi", tNav("toernooi")),
     ...link("info", "/info", tNav("info")),
-    ...link("teams", "/teams", tNav("teams")),
-    ...link("schema", "/schema", tNav("schema")),
     ...link("regels", "/regels", tNav("rules")),
     ...link("venue", "/venue", tNav("venue")),
-    ...(funItems.length > 0 ? [{ label: tNav("fun"), children: funItems }] : []),
+  ];
+  const group = (label: string, children: NavLink[]) =>
+    children.length > 0 ? [{ label, children }] : [];
+  const navItems: NavEntry[] = [
+    ...link("home", "/", tNav("home")),
+    ...link("teams", "/teams", tNav("teams")),
+    ...link("schema", "/schema", tNav("schema")),
+    ...group(tNav("infoGroup"), infoItems),
+    ...group(tNav("fun"), funItems),
   ];
 
   return (

@@ -14,7 +14,8 @@
     "nickname": "Derby name",
     "notifications": "Notifications",
     "admin": "Admin",
-    "fun": "Fun"
+    "fun": "Fun",
+    "infoGroup": "Info"
   },
   "Event": {
     "league": "Roadkill Rollers Nijmegen",
