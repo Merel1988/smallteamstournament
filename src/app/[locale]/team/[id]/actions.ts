@@ -133,15 +133,27 @@ export async function saveBench(
   const name = text(formData, "name", LIMITS.name);
   const role = text(formData, "role", LIMITS.role);
   const pronouns = text(formData, "pronouns", LIMITS.pronouns);
+  const headshotUrl = String(formData.get("headshotUrl") ?? "");
   if (!name || !role || pronouns === null) return { ok: false, error: "invalid" };
+  if (headshotUrl && !isTeamHeadshotUrl(headshotUrl, teamId)) {
+    return { ok: false, error: "invalid" };
+  }
 
-  const data = { name, role, pronouns: pronouns || null };
+  const data = {
+    name,
+    role,
+    pronouns: pronouns || null,
+    ...(headshotUrl ? { headshotUrl } : {}),
+  };
   if (benchId) {
     const existing = await prisma.benchStaff.findUnique({ where: { id: benchId } });
     if (!existing || existing.teamId !== teamId) {
       return { ok: false, error: "forbidden" };
     }
     await prisma.benchStaff.update({ where: { id: benchId }, data });
+    if (headshotUrl && existing.headshotUrl && existing.headshotUrl !== headshotUrl) {
+      await deleteFromBlob(existing.headshotUrl);
+    }
   } else {
     const count = await prisma.benchStaff.count({ where: { teamId } });
     await prisma.benchStaff.create({ data: { ...data, teamId, sortOrder: count } });
@@ -155,6 +167,7 @@ export async function deleteBench(teamId: string, benchId: string): Promise<Save
   const existing = await prisma.benchStaff.findUnique({ where: { id: benchId } });
   if (!existing || existing.teamId !== teamId) return { ok: false, error: "forbidden" };
   await prisma.benchStaff.delete({ where: { id: benchId } });
+  if (existing.headshotUrl) await deleteFromBlob(existing.headshotUrl);
   refresh(teamId);
   return { ok: true };
 }
