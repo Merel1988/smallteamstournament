@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import Countdown from "@/components/Countdown";
+import RoadkillLogo from "@/components/RoadkillLogo";
 import EventJsonLd from "@/components/EventJsonLd";
 import { EVENT } from "@/lib/event";
 import { prisma } from "@/lib/prisma";
@@ -63,34 +64,43 @@ export default async function HomePage({
   return (
     <div className="space-y-8">
       <EventJsonLd description={tEvent("description")} />
-      <section className="bg-derby-ink text-white rounded-2xl p-6 sm:p-10 shadow-lg">
-        <p className="font-display text-white text-xl sm:text-2xl">
-          {tEvent("league")}
-        </p>
-        <h1 className="font-display text-5xl sm:text-7xl text-white leading-[0.9] mt-1">
-          {tEvent("name")}
-        </h1>
-        <p className="text-white/80 mt-3 max-w-2xl">{tEvent("description")}</p>
-        <div className="mt-4 text-sm text-white/90">
-          <p>
-            <strong>{tEvent("dateLine")}</strong>
-          </p>
-          <p>{tEvent("venueLine")}</p>
+      <section className="relative overflow-hidden bg-derby-ink text-white rounded-2xl p-6 pb-8 sm:p-10 sm:pb-12 shadow-lg">
+        <div
+          className="pointer-events-none absolute -right-16 -top-6 w-56 opacity-30 rotate-[-8deg] sm:w-80 lg:-right-10 lg:top-4 lg:opacity-100"
+          aria-hidden
+        >
+          <RoadkillLogo className="w-full h-auto text-white" />
         </div>
+        <div className="stripes absolute inset-x-0 bottom-0 h-2" aria-hidden />
+        <div className="relative">
+          <p className="font-display text-derby-accent text-xl sm:text-2xl">
+            {tEvent("league")}
+          </p>
+          <h1 className="font-display text-5xl sm:text-7xl text-white leading-[0.9] mt-1">
+            {tEvent("name")}
+          </h1>
+          <p className="text-white/80 mt-3 max-w-2xl">{tEvent("description")}</p>
+          <div className="mt-4 text-sm text-white/90">
+            <p>
+              <strong>{tEvent("dateLine")}</strong>
+            </p>
+            <p>{tEvent("venueLine")}</p>
+          </div>
 
-        <div className="mt-8">
-          {beforeEvent ? (
-            <>
-              <p className="text-xs uppercase tracking-wider text-white/70 mb-2">
-                {t("countdownLabel")}
-              </p>
-              <Countdown target={EVENT.date} />
-            </>
-          ) : (
-            <div className="bg-derby-accent rounded-xl p-4">
-              <p className="font-display text-3xl">{t("tournamentLive")}</p>
-            </div>
-          )}
+          <div className="mt-8">
+            {beforeEvent ? (
+              <>
+                <p className="text-xs uppercase tracking-wider text-white/70 mb-2">
+                  {t("countdownLabel")}
+                </p>
+                <Countdown target={EVENT.date} />
+              </>
+            ) : (
+              <div className="bg-derby-accent rounded-xl p-4">
+                <p className="font-display text-3xl">{t("tournamentLive")}</p>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 

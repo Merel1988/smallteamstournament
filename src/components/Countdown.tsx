@@ -35,7 +35,7 @@ export default function Countdown({ target }: { target: Date }) {
       {cells.map((c) => (
         <div
           key={c.label}
-          className="bg-derby-ink text-white rounded-xl py-4 px-2 text-center shadow-md"
+          className="bg-white/10 text-white rounded-xl border-t-4 border-derby-accent py-4 px-2 text-center shadow-md backdrop-blur-sm"
         >
           <div className="font-display text-4xl sm:text-5xl leading-none">
             {String(c.value).padStart(2, "0")}
