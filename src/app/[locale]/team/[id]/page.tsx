@@ -153,13 +153,14 @@ export default async function TeamPortalPage({
         {bench.map((b) => (
           <BenchForm
             key={b.id}
+            teamId={team.id}
             member={b}
             save={saveBench.bind(null, team.id, b.id)}
             remove={deleteBench.bind(null, team.id, b.id)}
           />
         ))}
         <h3 className="font-display text-2xl pt-2">{t("addBench")}</h3>
-        <BenchForm save={saveBench.bind(null, team.id, null)} />
+        <BenchForm teamId={team.id} save={saveBench.bind(null, team.id, null)} />
       </section>
     </div>
   );
