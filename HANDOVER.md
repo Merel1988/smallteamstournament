@@ -272,9 +272,8 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 - Globaal (`globals.css`): handjescursor, hover (iets transparanter), indrukeffect, `not-allowed` bij disabled, gestylede bestandsknop (`::file-selector-button`).
 - Admin: alle submitknoppen zijn `src/components/SubmitButton.tsx` (spinner terwijl de server action loopt, daarna kort ✓, dubbelklik geblokkeerd).
 
-### FB25 · Foto voor bench staff ✅ klaar op branch `feature/bench-photo` (`880233d`), ⏳ wacht op prod-migratie
+### FB25 · Foto voor bench staff ✅ AF (live, prod-migratie gedaan 2026-10-14)
 - `BenchStaff.headshotUrl`; upload zoals bij skaters (zelfde map), zichtbaar op `/teams/[id]` als kaarten zoals de spelers.
-- **Live zetten:** `git checkout feature/bench-photo && node --env-file=.env.production.local scripts/migrate-benchphoto-prod.mjs`, daarna mergen. Niet eerder mergen: zonder kolom faalt de teampagina.
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
