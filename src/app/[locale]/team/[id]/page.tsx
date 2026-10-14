@@ -43,12 +43,12 @@ export default async function TeamPortalPage({
 
   const team = await prisma.team.findUnique({
     where: { id },
-    select: { id: true, name: true, passwordHash: true },
+    select: { id: true, name: true, password: true },
   });
   if (!team) notFound();
 
   if (!(await canEditTeam(team.id))) {
-    if (!team.passwordHash) {
+    if (!team.password) {
       return (
         <div className="max-w-md mx-auto bg-white rounded-2xl p-6 shadow space-y-2">
           <h1 className="font-display text-3xl">{team.name}</h1>

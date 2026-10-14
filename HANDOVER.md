@@ -251,9 +251,9 @@ Besluit Merel: **gewoon in het menu** ("Infopack", na Toernooi), niet op de home
 ### FB18 · Teampagina met wachtwoord ✅ AF (live, prod-migratie gedaan 2026-10-13)
 Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen geheime link).
 - **Pagina** `/team/[id]` (`src/app/[locale]/team/[id]/`, NL/EN, `noindex`, `/team/` disallowed in robots, nergens gelinkt). Zonder wachtwoord: "nog niet geopend". Na inloggen: skaters (derby name, nummer, voornaamwoorden, headshot) en bench staff (naam, rol met suggesties, voornaamwoorden) toevoegen/wijzigen/verwijderen. Teksten in namespace `TeamPortal` (bewerkbaar via `/admin/teksten`, `intro` is de plek voor een deadline).
-- **Auth** `src/lib/team-auth.ts`: scrypt-hash op `Team.passwordHash`; cookie `derby_team` (30 dagen) met een eigen HMAC-sleutel (afgeleid van `ADMIN_SECRET`, maar nooit geldig als admin-cookie) en een vingerafdruk van de hash, dus wachtwoord wijzigen/sluiten logt het team uit. 5 foute pogingen → 15 min blokkade (`failedLogins`/`lockedUntil`). Ingelogde admins mogen elke teampagina bewerken.
+- **Auth** `src/lib/team-auth.ts`: wachtwoord **versleuteld** (AES-GCM, sleutel afgeleid van `ADMIN_SECRET`) in kolom `Team.passwordHash` (Prisma-veld `password` via `@map`), zodat de admin het kan teruglezen (besluit Merel 2026-10-14: organisatoren zijn te vertrouwen, wachtwoord moet terug te geven zijn). Oude scrypt-hashes werken nog bij inloggen maar zijn niet zichtbaar; cookie `derby_team` (30 dagen) met een eigen HMAC-sleutel (afgeleid van `ADMIN_SECRET`, maar nooit geldig als admin-cookie) en een vingerafdruk van de hash, dus wachtwoord wijzigen/sluiten logt het team uit. 5 foute pogingen → 15 min blokkade (`failedLogins`/`lockedUntil`). Ingelogde admins mogen elke teampagina bewerken.
 - **Headshots** via client-upload naar Blob (`/api/team-upload`, alleen met geldige team-sessie, pad `players/<teamId>/`); de server action accepteert alleen URL's uit die map. Oude headshot wordt bij vervangen verwijderd.
-- **Admin** `/admin/teams`: per team blok "Teampagina" met status, link, wachtwoord instellen/wijzigen (voorstel vooringevuld, eenmalig zichtbaar) en "Teampagina sluiten". `/admin/spelers` heeft nu ook voornaamwoorden.
+- **Admin** `/admin/teams`: per team blok "Teampagina" met status, link, **het huidige wachtwoord zichtbaar**, leeg veld voor een ander wachtwoord (geen voorstel), "Teampagina sluiten" en "Blokkade opheffen" na te veel foute pogingen. `/admin/spelers` heeft nu ook voornaamwoorden.
 - **Publiek** `/teams/[id]`: voornaamwoorden bij spelers + blok Bench staff.
 - Lokaal end-to-end getest (instellen, fout/goed wachtwoord, blokkade, ander team geen toegang, uitgelogd na wijziging, toevoegen skater/bench, upload-route weigert zonder sessie). Echte headshot-upload niet lokaal getest (zou in de productie-Blob-store schrijven).
 - **Live zetten:** `git checkout feature/team-portal && node --env-file=.env.production.local scripts/migrate-teamportal-prod.mjs` (idempotent, alleen toevoegend), daarna mergen naar `main`. ⚠️ Niet eerder mergen: de code leest de nieuwe kolommen, zonder migratie faalt elke team-query.
@@ -264,6 +264,17 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 
 ### FB22 · Meer ruimte rond pauzeblokken in het schema ✅ AF (live)
 - Pauze/ceremonie-blokken (ingevoerd als wedstrijd) en automatische pauzes krijgen 10px marge boven en onder, zodat de scheve wedstrijdblokken er niet meer tegenaan schuren.
+
+### FB23 · Hero op home met meer kleur ✅ AF (live, `b8a24a8`)
+- Logo (wiel + rode streep) rolt rechts het blok in (vanaf `lg` vol, kleiner/vervaagd daaronder), "Roadkill Rollers" in rood, rood-gestreepte tape onderaan, aftelvakjes zichtbaar (licht vlak met rood randje).
+
+### FB24 · Klikfeedback op knoppen ✅ AF (live, `dacf9d2`)
+- Globaal (`globals.css`): handjescursor, hover (iets transparanter), indrukeffect, `not-allowed` bij disabled, gestylede bestandsknop (`::file-selector-button`).
+- Admin: alle submitknoppen zijn `src/components/SubmitButton.tsx` (spinner terwijl de server action loopt, daarna kort ✓, dubbelklik geblokkeerd).
+
+### FB25 · Foto voor bench staff ✅ klaar op branch `feature/bench-photo` (`880233d`), ⏳ wacht op prod-migratie
+- `BenchStaff.headshotUrl`; upload zoals bij skaters (zelfde map), zichtbaar op `/teams/[id]` als kaarten zoals de spelers.
+- **Live zetten:** `git checkout feature/bench-photo && node --env-file=.env.production.local scripts/migrate-benchphoto-prod.mjs`, daarna mergen. Niet eerder mergen: zonder kolom faalt de teampagina.
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.

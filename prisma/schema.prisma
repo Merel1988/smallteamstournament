@@ -15,7 +15,7 @@ model Team {
   color         String?
   descriptionNl String?
   descriptionEn String?
-  passwordHash  String?
+  password      String?      @map("passwordHash")
   failedLogins  Int          @default(0)
   lockedUntil   DateTime?
   createdAt     DateTime     @default(now())

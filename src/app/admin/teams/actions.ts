@@ -3,7 +3,7 @@
 import { requireAdmin } from "@/lib/admin-auth";
 import { uploadToBlob, deleteFromBlob } from "@/lib/blob";
 import { prisma } from "@/lib/prisma";
-import { MIN_PASSWORD_LENGTH, hashPassword } from "@/lib/team-auth";
+import { MIN_PASSWORD_LENGTH, encryptPassword } from "@/lib/team-auth";
 import { revalidatePath } from "next/cache";
 
 export async function createTeam(formData: FormData) {
@@ -82,7 +82,7 @@ export async function setTeamPassword(id: string, formData: FormData) {
   if (password.length < MIN_PASSWORD_LENGTH) return;
   await prisma.team.update({
     where: { id },
-    data: { passwordHash: hashPassword(password), failedLogins: 0, lockedUntil: null },
+    data: { password: encryptPassword(password), failedLogins: 0, lockedUntil: null },
   });
   revalidatePath("/admin/teams");
 }
@@ -91,7 +91,16 @@ export async function clearTeamPassword(id: string) {
   await requireAdmin();
   await prisma.team.update({
     where: { id },
-    data: { passwordHash: null, failedLogins: 0, lockedUntil: null },
+    data: { password: null, failedLogins: 0, lockedUntil: null },
+  });
+  revalidatePath("/admin/teams");
+}
+
+export async function unlockTeam(id: string) {
+  await requireAdmin();
+  await prisma.team.update({
+    where: { id },
+    data: { failedLogins: 0, lockedUntil: null },
   });
   revalidatePath("/admin/teams");
 }

@@ -39,10 +39,10 @@ export async function loginTeam(formData: FormData) {
     });
 
   const team = await prisma.team.findUnique({ where: { id: teamId } });
-  if (!team?.passwordHash) return back("closed");
+  if (!team?.password) return back("closed");
   if (team.lockedUntil && team.lockedUntil > new Date()) return back("locked");
 
-  if (!verifyPassword(password, team.passwordHash)) {
+  if (!verifyPassword(password, team.password)) {
     const failed = team.failedLogins + 1;
     const lock = failed >= MAX_FAILED_LOGINS;
     await prisma.team.update({
@@ -62,7 +62,7 @@ export async function loginTeam(formData: FormData) {
     });
   }
   const store = await cookies();
-  store.set(TEAM_COOKIE, createTeamToken(teamId, team.passwordHash), teamCookieOptions());
+  store.set(TEAM_COOKIE, createTeamToken(teamId, team.password), teamCookieOptions());
   return back();
 }
 

@@ -1,4 +1,7 @@
 import {
+  createCipheriv,
+  createDecipheriv,
+  createHash,
   createHmac,
   randomBytes,
   scryptSync,
@@ -25,27 +28,53 @@ function hmac(payload: string): string {
   return createHmac("sha256", key()).update(payload).digest("hex");
 }
 
-export function hashPassword(password: string): string {
-  const salt = randomBytes(16);
-  const hash = scryptSync(password, salt, 64);
-  return `scrypt$${salt.toString("hex")}$${hash.toString("hex")}`;
+// Passwords are stored encrypted (not hashed) so organisers can look them up in admin.
+function encryptionKey(): Buffer {
+  return createHash("sha256").update(`${key()}:password`).digest();
+}
+
+export function encryptPassword(password: string): string {
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", encryptionKey(), iv);
+  const encrypted = Buffer.concat([cipher.update(password, "utf8"), cipher.final()]);
+  return ["enc", iv, cipher.getAuthTag(), encrypted].map((p) => (typeof p === "string" ? p : p.toString("hex"))).join("$");
+}
+
+// Returns null for passwords set before they were stored encrypted (scrypt hashes).
+export function revealPassword(stored: string): string | null {
+  const [scheme, ivHex, tagHex, dataHex] = stored.split("$");
+  if (scheme !== "enc" || !ivHex || !tagHex || !dataHex) return null;
+  try {
+    const decipher = createDecipheriv("aes-256-gcm", encryptionKey(), Buffer.from(ivHex, "hex"));
+    decipher.setAuthTag(Buffer.from(tagHex, "hex"));
+    return Buffer.concat([decipher.update(Buffer.from(dataHex, "hex")), decipher.final()]).toString("utf8");
+  } catch {
+    return null;
+  }
 }
 
 export function verifyPassword(password: string, stored: string): boolean {
-  const [scheme, saltHex, hashHex] = stored.split("$");
-  if (scheme !== "scrypt" || !saltHex || !hashHex) return false;
-  const expected = Buffer.from(hashHex, "hex");
-  const actual = scryptSync(password, Buffer.from(saltHex, "hex"), expected.length);
-  return timingSafeEqual(actual, expected);
+  if (stored.startsWith("scrypt$")) {
+    const [, saltHex, hashHex] = stored.split("$");
+    if (!saltHex || !hashHex) return false;
+    const expected = Buffer.from(hashHex, "hex");
+    const actual = scryptSync(password, Buffer.from(saltHex, "hex"), expected.length);
+    return timingSafeEqual(actual, expected);
+  }
+  const plain = revealPassword(stored);
+  if (plain === null) return false;
+  const a = createHash("sha256").update(password).digest();
+  const b = createHash("sha256").update(plain).digest();
+  return timingSafeEqual(a, b);
 }
 
-// Tied to the current hash, so changing or removing the password ends existing sessions.
-function passwordFingerprint(passwordHash: string): string {
-  return hmac(`fp.${passwordHash}`).slice(0, 16);
+// Tied to the stored password, so changing or removing the password ends existing sessions.
+function passwordFingerprint(stored: string): string {
+  return hmac(`fp.${stored}`).slice(0, 16);
 }
 
-export function createTeamToken(teamId: string, passwordHash: string): string {
-  const payload = `team.${teamId}.${passwordFingerprint(passwordHash)}.${Date.now()}`;
+export function createTeamToken(teamId: string, stored: string): string {
+  const payload = `team.${teamId}.${passwordFingerprint(stored)}.${Date.now()}`;
   return `${payload}.${hmac(payload)}`;
 }
 
@@ -80,10 +109,10 @@ export async function canEditTeam(teamId: string): Promise<boolean> {
   if (!session || session.teamId !== teamId) return false;
   const team = await prisma.team.findUnique({
     where: { id: teamId },
-    select: { passwordHash: true },
+    select: { password: true },
   });
-  if (!team?.passwordHash) return false;
-  return session.fingerprint === passwordFingerprint(team.passwordHash);
+  if (!team?.password) return false;
+  return session.fingerprint === passwordFingerprint(team.password);
 }
 
 export async function requireTeamEditor(teamId: string): Promise<void> {

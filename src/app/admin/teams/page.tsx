@@ -1,12 +1,12 @@
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
-import { randomBytes } from "crypto";
-import { MIN_PASSWORD_LENGTH } from "@/lib/team-auth";
+import { MIN_PASSWORD_LENGTH, revealPassword } from "@/lib/team-auth";
 import { SITE_URL } from "@/lib/seo";
 import {
   clearTeamPassword,
   createTeam,
+  unlockTeam,
   deleteTeam,
   setTeamPassword,
   updateTeam,
@@ -114,7 +114,8 @@ export default async function AdminTeamsPage() {
             </form>
             <TeamPortalAdmin
               id={t.id}
-              hasPassword={!!t.passwordHash}
+              hasPassword={!!t.password}
+              password={t.password ? revealPassword(t.password) : null}
               locked={!!t.lockedUntil && t.lockedUntil > new Date()}
               players={t._count.players}
               bench={t._count.benchStaff}
@@ -129,56 +130,72 @@ export default async function AdminTeamsPage() {
 function TeamPortalAdmin({
   id,
   hasPassword,
+  password,
   locked,
   players,
   bench,
 }: {
   id: string;
   hasPassword: boolean;
+  password: string | null;
   locked: boolean;
   players: number;
   bench: number;
 }) {
   const url = `${SITE_URL}/team/${id}`;
-  const suggestion = randomBytes(9).toString("base64url");
   return (
     <div className="border-t border-derby-ink/10 pt-4 space-y-3">
       <h3 className="font-display text-xl">Teampagina</h3>
       <p className="text-sm">
-        {hasPassword ? "Open, met wachtwoord" : "Dicht (geen wachtwoord ingesteld)"}
-        {locked && " · tijdelijk geblokkeerd na te veel inlogpogingen"}
+        {hasPassword ? "Open" : "Dicht (geen wachtwoord ingesteld)"}
         {` · ${players} skaters, ${bench} bench staff`}
       </p>
-      <p className="text-sm break-all">
-        Link:{" "}
-        <a href={url} className="underline" target="_blank" rel="noopener noreferrer">
-          {url}
-        </a>
-      </p>
+      <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+        <dt className="font-bold">Link</dt>
+        <dd className="break-all">
+          <a href={url} className="underline" target="_blank" rel="noopener noreferrer">
+            {url}
+          </a>
+        </dd>
+        <dt className="font-bold">Wachtwoord</dt>
+        <dd>
+          {!hasPassword ? (
+            <span className="text-derby-ink/60">nog niet ingesteld</span>
+          ) : password ? (
+            <code className="font-mono bg-derby-ink/5 rounded px-2 py-0.5 select-all">
+              {password}
+            </code>
+          ) : (
+            <span className="text-derby-accent">
+              ingesteld vóór wachtwoorden zichtbaar werden, stel het hieronder opnieuw in
+            </span>
+          )}
+        </dd>
+      </dl>
+      {locked && (
+        <form action={unlockTeam.bind(null, id)} className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-derby-accent">Tijdelijk geblokkeerd na te veel foute inlogpogingen.</span>
+          <SubmitButton className="underline font-bold">Blokkade opheffen</SubmitButton>
+        </form>
+      )}
       <form action={setTeamPassword.bind(null, id)} className="flex flex-wrap items-end gap-2">
         <label className="block flex-1 min-w-[12rem]">
           <span className="block text-sm mb-1">
-            {hasPassword ? "Nieuw wachtwoord" : "Wachtwoord"} (min. {MIN_PASSWORD_LENGTH} tekens,
-            voorstel ingevuld)
+            {hasPassword ? "Ander wachtwoord" : "Wachtwoord"} (min. {MIN_PASSWORD_LENGTH} tekens)
           </span>
           <input
             name="password"
-            defaultValue={suggestion}
             required
             minLength={MIN_PASSWORD_LENGTH}
             autoComplete="off"
             className="w-full border border-derby-ink/20 rounded-lg px-3 py-2 font-mono"
           />
         </label>
-        <SubmitButton
-          type="submit"
-          className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold"
-        >
+        <SubmitButton className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold">
           {hasPassword ? "Wachtwoord wijzigen" : "Wachtwoord instellen"}
         </SubmitButton>
         {hasPassword && (
           <SubmitButton
-            type="submit"
             formAction={clearTeamPassword.bind(null, id)}
             formNoValidate
             className="bg-white border border-derby-accent text-derby-accent rounded-full px-4 py-2 font-bold"
@@ -188,9 +205,9 @@ function TeamPortalAdmin({
         )}
       </form>
       <p className="text-xs text-derby-ink/60">
-        Het wachtwoord wordt versleuteld opgeslagen en is daarna niet meer te zien: kopieer het
-        voor je opslaat en stuur het samen met de link naar het team. Wijzigen of sluiten logt het
-        team uit. Als admin kun je via de link zelf ook de roster bewerken.
+        Stuur de link en het wachtwoord naar het team. Een ander wachtwoord instellen of de
+        teampagina sluiten logt het team uit. Als admin kun je via de link zelf ook de roster
+        bewerken.
       </p>
     </div>
   );
