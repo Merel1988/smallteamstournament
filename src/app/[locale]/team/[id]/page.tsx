@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { LOCK_MINUTES, canEditTeam } from "@/lib/team-auth";
+import { MAX_BENCH, MAX_PLAYERS } from "@/lib/team-portal";
 import {
   BenchForm,
   BenchRoleOptions,
@@ -126,7 +127,7 @@ export default async function TeamPortalPage({
 
       <section className="space-y-3">
         <h2 className="font-display text-3xl">
-          {t("skatersHeading")} ({players.length})
+          {t("skatersHeading")} ({players.length}/{MAX_PLAYERS})
         </h2>
         {players.length === 0 && (
           <p className="text-derby-ink/60">{t("skatersEmpty")}</p>
@@ -140,12 +141,20 @@ export default async function TeamPortalPage({
             remove={deletePlayer.bind(null, team.id, p.id)}
           />
         ))}
-        <h3 className="font-display text-2xl pt-2">{t("addSkater")}</h3>
-        <PlayerForm teamId={team.id} save={savePlayer.bind(null, team.id, null)} />
+        {players.length < MAX_PLAYERS ? (
+          <>
+            <h3 className="font-display text-2xl pt-2">{t("addSkater")}</h3>
+            <PlayerForm teamId={team.id} save={savePlayer.bind(null, team.id, null)} />
+          </>
+        ) : (
+          <p className="text-derby-ink/60">{t("skatersFull", { max: MAX_PLAYERS })}</p>
+        )}
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-display text-3xl">{t("benchHeading")}</h2>
+        <h2 className="font-display text-3xl">
+          {t("benchHeading")} ({bench.length}/{MAX_BENCH})
+        </h2>
         <BenchRoleOptions />
         {bench.length === 0 && (
           <p className="text-derby-ink/60">{t("benchEmpty")}</p>
@@ -159,8 +168,14 @@ export default async function TeamPortalPage({
             remove={deleteBench.bind(null, team.id, b.id)}
           />
         ))}
-        <h3 className="font-display text-2xl pt-2">{t("addBench")}</h3>
-        <BenchForm teamId={team.id} save={saveBench.bind(null, team.id, null)} />
+        {bench.length < MAX_BENCH ? (
+          <>
+            <h3 className="font-display text-2xl pt-2">{t("addBench")}</h3>
+            <BenchForm teamId={team.id} save={saveBench.bind(null, team.id, null)} />
+          </>
+        ) : (
+          <p className="text-derby-ink/60">{t("benchFull", { max: MAX_BENCH })}</p>
+        )}
       </section>
     </div>
   );

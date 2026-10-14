@@ -516,6 +516,9 @@
     "saving": "Bezig met opslaan...",
     "saved": "Opgeslagen",
     "errorInvalid": "Controleer de velden en probeer het opnieuw.",
-    "errorUpload": "Uploaden is mislukt. Probeer een andere of kleinere foto."
+    "errorUpload": "Uploaden is mislukt. Probeer een andere of kleinere foto.",
+    "skatersFull": "Je hebt het maximum van {max} skaters bereikt. Verwijder eerst een skater om iemand anders toe te voegen.",
+    "benchFull": "Je hebt het maximum van {max} bench staff bereikt. Verwijder eerst iemand om een ander toe te voegen.",
+    "errorFull": "Het maximum is bereikt, er kan niemand meer bij."
   }
 }

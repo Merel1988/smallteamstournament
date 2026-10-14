@@ -516,6 +516,9 @@
     "saving": "Saving...",
     "saved": "Saved",
     "errorInvalid": "Please check the fields and try again.",
-    "errorUpload": "Upload failed. Try another or smaller photo."
+    "errorUpload": "Upload failed. Try another or smaller photo.",
+    "skatersFull": "You have reached the maximum of {max} skaters. Remove a skater first to add someone else.",
+    "benchFull": "You have reached the maximum of {max} bench staff. Remove someone first to add another person.",
+    "errorFull": "The maximum has been reached, no one else can be added."
   }
 }

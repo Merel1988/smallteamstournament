@@ -14,7 +14,13 @@ import {
   teamCookieOptions,
   verifyPassword,
 } from "@/lib/team-auth";
-import { LIMITS, isTeamHeadshotUrl, type SaveResult } from "@/lib/team-portal";
+import {
+  LIMITS,
+  MAX_BENCH,
+  MAX_PLAYERS,
+  isTeamHeadshotUrl,
+  type SaveResult,
+} from "@/lib/team-portal";
 
 function text(formData: FormData, key: string, max: number): string | null {
   const value = String(formData.get(key) ?? "").trim();
@@ -107,6 +113,8 @@ export async function savePlayer(
       await deleteFromBlob(existing.headshotUrl);
     }
   } else {
+    const count = await prisma.player.count({ where: { teamId } });
+    if (count >= MAX_PLAYERS) return { ok: false, error: "full" };
     await prisma.player.create({ data: { ...data, teamId } });
   }
   refresh(teamId);
@@ -156,6 +164,7 @@ export async function saveBench(
     }
   } else {
     const count = await prisma.benchStaff.count({ where: { teamId } });
+    if (count >= MAX_BENCH) return { ok: false, error: "full" };
     await prisma.benchStaff.create({ data: { ...data, teamId, sortOrder: count } });
   }
   refresh(teamId);

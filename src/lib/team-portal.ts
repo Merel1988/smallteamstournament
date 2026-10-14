@@ -6,6 +6,9 @@ export const LIMITS = {
   role: 40,
 } as const;
 
+export const MAX_PLAYERS = 10;
+export const MAX_BENCH = 2;
+
 export const BENCH_ROLES = ["Bench Coach", "Bench Manager", "Alternate"];
 
 export function headshotPrefix(teamId: string): string {
@@ -26,4 +29,4 @@ export function isTeamHeadshotUrl(url: string, teamId: string): boolean {
   }
 }
 
-export type SaveResult = { ok: true } | { ok: false; error: "invalid" | "forbidden" };
+export type SaveResult = { ok: true } | { ok: false; error: "invalid" | "forbidden" | "full" };

@@ -13,7 +13,7 @@ import {
 
 type Save = (formData: FormData) => Promise<SaveResult>;
 type Remove = () => Promise<SaveResult>;
-type Status = "idle" | "saved" | "invalid" | "upload";
+type Status = "idle" | "saved" | "invalid" | "upload" | "full";
 
 const inputClass = "w-full border border-derby-ink/20 rounded-lg px-3 py-2";
 
@@ -81,7 +81,7 @@ function useSubmit(save: Save, onSaved?: () => void) {
         setStatus("saved");
         onSaved?.();
       } else {
-        setStatus("invalid");
+        setStatus(result.error === "full" ? "full" : "invalid");
       }
     });
   }
@@ -97,10 +97,11 @@ function StatusLine({ status }: { status: Status }) {
       </p>
     );
   }
-  if (status === "invalid" || status === "upload") {
+  if (status === "invalid" || status === "upload" || status === "full") {
+    const key = { invalid: "errorInvalid", upload: "errorUpload", full: "errorFull" } as const;
     return (
       <p role="alert" className="text-sm text-derby-accent">
-        {t(status === "upload" ? "errorUpload" : "errorInvalid")}
+        {t(key[status])}
       </p>
     );
   }
