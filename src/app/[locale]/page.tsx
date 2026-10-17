@@ -60,6 +60,10 @@ export default async function HomePage({
 
   const beforeEvent = EVENT.date.getTime() > now.getTime();
   const timeFormatter = eventTimeFormatter(locale);
+  const side = (team: { id: string; name: string }, label: string | null) => ({
+    name: sideName(team, label),
+    href: label?.trim() ? null : `/teams/${team.id}`,
+  });
 
   return (
     <div className="space-y-8">
@@ -138,8 +142,8 @@ export default async function HomePage({
             {t("liveNow")}
           </p>
           <MatchRow
-            teamA={sideName(liveMatch.teamA, liveMatch.teamALabel)}
-            teamB={sideName(liveMatch.teamB, liveMatch.teamBLabel)}
+            teamA={side(liveMatch.teamA, liveMatch.teamALabel)}
+            teamB={side(liveMatch.teamB, liveMatch.teamBLabel)}
             scoreA={liveMatch.scoreA}
             scoreB={liveMatch.scoreB}
             vsLabel={t("vs")}
@@ -154,8 +158,8 @@ export default async function HomePage({
             {t("nextMatch")}
           </p>
           <MatchRow
-            teamA={sideName(nextMatch.teamA, nextMatch.teamALabel)}
-            teamB={sideName(nextMatch.teamB, nextMatch.teamBLabel)}
+            teamA={side(nextMatch.teamA, nextMatch.teamALabel)}
+            teamB={side(nextMatch.teamB, nextMatch.teamBLabel)}
             when={nextMatch.startsAt}
             vsLabel={t("vs")}
             timeFormatter={timeFormatter}
@@ -197,8 +201,8 @@ function MatchRow({
   vsLabel,
   timeFormatter,
 }: {
-  teamA: string;
-  teamB: string;
+  teamA: MatchSide;
+  teamB: MatchSide;
   scoreA?: number | null;
   scoreB?: number | null;
   when?: Date;
@@ -207,7 +211,7 @@ function MatchRow({
 }) {
   return (
     <div className="mt-2 flex items-center justify-between gap-4">
-      <div className="font-display text-2xl">{teamA}</div>
+      <TeamName side={teamA} className="font-display text-2xl" />
       {scoreA != null && scoreB != null ? (
         <div className="font-display text-3xl text-derby-accent">
           {scoreA} – {scoreB}
@@ -217,7 +221,21 @@ function MatchRow({
       ) : (
         <div className="text-sm text-derby-ink/70">{vsLabel}</div>
       )}
-      <div className="font-display text-2xl text-right">{teamB}</div>
+      <TeamName side={teamB} className="font-display text-2xl text-right" />
     </div>
+  );
+}
+
+type MatchSide = { name: string; href: string | null };
+
+function TeamName({ side, className }: { side: MatchSide; className: string }) {
+  if (!side.href) return <div className={className}>{side.name}</div>;
+  return (
+    <Link
+      href={side.href}
+      className={`${className} hover:text-derby-accent underline decoration-2 decoration-transparent underline-offset-4 hover:decoration-current transition-colors`}
+    >
+      {side.name}
+    </Link>
   );
 }
