@@ -1,26 +1,23 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
-import { DEFAULT_POSITIONS, type Audience } from "@/lib/infopack";
+import { DEFAULT_POSITIONS } from "@/lib/infopack";
 import { kindOf } from "@/lib/schedule";
 import { eventMinutes, formatMinutes } from "@/lib/time";
 import { sideName } from "@/lib/match-teams";
 import {
   copyRoster,
+  createLockerRoom,
   createProgramItem,
+  deleteLockerRoom,
   deleteProgramItem,
+  updateLockerRoom,
   saveRoster,
   updateProgramItem,
 } from "./actions";
 import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
-
-const AUDIENCE_LABELS: Record<Audience, string> = {
-  all: "Iedereen (ook publiek)",
-  teams: "Teams",
-  officials: "Officials",
-};
 
 const input = "w-full border border-derby-ink/20 rounded-lg px-3 py-2";
 const EXTRA_ROWS = 4;
@@ -32,8 +29,9 @@ type ProgramRow = {
   titleEn: string | null;
   noteNl: string | null;
   noteEn: string | null;
-  audience: string;
 };
+
+type LockerRow = { room: string; labelNl: string; labelEn: string | null };
 
 export default async function AdminInfopackPage({
   searchParams,
@@ -43,12 +41,13 @@ export default async function AdminInfopackPage({
   await requireAdmin();
   const { match: matchParam, saved } = await searchParams;
 
-  const [items, matchRows] = await Promise.all([
+  const [items, matchRows, lockerRooms] = await Promise.all([
     prisma.programItem.findMany({ orderBy: { start: "asc" } }),
     prisma.match.findMany({
       orderBy: { startsAt: "asc" },
       include: { teamA: true, teamB: true, _count: { select: { officials: true } } },
     }),
+    prisma.lockerRoom.findMany({ orderBy: { sortOrder: "asc" } }).catch(() => []),
   ]);
   const matches = matchRows.filter((m) => kindOf(m.poule) === "match");
   const selected = matches.find((m) => m.id === matchParam) ?? matches[0];
@@ -72,7 +71,7 @@ export default async function AdminInfopackPage({
       <header>
         <h1 className="font-display text-4xl">Infopack</h1>
         <p className="text-derby-ink/70">
-          Beheer het dagprogramma en de officials roster op{" "}
+          Beheer het dagprogramma, de kleedkamers en de officials roster op{" "}
           <Link href="/info" className="underline">
             /info
           </Link>
@@ -121,6 +120,44 @@ export default async function AdminInfopackPage({
             ))}
           </ul>
         )}
+      </section>
+
+      <section id="kleedkamers" className="space-y-4 scroll-mt-6">
+        <h2 className="font-display text-3xl">Kleedkamers</h2>
+        <p className="text-derby-ink/70">
+          Eén naam per regel. Een regel die precies een teamnaam is, linkt op /info naar dat team.
+        </p>
+        <ul className="space-y-3">
+          {lockerRooms.map((r) => (
+            <li key={r.id}>
+              <form
+                action={updateLockerRoom.bind(null, r.id)}
+                className="bg-white rounded-2xl p-5 shadow space-y-3"
+              >
+                <LockerFields room={r} />
+                <div className="flex gap-2">
+                  <SubmitButton type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold">
+                    Opslaan
+                  </SubmitButton>
+                  <SubmitButton
+                    type="submit"
+                    formAction={deleteLockerRoom.bind(null, r.id)}
+                    className="bg-white border border-derby-accent text-derby-accent rounded-full px-4 py-2 font-bold"
+                  >
+                    Verwijder
+                  </SubmitButton>
+                </div>
+              </form>
+            </li>
+          ))}
+        </ul>
+        <form action={createLockerRoom} className="bg-white rounded-2xl p-5 shadow space-y-3">
+          <h3 className="font-display text-2xl">Nieuwe kleedkamer</h3>
+          <LockerFields />
+          <SubmitButton type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold">
+            Toevoegen
+          </SubmitButton>
+        </form>
       </section>
 
       <section id="roster" className="space-y-4 scroll-mt-6">
@@ -261,15 +298,24 @@ function ProgramFields({ item }: { item?: ProgramRow }) {
         <span className="block text-sm mb-1">Toelichting (EN, optioneel)</span>
         <input name="noteEn" defaultValue={item?.noteEn ?? ""} className={input} />
       </label>
-      <label className="block sm:col-span-2">
-        <span className="block text-sm mb-1">Voor wie</span>
-        <select name="audience" defaultValue={item?.audience ?? "all"} className={input}>
-          {(Object.keys(AUDIENCE_LABELS) as Audience[]).map((a) => (
-            <option key={a} value={a}>
-              {AUDIENCE_LABELS[a]}
-            </option>
-          ))}
-        </select>
+    </div>
+  );
+}
+
+function LockerFields({ room }: { room?: LockerRow }) {
+  return (
+    <div className="grid gap-3 sm:grid-cols-[6rem_1fr_1fr]">
+      <label className="block">
+        <span className="block text-sm mb-1">Nummer</span>
+        <input name="room" required defaultValue={room?.room ?? ""} className={input} />
+      </label>
+      <label className="block">
+        <span className="block text-sm mb-1">Wie (NL)</span>
+        <textarea name="labelNl" required rows={2} defaultValue={room?.labelNl ?? ""} className={input} />
+      </label>
+      <label className="block">
+        <span className="block text-sm mb-1">Wie (EN, optioneel)</span>
+        <textarea name="labelEn" rows={2} defaultValue={room?.labelEn ?? ""} className={input} />
       </label>
     </div>
   );

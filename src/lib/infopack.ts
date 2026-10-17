@@ -1,19 +1,11 @@
 // Shared between server and client components: no Prisma imports here.
 
-export type Audience = "all" | "teams" | "officials";
-export const AUDIENCES: Audience[] = ["all", "teams", "officials"];
-
-export function toAudience(value: string): Audience {
-  return (AUDIENCES as string[]).includes(value) ? (value as Audience) : "all";
-}
-
 export type ProgramEntry = {
   id: string;
   start: number;
   end: number | null;
   title: string;
   note: string | null;
-  audience: Audience;
   kind: "item" | "match" | "break";
 };
 

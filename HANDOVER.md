@@ -275,6 +275,11 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 ### FB25 · Foto voor bench staff ✅ AF (live, prod-migratie gedaan 2026-10-14)
 - `BenchStaff.headshotUrl`; upload zoals bij skaters (zelfde map), zichtbaar op `/teams/[id]` als kaarten zoals de spelers.
 
+### FB27 · Kleedkamers in de infopack + één dagprogramma ✅ code live (2026-10-17), ⚠️ prod-migratie nog draaien
+- Nieuwe tabel `LockerRoom` (nummer, NL/EN-tekst met één naam per regel). Op `/info` een blok "Kleedkamers" (+ springlink); een regel die exact een teamnaam is krijgt de teamkleur en linkt naar het team. Beheer in `/admin/infopack`.
+- **Merel draait:** `node --env-file=.env.production.local scripts/migrate-lockerroom-prod.mjs` (idempotent; vult bij een lege tabel de verdeling 1 t/m 6 uit de spreadsheet). Tot die tijd is het blok verborgen en geeft opslaan in admin een fout; de rest werkt.
+- Dagprogramma: filterknoppen Alles/Publiek/Teams/Officials en de doelgroep-labels weg (besluit Merel: één schema voor iedereen). Kolom `ProgramItem.audience` blijft in de DB maar wordt niet meer gebruikt.
+
 ### FB26 · Bio per team via de teampagina ✅ AF (2026-10-17, geen migratie)
 - Blok "Over ons" bovenaan `/team/[id]`: twee tekstvakken (NL/EN, max 1000 tekens), opgeslagen in de bestaande `Team.descriptionNl`/`descriptionEn`. Admin `/admin/teams` bewerkt dezelfde velden, nu als tekstvak ("Bio").
 - `/teams/[id]` toont de bio met regelovergangen en valt in beide richtingen terug op de andere taal (eerder alleen EN → NL).

@@ -457,17 +457,7 @@
     "programHeading": "Day schedule",
     "programNote": "Times are subject to change. Games from the schedule are added automatically.",
     "programEmpty": "The day schedule will follow soon.",
-    "filterLabel": "Show schedule for",
-    "filter": {
-      "everything": "Everything",
-      "public": "Public",
-      "teams": "Teams",
-      "officials": "Officials"
-    },
-    "audience": {
-      "teams": "Teams",
-      "officials": "Officials"
-    },
+    "lockerHeading": "Locker rooms",
     "rosterHeading": "Officials roster",
     "rosterEmpty": "The officials roster will follow soon.",
     "officialsHeading": "Dress code",

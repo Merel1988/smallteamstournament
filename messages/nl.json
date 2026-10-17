@@ -457,17 +457,7 @@
     "programHeading": "Dagprogramma",
     "programNote": "Tijden onder voorbehoud. De wedstrijden uit het speelschema staan er automatisch tussen.",
     "programEmpty": "Het dagprogramma volgt binnenkort.",
-    "filterLabel": "Toon programma voor",
-    "filter": {
-      "everything": "Alles",
-      "public": "Publiek",
-      "teams": "Teams",
-      "officials": "Officials"
-    },
-    "audience": {
-      "teams": "Teams",
-      "officials": "Officials"
-    },
+    "lockerHeading": "Kleedkamers",
     "rosterHeading": "Officials roster",
     "rosterEmpty": "De officials roster volgt binnenkort.",
     "officialsHeading": "Dresscode",
