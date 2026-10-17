@@ -4,6 +4,7 @@ export const LIMITS = {
   pronouns: 30,
   name: 80,
   role: 40,
+  bio: 1000,
 } as const;
 
 export const MAX_PLAYERS = 10;

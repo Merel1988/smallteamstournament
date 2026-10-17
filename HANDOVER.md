@@ -275,6 +275,10 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 ### FB25 · Foto voor bench staff ✅ AF (live, prod-migratie gedaan 2026-10-14)
 - `BenchStaff.headshotUrl`; upload zoals bij skaters (zelfde map), zichtbaar op `/teams/[id]` als kaarten zoals de spelers.
 
+### FB26 · Bio per team via de teampagina ✅ AF (2026-10-17, geen migratie)
+- Blok "Over ons" bovenaan `/team/[id]`: twee tekstvakken (NL/EN, max 1000 tekens), opgeslagen in de bestaande `Team.descriptionNl`/`descriptionEn`. Admin `/admin/teams` bewerkt dezelfde velden, nu als tekstvak ("Bio").
+- `/teams/[id]` toont de bio met regelovergangen en valt in beide richtingen terug op de andere taal (eerder alleen EN → NL).
+
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
 

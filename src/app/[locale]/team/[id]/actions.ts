@@ -78,6 +78,20 @@ export async function logoutTeam(teamId: string, locale: string) {
   redirect({ href: `/team/${teamId}`, locale });
 }
 
+export async function saveBio(teamId: string, formData: FormData): Promise<SaveResult> {
+  if (!(await canEditTeam(teamId))) return { ok: false, error: "forbidden" };
+  const bioNl = text(formData, "bioNl", LIMITS.bio);
+  const bioEn = text(formData, "bioEn", LIMITS.bio);
+  if (bioNl === null || bioEn === null) return { ok: false, error: "invalid" };
+  await prisma.team.update({
+    where: { id: teamId },
+    data: { descriptionNl: bioNl || null, descriptionEn: bioEn || null },
+  });
+  refresh(teamId);
+  revalidatePath("/admin/teams");
+  return { ok: true };
+}
+
 export async function savePlayer(
   teamId: string,
   playerId: string | null,

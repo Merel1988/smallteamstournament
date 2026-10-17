@@ -21,8 +21,10 @@ export async function generateMetadata({
   if (!team) return {};
 
   const description =
-    (locale === "en" ? team.descriptionEn || team.descriptionNl : team.descriptionNl) ||
-    `${team.name} — ${SITE_NAME}`;
+    (locale === "en"
+      ? team.descriptionEn || team.descriptionNl
+      : team.descriptionNl || team.descriptionEn
+    )?.slice(0, 200) || `${team.name} — ${SITE_NAME}`;
   const path = `teams/${id}`;
   const canonical = SITE_URL + localizedPath(locale, path);
 
@@ -93,10 +95,12 @@ export default async function TeamDetailPage({
             const description =
               locale === "en"
                 ? team.descriptionEn || team.descriptionNl
-                : team.descriptionNl;
+                : team.descriptionNl || team.descriptionEn;
             return (
               description && (
-                <p className="text-derby-ink/70 mt-1 text-sm">{description}</p>
+                <p className="text-derby-ink/70 mt-1 text-sm whitespace-pre-line">
+                  {description}
+                </p>
               )
             );
           })()}

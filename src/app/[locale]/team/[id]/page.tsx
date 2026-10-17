@@ -7,6 +7,7 @@ import { MAX_BENCH, MAX_PLAYERS } from "@/lib/team-portal";
 import {
   BenchForm,
   BenchRoleOptions,
+  BioForm,
   PlayerForm,
 } from "@/components/team-portal/RosterForms";
 import {
@@ -15,6 +16,7 @@ import {
   loginTeam,
   logoutTeam,
   saveBench,
+  saveBio,
   savePlayer,
 } from "./actions";
 
@@ -44,7 +46,13 @@ export default async function TeamPortalPage({
 
   const team = await prisma.team.findUnique({
     where: { id },
-    select: { id: true, name: true, password: true },
+    select: {
+      id: true,
+      name: true,
+      password: true,
+      descriptionNl: true,
+      descriptionEn: true,
+    },
   });
   if (!team) notFound();
 
@@ -124,6 +132,16 @@ export default async function TeamPortalPage({
           </button>
         </form>
       </header>
+
+      <section className="space-y-3">
+        <h2 className="font-display text-3xl">{t("bioHeading")}</h2>
+        <p className="text-derby-ink/60">{t("bioIntro")}</p>
+        <BioForm
+          bioNl={team.descriptionNl}
+          bioEn={team.descriptionEn}
+          save={saveBio.bind(null, team.id)}
+        />
+      </section>
 
       <section className="space-y-3">
         <h2 className="font-display text-3xl">

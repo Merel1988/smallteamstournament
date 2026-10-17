@@ -35,8 +35,8 @@ export default async function AdminTeamsPage() {
         <Field name="name" label="Naam" required />
         <Field name="shortName" label="Afkorting" />
         <Field name="color" label="Accent-kleur (hex, bv #ff3e6c)" />
-        <Field name="descriptionNl" label="Korte beschrijving (NL)" />
-        <Field name="descriptionEn" label="Korte beschrijving (EN, optioneel)" />
+        <Field name="descriptionNl" label="Bio (NL)" multiline />
+        <Field name="descriptionEn" label="Bio (EN, optioneel)" multiline />
         <label className="block">
           <span className="block text-sm mb-1">Logo</span>
           <input type="file" name="logo" accept="image/*" />
@@ -82,12 +82,14 @@ export default async function AdminTeamsPage() {
                   />
                   <Field
                     name="descriptionNl"
-                    label="Beschrijving (NL)"
+                    label="Bio (NL)"
+                    multiline
                     defaultValue={t.descriptionNl ?? ""}
                   />
                   <Field
                     name="descriptionEn"
-                    label="Beschrijving (EN, optioneel)"
+                    label="Bio (EN, optioneel)"
+                    multiline
                     defaultValue={t.descriptionEn ?? ""}
                   />
                   <label className="block">
@@ -218,21 +220,34 @@ function Field({
   label,
   required,
   defaultValue,
+  multiline,
 }: {
   name: string;
   label: string;
   required?: boolean;
   defaultValue?: string;
+  multiline?: boolean;
 }) {
+  const className = "w-full border border-derby-ink/20 rounded-lg px-3 py-2";
   return (
     <label className="block">
       <span className="block text-sm mb-1">{label}</span>
-      <input
-        name={name}
-        defaultValue={defaultValue}
-        required={required}
-        className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
-      />
+      {multiline ? (
+        <textarea
+          name={name}
+          defaultValue={defaultValue}
+          required={required}
+          rows={4}
+          className={className}
+        />
+      ) : (
+        <input
+          name={name}
+          defaultValue={defaultValue}
+          required={required}
+          className={className}
+        />
+      )}
     </label>
   );
 }

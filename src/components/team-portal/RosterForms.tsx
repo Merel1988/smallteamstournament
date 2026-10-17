@@ -295,6 +295,52 @@ export function BenchForm({
   );
 }
 
+export function BioForm({
+  bioNl,
+  bioEn,
+  save,
+}: {
+  bioNl: string | null;
+  bioEn: string | null;
+  save: Save;
+}) {
+  const t = useTranslations("TeamPortal");
+  const { status, pending, run } = useSubmit(save);
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        run(async (fd) => fd, e.currentTarget);
+      }}
+      className="bg-white rounded-2xl p-4 shadow space-y-3"
+    >
+      <label className="block">
+        <span className="block text-sm mb-1">{t("bioNl")}</span>
+        <textarea
+          name="bioNl"
+          rows={5}
+          maxLength={LIMITS.bio}
+          defaultValue={bioNl ?? ""}
+          className={inputClass}
+        />
+      </label>
+      <label className="block">
+        <span className="block text-sm mb-1">{t("bioEn")}</span>
+        <textarea
+          name="bioEn"
+          rows={5}
+          maxLength={LIMITS.bio}
+          defaultValue={bioEn ?? ""}
+          className={inputClass}
+        />
+      </label>
+      <Buttons pending={pending} label={t("save")} />
+      <StatusLine status={status} />
+    </form>
+  );
+}
+
 export function BenchRoleOptions() {
   return (
     <datalist id="bench-roles">
