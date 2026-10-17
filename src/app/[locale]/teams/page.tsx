@@ -44,12 +44,12 @@ export default async function TeamsPage({
       {teams.length === 0 ? (
         <p className="text-derby-ink/60">{t("empty")}</p>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr gap-4">
           {teams.map((team) => (
-            <li key={team.id}>
+            <li key={team.id} className="flex">
               <Link
                 href={`/teams/${team.id}`}
-                className="bg-white rounded-xl p-5 shadow flex items-center gap-4 hover:shadow-lg transition block"
+                className="bg-white rounded-xl p-5 shadow flex flex-1 items-center gap-4 hover:shadow-lg transition"
                 style={
                   team.color ? { borderLeft: `6px solid ${team.color}` } : undefined
                 }
@@ -60,12 +60,12 @@ export default async function TeamsPage({
                     alt={team.name}
                     width={64}
                     height={64}
-                    className="rounded-lg object-cover"
+                    className="w-16 h-16 shrink-0 rounded-lg object-contain"
                   />
                 ) : (
-                  <div className="w-16 h-16 rounded-lg stripes" />
+                  <div className="w-16 h-16 shrink-0 rounded-lg stripes" />
                 )}
-                <div>
+                <div className="min-w-0">
                   <div className="font-display text-2xl">{team.name}</div>
                   <div className="text-xs text-derby-ink/60">
                     {t("playerCount", { count: team._count.players })}
