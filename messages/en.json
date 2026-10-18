@@ -157,7 +157,8 @@
       "donePending": "{count, plural, one {1 photo will be reviewed by the organisers first.} other {# photos will be reviewed by the organisers first.}}",
       "doneFailed": "{count, plural, one {1 photo could not be uploaded.} other {# photos could not be uploaded.}} Please try again.",
       "closed": "Photo uploads are currently closed.",
-      "privacyLink": "More about privacy"
+      "privacyLink": "More about privacy",
+      "preparing": "Your phone is getting the photos ready. With lots of photos this can take a moment…"
     }
   },
   "Mvp": {

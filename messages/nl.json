@@ -157,7 +157,8 @@
       "donePending": "{count, plural, one {1 foto wordt eerst bekeken door de organisatie.} other {# foto's worden eerst bekeken door de organisatie.}}",
       "doneFailed": "{count, plural, one {1 foto kon niet worden geüpload.} other {# foto's konden niet worden geüpload.}} Probeer het nog eens.",
       "closed": "Foto's uploaden is op dit moment gesloten.",
-      "privacyLink": "Meer over privacy"
+      "privacyLink": "Meer over privacy",
+      "preparing": "Je telefoon zet de foto's klaar. Bij veel foto's kan dit even duren…"
     }
   },
   "Mvp": {
