@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import ProtectedImage from "@/components/ProtectedImage";
 import { prisma } from "@/lib/prisma";
 import { assertPageVisible } from "@/lib/page-visibility";
 import { SITE_NAME, SITE_URL, languageAlternates, localizedPath } from "@/lib/seo";
@@ -32,6 +33,7 @@ export async function generateMetadata({
     title: team.name,
     description,
     alternates: { canonical, languages: languageAlternates(path) },
+    robots: { index: true, follow: true, noimageindex: true },
     openGraph: {
       title: `${team.name} · ${SITE_NAME}`,
       description,
@@ -119,7 +121,7 @@ export default async function TeamDetailPage({
                 className="bg-white rounded-xl p-3 shadow text-center"
               >
                 {p.headshotUrl ? (
-                  <Image
+                  <ProtectedImage
                     src={p.headshotUrl}
                     alt={p.derbyName}
                     width={300}
@@ -151,7 +153,7 @@ export default async function TeamDetailPage({
             {team.benchStaff.map((b) => (
               <li key={b.id} className="bg-white rounded-xl p-3 shadow text-center">
                 {b.headshotUrl ? (
-                  <Image
+                  <ProtectedImage
                     src={b.headshotUrl}
                     alt={b.name}
                     width={300}

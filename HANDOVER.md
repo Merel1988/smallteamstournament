@@ -303,6 +303,7 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 - **Admin `/admin/fotos`:** tabbladen Te beoordelen / Verwijderverzoeken / Zichtbaar, goedkeuren, (bulk) verwijderen incl. blobs, noodknop uploads open/dicht (`PageVisibility`-rij `fotos-upload`). Dashboard toont "Foto's te beoordelen". Merel houdt de wachtrij zelf bij.
 - **Kosten/plan:** AI Gateway-tegoed $10 gekocht (2026-10-18), controle kost ca. $0,0002 per foto. **Pro aanzetten rond 14 nov** (Hobby: max 2000 Blob-uploads/maand, elke foto = 2 uploads). Na Pro: env `PHOTO_MODERATION_ZDR=1` zetten (zero data retention, alleen op Pro). Na het event: zie DEPLOY.md "Na het toernooi". Bewaartermijn nog niet besloten.
 - Bestaande foto's blijven zichtbaar en worden "alleen bekijken" (migratie-default).
+- Portretfoto's van spelers/staf (teampagina + schema) gebruiken `ProtectedImage` (zelfde blokkades als "alleen bekijken"); teampagina's hebben `noimageindex`. Teamlogo's bewust vrij.
 
 ## 4b. E-mail — `info@smallteamstournament.nl` (los van de app)
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import ProtectedImage from "./ProtectedImage";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
@@ -499,12 +499,13 @@ function PlayerChip({ player }: { player: SchedulePlayer }) {
   return (
     <li className="flex items-center gap-1.5 min-w-0 bg-white/10 rounded-full pl-1 pr-3 py-1 text-sm">
       {player.headshotUrl ? (
-        <Image
+        <ProtectedImage
           src={player.headshotUrl}
           alt=""
           width={24}
           height={24}
-          className="w-6 h-6 rounded-full object-cover shrink-0"
+          wrapperClassName="shrink-0"
+          className="w-6 h-6 rounded-full object-cover"
         />
       ) : (
         <span className="w-6 h-6 shrink-0 rounded-full bg-derby-accent flex items-center justify-center text-[10px] font-bold" aria-hidden>
