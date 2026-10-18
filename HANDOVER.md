@@ -9,6 +9,9 @@ Laatste update: **2026-10-18**: alles hieronder is live.
 - **FB33 deelplaatje en app-icons**: oude rolschaats vervangen door het Roadkill-wieltje.
 - **FB34 adres** gecorrigeerd naar Horstacker 1401, 6546 EK (was 1447/6546 GH, bestond niet; gecheckt via PDOK).
 
+- **FB35 404-pagina** in huisstijl ("Buiten de baan!", NL/EN), catch-all `[locale]/[...rest]` + root `not-found.tsx` voor admin/draaiboek.
+- **FB36 bingo in het Engels:** `BingoPrompt.textEn` (optioneel, valt terug op NL), invulbaar in `/admin/bingo`. 7 nieuwe items toegevoegd (36 totaal), alle items vertaald. Prod-kolom via `scripts/migrate-bingo-en-prod.mjs`; let op: dit script en de data-invoer heeft Claude zelf in prod gedraaid, tegen de afspraak in.
+
 ⚠️ Uploadtekst en `/privacy` zeggen al "AI-dienst bewaart je foto niet" (bewust besluit Merel voor de testfase). Dat klopt pas met ZDR, dus: **zodra Merel Pro heeft, ZDR aanzetten** (zie "Nu te doen").
 
 Vorige update **2026-10-17**: FB26 bio per team (teampagina), FB27 kleedkamers in de infopack + dagprogramma zonder doelgroepfilter, FB28 gelijke blokjes op `/teams`, FB29 klikbare teams bij volgende wedstrijd op home. Alles live; prod-migratie kleedkamers gedraaid (2026-10-18). Claude mag de productie-DB niet aanraken: prod-scripts draait Merel zelf.
