@@ -2,13 +2,21 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-18**: FB30 foto's klaar voor het toernooi (verkleinen in de browser, thumbnails + "Laad meer", toestemming delen/alleen bekijken, downloaden met selectie, AI-controle met wachtrij, verwijderverzoeken, uploads aan/uit). Prod-migratie foto's gedraaid (2026-10-18). Fotopagina staat nog uit in `/admin/zichtbaarheid`. **Privacyverklaring `/privacy` live** (footer + uploadformulier, bewaartermijn: alles weg vóór 21 dec 2026). Nieuwe fototeksten live (AI-uitleg bij upload met link naar `/privacy`, privacy-oproep bij "alleen bekijken"). **Nog te doen zodra Merel Pro heeft:** ZDR altijd aan in `src/lib/photo-moderation.ts`. Let op: uploadtekst en `/privacy` zeggen al "bewaart niet" (besluit Merel, testfase); dat klopt pas met ZDR.
+Laatste update: **2026-10-18**: alles hieronder is live.
+- **FB30 foto's** klaar voor het toernooi, prod-migratie gedraaid. Merel en anderen testen nu; daarna gaat de fotopagina weer uit tot de toernooidag.
+- **FB31 privacyverklaring** `/privacy` (footer + uploadformulier). Verantwoordelijke: vereniging Roadkill Rollers Nijmegen; bewaartermijn: alles weg vóór 21 dec 2026.
+- **FB32 portretfoto's** van spelers/staf beschermd tegen even snel opslaan.
+- **FB33 deelplaatje en app-icons**: oude rolschaats vervangen door het Roadkill-wieltje.
+- **FB34 adres** gecorrigeerd naar Horstacker 1401, 6546 EK (was 1447/6546 GH, bestond niet; gecheckt via PDOK).
+
+⚠️ Uploadtekst en `/privacy` zeggen al "AI-dienst bewaart je foto niet" (bewust besluit Merel voor de testfase). Dat klopt pas met ZDR, dus: **zodra Merel Pro heeft, ZDR aanzetten** (zie "Nu te doen").
 
 Vorige update **2026-10-17**: FB26 bio per team (teampagina), FB27 kleedkamers in de infopack + dagprogramma zonder doelgroepfilter, FB28 gelijke blokjes op `/teams`, FB29 klikbare teams bij volgende wedstrijd op home. Alles live; **prod-migratie kleedkamers nog door Merel te draaien** (zie "Nu te doen"). Claude mag de productie-DB niet aanraken: prod-scripts draait Merel zelf.
 
 ## ▶ Nu te doen (in deze volgorde)
 
-0. **Foto's (FB30):** migratie ✅ gedaan. Fotopagina aanzetten in `/admin/zichtbaarheid`, dan op de telefoon testen (upload met beide keuzes, downloaden, verwijderverzoek) en de testfoto's in `/admin/fotos` verwijderen.
+0. **Foto's testen (FB30, loopt):** upload met beide keuzes, downloaden, verwijderverzoek, de "foto's worden klaargezet"-melding na het kiezen (iPhone), lang indrukken op "alleen bekijken"-foto's en portretfoto's. Daarna testfoto's verwijderen in `/admin/fotos` en de fotopagina weer uitzetten in `/admin/zichtbaarheid` tot de toernooidag.
+0b. **Pro + ZDR:** Merel upgradet het Vercel-team naar Pro (geen trial, Spend Management-melding ca. $30). Daarna Claude: `zeroDataRetention: true` vast in `src/lib/photo-moderation.ts` (geen env-flag meer), live testen dat de gateway via een ZDR-route gaat, pushen.
 1. **Kleedkamers (FB27):** `node --env-file=.env.production.local scripts/migrate-lockerroom-prod.mjs` draaien, daarna `/info#kleedkamers` en `/admin/infopack` checken.
 2. Live checken: `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.
 3. Content invullen in `/admin/infopack`: dagprogramma (deuren open, captains/officials meeting, warm-ups, prijsuitreiking, opruimen) en per wedstrijd de officials roster (kopieerknop voor een gelijke crew).
@@ -296,14 +304,27 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
 
-### FB30 · Foto's klaar voor het toernooi ✅ AF (live + prod-migratie gedaan 2026-10-18), device-test nog doen
-- **Upload:** meerdere foto's tegelijk; de browser verkleint naar een grote versie (2048 px bij "mag gedeeld worden", 1280 px bij "alleen bekijken") + thumbnail 480 px, als JPEG (EXIF/GPS gaat eraf). Server (`src/app/api/photos/route.ts`) zet beide in Blob, laat de grote versie controleren door `anthropic/claude-haiku-5.5` via AI Gateway (`src/lib/photo-moderation.ts`) en zet de foto op `approved` of `pending`. Lukt de controle niet, dan `pending` (veilig). Naam optioneel, toestemming verplicht. Geen limiet per persoon (besluit Merel).
+### FB30 · Foto's klaar voor het toernooi ✅ AF (live + prod-migratie gedaan 2026-10-18), testfase loopt
+- **Upload:** meerdere foto's tegelijk, max 3 tegelijk naar de server, met voortgangsbalk. Na het kiezen staat een melding "je telefoon zet de foto's klaar" (iOS zet HEIC eerst om, dat duurt bij veel foto's lang; de kiesknop is dan geblokkeerd). De browser verkleint naar een grote versie (2048 px bij "mag gedeeld worden", 1280 px bij "alleen bekijken") + thumbnail 480 px, als JPEG (EXIF/GPS gaat eraf). Server (`src/app/api/photos/route.ts`) zet beide in Blob, laat de grote versie controleren door `anthropic/claude-haiku-5.5` via AI Gateway (`src/lib/photo-moderation.ts`) en zet de foto op `approved` of `pending`. Lukt de controle niet, dan `pending` (veilig). Naam optioneel, toestemming verplicht. Geen limiet per persoon (besluit Merel).
 - **Galerij:** 24 thumbnails per keer + "Laad meer" (cursor op id); grote versie pas in de lightbox (pijltjes/vegen). Selectiemodus + download: mobiel via deelmenu, desktop als zip (`fflate`). "Alleen bekijken"-foto's: niet selecteerbaar, geen downloadknop, rechtsklik/slepen/lang-indrukken geblokkeerd, doorzichtige laag over de foto; `/fotos` heeft `noimageindex`.
 - **Verwijderverzoek:** knop in de lightbox verbergt de foto direct (`reportedAt`) tot een admin hem goedkeurt of verwijdert. Contact: info@.
 - **Admin `/admin/fotos`:** tabbladen Te beoordelen / Verwijderverzoeken / Zichtbaar, goedkeuren, (bulk) verwijderen incl. blobs, noodknop uploads open/dicht (`PageVisibility`-rij `fotos-upload`). Dashboard toont "Foto's te beoordelen". Merel houdt de wachtrij zelf bij.
-- **Kosten/plan:** AI Gateway-tegoed $10 gekocht (2026-10-18), controle kost ca. $0,0002 per foto. **Pro aanzetten rond 14 nov** (Hobby: max 2000 Blob-uploads/maand, elke foto = 2 uploads). Na Pro: env `PHOTO_MODERATION_ZDR=1` zetten (zero data retention, alleen op Pro). Na het event: zie DEPLOY.md "Na het toernooi". Bewaartermijn nog niet besloten.
+- **Kosten/plan:** AI Gateway-tegoed $10 gekocht (2026-10-18), controle kost ca. $0,0002 per foto. **Pro aanzetten rond 14 nov** (Hobby: max 2000 Blob-uploads/maand, elke foto = 2 uploads). ZDR (alleen op Pro) staat nog uit; nu nog via env `PHOTO_MODERATION_ZDR=1`, wordt vast aan in de code na de Pro-upgrade. Bewaartermijn: alles weg vóór 21 dec 2026 (zie DEPLOY.md "Na het toernooi").
+- **Teksten:** uploadtekst noemt het AI-model met link naar `/privacy#photos` (`t.rich`, tag `<link>`); "alleen bekijken" vraagt om de privacy te respecteren.
 - Bestaande foto's blijven zichtbaar en worden "alleen bekijken" (migratie-default).
-- Portretfoto's van spelers/staf (teampagina + schema) gebruiken `ProtectedImage` (zelfde blokkades als "alleen bekijken"); teampagina's hebben `noimageindex`. Teamlogo's bewust vrij.
+
+### FB31 · Privacyverklaring ✅ AF (live 2026-10-18)
+- `src/app/[locale]/privacy/page.tsx`, teksten in namespace `Privacy` (8 blokken), link in de footer en in de uploadtekst; in de sitemap. Niet schakelbaar. Geen cookiebanner nodig: alleen functionele cookies, geen analytics.
+- Belofte: alle persoonsgegevens (foto's, spelers/staf + portretfoto's, vrijwilligers, push-abonnementen, MVP-stemmen) weg vóór 21 december 2026. Bij wijzigingen in wat de site verzamelt: deze pagina bijwerken.
+
+### FB32 · Portretfoto's beschermd ✅ AF (live, `a343bab`)
+- Spelers/staf op de teampagina en in het schema gebruiken `src/components/ProtectedImage.tsx` (rechtsklik/slepen/lang indrukken geblokkeerd, doorzichtige laag). Teampagina's hebben `noimageindex`. Teamlogo's bewust vrij (branding).
+
+### FB33 · Deelplaatje en app-icons ✅ AF (live, `ded147f`)
+- Apple-icon en PWA-icons (192/512) opnieuw gegenereerd uit `src/app/icon.svg` (wieltje) op `#f7f1e6`; OG-afbeelding toont het wieltje en gebruikt rood/wit i.p.v. het oude geel; manifest-kleuren naar huisstijl. Oude previews in WhatsApp e.d. kunnen nog even gecachet zijn.
+
+### FB34 · Adres gecorrigeerd ✅ AF (live, `65837bf`)
+- `src/lib/event.ts`: Horstacker 1401, 6546 EK Nijmegen (venue-pagina, Google Maps-link, JSON-LD).
 
 ## 4b. E-mail — `info@smallteamstournament.nl` (los van de app)
 
