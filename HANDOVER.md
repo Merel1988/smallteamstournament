@@ -11,13 +11,13 @@ Laatste update: **2026-10-18**: alles hieronder is live.
 
 ⚠️ Uploadtekst en `/privacy` zeggen al "AI-dienst bewaart je foto niet" (bewust besluit Merel voor de testfase). Dat klopt pas met ZDR, dus: **zodra Merel Pro heeft, ZDR aanzetten** (zie "Nu te doen").
 
-Vorige update **2026-10-17**: FB26 bio per team (teampagina), FB27 kleedkamers in de infopack + dagprogramma zonder doelgroepfilter, FB28 gelijke blokjes op `/teams`, FB29 klikbare teams bij volgende wedstrijd op home. Alles live; **prod-migratie kleedkamers nog door Merel te draaien** (zie "Nu te doen"). Claude mag de productie-DB niet aanraken: prod-scripts draait Merel zelf.
+Vorige update **2026-10-17**: FB26 bio per team (teampagina), FB27 kleedkamers in de infopack + dagprogramma zonder doelgroepfilter, FB28 gelijke blokjes op `/teams`, FB29 klikbare teams bij volgende wedstrijd op home. Alles live; prod-migratie kleedkamers gedraaid (2026-10-18). Claude mag de productie-DB niet aanraken: prod-scripts draait Merel zelf.
 
 ## ▶ Nu te doen (in deze volgorde)
 
 0. **Foto's testen (FB30, loopt):** upload met beide keuzes, downloaden, verwijderverzoek, de "foto's worden klaargezet"-melding na het kiezen (iPhone), lang indrukken op "alleen bekijken"-foto's en portretfoto's. Daarna testfoto's verwijderen in `/admin/fotos` en de fotopagina weer uitzetten in `/admin/zichtbaarheid` tot de toernooidag.
 0b. **Pro + ZDR:** Merel upgradet het Vercel-team naar Pro (geen trial, Spend Management-melding ca. $30). Daarna Claude: `zeroDataRetention: true` vast in `src/lib/photo-moderation.ts` (geen env-flag meer), live testen dat de gateway via een ZDR-route gaat, pushen.
-1. **Kleedkamers (FB27):** `node --env-file=.env.production.local scripts/migrate-lockerroom-prod.mjs` draaien, daarna `/info#kleedkamers` en `/admin/infopack` checken.
+1. **Kleedkamers (FB27):** migratie ✅ gedraaid, `/info#kleedkamers` live. Indeling nog nalopen in `/admin/infopack`.
 2. Live checken: `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.
 3. Content invullen in `/admin/infopack`: dagprogramma (deuren open, captains/officials meeting, warm-ups, prijsuitreiking, opruimen) en per wedstrijd de officials roster (kopieerknop voor een gelijke crew).
 4. **FB18 is live**: per team een wachtwoord instellen in `/admin/teams` en link + wachtwoord naar de teams sturen.
@@ -290,7 +290,7 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 - Blok "Over ons" bovenaan `/team/[id]`: twee tekstvakken (NL/EN, max 1000 tekens), opgeslagen in de bestaande `Team.descriptionNl`/`descriptionEn`. Admin `/admin/teams` bewerkt dezelfde velden, nu als tekstvak ("Bio").
 - `/teams/[id]` toont de bio met regelovergangen en valt in beide richtingen terug op de andere taal (eerder alleen EN → NL).
 
-### FB27 · Kleedkamers in de infopack + één dagprogramma ✅ code live (2026-10-17), ⚠️ prod-migratie nog draaien
+### FB27 · Kleedkamers in de infopack + één dagprogramma ✅ AF (live, prod-migratie gedraaid 2026-10-18)
 - Nieuwe tabel `LockerRoom` (nummer, NL/EN-tekst met één naam per regel). Op `/info` een blok "Kleedkamers" (+ springlink); een regel die exact een teamnaam is krijgt de teamkleur en linkt naar het team. Beheer in `/admin/infopack`.
 - **Merel draait:** `node --env-file=.env.production.local scripts/migrate-lockerroom-prod.mjs` (idempotent; vult bij een lege tabel de verdeling 1 t/m 6 uit de spreadsheet). Tot die tijd is het blok verborgen en geeft opslaan in admin een fout; de rest werkt.
 - Dagprogramma: filterknoppen Alles/Publiek/Teams/Officials en de doelgroep-labels weg (besluit Merel: één schema voor iedereen). Kolom `ProgramItem.audience` blijft in de DB maar wordt niet meer gebruikt.
