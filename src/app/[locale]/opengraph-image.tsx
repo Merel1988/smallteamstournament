@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { EVENT } from "@/lib/event";
 
@@ -6,7 +8,12 @@ export const alt = `${EVENT.name} — ${EVENT.league}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OgImage() {
+export default async function OgImage() {
+  const svg = (await readFile(join(process.cwd(), "src/app/icon.svg"), "utf8"))
+    .replace(/<style>.*?<\/style>/, "")
+    .replaceAll('class="ink"', 'fill="#ffffff"');
+  const logo = `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -18,7 +25,7 @@ export default function OgImage() {
           justifyContent: "center",
           padding: "80px",
           background: "#141414",
-          color: "#ffd400",
+          color: "#ffffff",
         }}
       >
         <div style={{ fontSize: 40, fontWeight: 700, color: "#ffffff" }}>
@@ -30,7 +37,7 @@ export default function OgImage() {
             fontWeight: 800,
             lineHeight: 1,
             marginTop: 12,
-            color: "#ffd400",
+            color: "#ffffff",
           }}
         >
           Small Teams
@@ -40,7 +47,7 @@ export default function OgImage() {
             fontSize: 128,
             fontWeight: 800,
             lineHeight: 1,
-            color: "#ffd400",
+            color: "#e30613",
           }}
         >
           Tournament
@@ -55,6 +62,13 @@ export default function OgImage() {
         >
           21 november 2026 · {EVENT.city}
         </div>
+        <img
+          src={logo}
+          alt=""
+          width={290}
+          height={290}
+          style={{ position: "absolute", right: 50, top: 170 }}
+        />
         <div
           style={{
             position: "absolute",
