@@ -2,11 +2,11 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-13 (nacht)**: FB17 hamburgermenu en FB20 favicon (wiel uit het logo) live. Tijdcorrectie + prod-migratie infopack/placeholders gedraaid door Merel, `feature/finale-placeholders` gemerged en live (`f9fb9ce`). Claude mag de productie-DB niet aanraken: prod-scripts draait Merel zelf.
+Laatste update: **2026-10-17**: FB26 bio per team (teampagina), FB27 kleedkamers in de infopack + dagprogramma zonder doelgroepfilter, FB28 gelijke blokjes op `/teams`, FB29 klikbare teams bij volgende wedstrijd op home. Alles live; **prod-migratie kleedkamers nog door Merel te draaien** (zie "Nu te doen"). Claude mag de productie-DB niet aanraken: prod-scripts draait Merel zelf.
 
 ## ▶ Nu te doen (in deze volgorde)
 
-1. ✅ Tijdcorrectie, prod-migratie infopack + placeholders en merge van `feature/finale-placeholders` zijn gedaan (2026-10-13).
+1. **Kleedkamers (FB27):** `node --env-file=.env.production.local scripts/migrate-lockerroom-prod.mjs` draaien, daarna `/info#kleedkamers` en `/admin/infopack` checken.
 2. Live checken: `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.
 3. Content invullen in `/admin/infopack`: dagprogramma (deuren open, captains/officials meeting, warm-ups, prijsuitreiking, opruimen) en per wedstrijd de officials roster (kopieerknop voor een gelijke crew).
 4. **FB18 is live**: per team een wachtwoord instellen in `/admin/teams` en link + wachtwoord naar de teams sturen.
@@ -275,14 +275,20 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 ### FB25 · Foto voor bench staff ✅ AF (live, prod-migratie gedaan 2026-10-14)
 - `BenchStaff.headshotUrl`; upload zoals bij skaters (zelfde map), zichtbaar op `/teams/[id]` als kaarten zoals de spelers.
 
+### FB26 · Bio per team via de teampagina ✅ AF (2026-10-17, geen migratie)
+- Blok "Over ons" bovenaan `/team/[id]`: twee tekstvakken (NL/EN, max 1000 tekens), opgeslagen in de bestaande `Team.descriptionNl`/`descriptionEn`. Admin `/admin/teams` bewerkt dezelfde velden, nu als tekstvak ("Bio").
+- `/teams/[id]` toont de bio met regelovergangen en valt in beide richtingen terug op de andere taal (eerder alleen EN → NL).
+
 ### FB27 · Kleedkamers in de infopack + één dagprogramma ✅ code live (2026-10-17), ⚠️ prod-migratie nog draaien
 - Nieuwe tabel `LockerRoom` (nummer, NL/EN-tekst met één naam per regel). Op `/info` een blok "Kleedkamers" (+ springlink); een regel die exact een teamnaam is krijgt de teamkleur en linkt naar het team. Beheer in `/admin/infopack`.
 - **Merel draait:** `node --env-file=.env.production.local scripts/migrate-lockerroom-prod.mjs` (idempotent; vult bij een lege tabel de verdeling 1 t/m 6 uit de spreadsheet). Tot die tijd is het blok verborgen en geeft opslaan in admin een fout; de rest werkt.
 - Dagprogramma: filterknoppen Alles/Publiek/Teams/Officials en de doelgroep-labels weg (besluit Merel: één schema voor iedereen). Kolom `ProgramItem.audience` blijft in de DB maar wordt niet meer gebruikt.
 
-### FB26 · Bio per team via de teampagina ✅ AF (2026-10-17, geen migratie)
-- Blok "Over ons" bovenaan `/team/[id]`: twee tekstvakken (NL/EN, max 1000 tekens), opgeslagen in de bestaande `Team.descriptionNl`/`descriptionEn`. Admin `/admin/teams` bewerkt dezelfde velden, nu als tekstvak ("Bio").
-- `/teams/[id]` toont de bio met regelovergangen en valt in beide richtingen terug op de andere taal (eerder alleen EN → NL).
+### FB28 · Teams-overzicht: gelijke blokjes ✅ AF (live, `337cb50`)
+- `/teams`: alle kaarten even hoog (`auto-rows-fr`, link vult de kaart) en logo's in een vast vak van 64×64 met `object-contain`.
+
+### FB29 · Teams klikbaar bij volgende/live wedstrijd op home ✅ AF (live, `15c5c5b`)
+- Teamnamen in "Volgende wedstrijd" en "Nu live" linken naar `/teams/[id]`; bij een placeholder ("Winnaar poule A") geen link, net als in het schema.
 
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
