@@ -565,5 +565,12 @@
     "rightsHeading": "Your rights",
     "rightsBody": "You can always ask which data we have about you, and have it corrected or deleted. Email info@smallteamstournament.nl. If we can't sort it out together, you can file a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).",
     "updated": "Last updated: 18 October 2026"
+  },
+  "NotFound": {
+    "metaTitle": "Page not found · Small Teams Tournament",
+    "title": "Out of bounds!",
+    "lead": "This page does not exist (anymore). Get back on the track before the ref calls a cut penalty.",
+    "home": "Back to home",
+    "schema": "View the schedule"
   }
 }

@@ -565,5 +565,12 @@
     "rightsHeading": "Jouw rechten",
     "rightsBody": "Je mag altijd vragen welke gegevens we van je hebben, en ze laten aanpassen of verwijderen. Mail info@smallteamstournament.nl. Kom je er met ons niet uit, dan kun je een klacht indienen bij de Autoriteit Persoonsgegevens.",
     "updated": "Laatst bijgewerkt: 18 oktober 2026"
+  },
+  "NotFound": {
+    "metaTitle": "Pagina niet gevonden · Small Teams Tournament",
+    "title": "Buiten de baan!",
+    "lead": "Deze pagina bestaat niet (meer). Kom snel terug op de track, voordat de ref je een cut penalty geeft.",
+    "home": "Terug naar home",
+    "schema": "Bekijk het schema"
   }
 }
