@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import type { Photo } from "@/generated/prisma/client";
 
-export const PHOTO_PAGE_SIZE = 30;
+export const PHOTO_PAGE_SIZE = 24;
 export const UPLOADS_SETTING_KEY = "fotos-upload";
 
 export type PhotoStatus = "approved" | "pending";
