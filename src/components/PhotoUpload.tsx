@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { prepareUpload } from "@/lib/image-resize";
 
 type Consent = "yes" | "no";
@@ -132,7 +133,12 @@ export default function PhotoUpload({
         ))}
       </fieldset>
 
-      <p className="text-xs text-derby-ink/60">{t("moderationNote")}</p>
+      <p className="text-xs text-derby-ink/60">
+        {t("moderationNote")}{" "}
+        <Link href="/privacy#photos" className="underline">
+          {t("privacyLink")}
+        </Link>
+      </p>
 
       {error && (
         <p role="alert" className="text-sm text-derby-accent">

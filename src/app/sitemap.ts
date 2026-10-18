@@ -20,6 +20,7 @@ const STATIC_PATHS = [
   "nickname",
   "regels",
   "venue",
+  "privacy",
 ];
 
 function entry(path: string, lastModified?: Date): MetadataRoute.Sitemap[number] {

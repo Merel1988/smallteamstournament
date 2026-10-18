@@ -161,6 +161,9 @@ export default async function LocaleLayout({
 
       <footer className="bg-derby-ink text-white/70 text-xs py-4 text-center">
         <p>{tFooter("line")}</p>
+        <Link href="/privacy" className="text-white/60 hover:text-white underline mr-3">
+          {tFooter("privacy")}
+        </Link>
         <a
           href="/admin/login"
           className="text-white/40 hover:text-white/70 underline"

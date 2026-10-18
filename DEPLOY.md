@@ -74,8 +74,7 @@ De app draait in productie. Stappen 1 t/m 5 zijn klaar. Wat nog open staat:
 
 **Na het toernooi**
 - [ ] Uploads sluiten in `/admin/fotos`
-- [ ] Archiveren: `node --env-file=.env.production.local scripts/archive-photos-prod.mjs` (zet alles + `photos.csv` in `./photo-archive`, gitignored)
-- [ ] Na de bewaartermijn: foto's verwijderen (bulk in `/admin/fotos`) zodat Blob onder 1 GB blijft
+- [ ] **Uiterlijk 21 december 2026 alle persoonsgegevens verwijderen** (belofte op `/privacy`): foto's (bulk in `/admin/fotos`, ook uit Blob), spelers/staf + portretfoto's, vrijwilligers, push-abonnementen, MVP-stemmen. Een archief met `scripts/archive-photos-prod.mjs` mag alleen als dat óók binnen die termijn weer weg is.
 - [ ] Blob-store overzetten volgens de Vercel-downgrade-instructies en terug naar Hobby
 
 ## 📂 Relevante bestanden

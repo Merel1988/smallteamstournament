@@ -156,7 +156,8 @@
       "doneApproved": "{count, plural, one {1 foto staat online!} other {# foto's staan online!}}",
       "donePending": "{count, plural, one {1 foto wordt eerst bekeken door de organisatie.} other {# foto's worden eerst bekeken door de organisatie.}}",
       "doneFailed": "{count, plural, one {1 foto kon niet worden geüpload.} other {# foto's konden niet worden geüpload.}} Probeer het nog eens.",
-      "closed": "Foto's uploaden is op dit moment gesloten."
+      "closed": "Foto's uploaden is op dit moment gesloten.",
+      "privacyLink": "Meer over privacy"
     }
   },
   "Mvp": {
@@ -379,7 +380,8 @@
   },
   "Footer": {
     "line": "Small Teams Tournament · Roadkill Rollers Nijmegen · 21 nov 2026 · Sportzaal De Horstacker",
-    "admin": "Admin"
+    "admin": "Admin",
+    "privacy": "Privacy"
   },
   "LanguageSwitcher": {
     "label": "Taal",
@@ -451,6 +453,10 @@
     "info": {
       "title": "Infopack",
       "description": "Dagprogramma, officials roster en praktische info voor teams en officials van het Small Teams Tournament."
+    },
+    "privacy": {
+      "title": "Privacy",
+      "description": "Welke gegevens de site van het Small Teams Tournament verzamelt en wat we ermee doen."
     }
   },
   "Toernooi": {
@@ -538,5 +544,26 @@
     "skatersFull": "Je hebt het maximum van {max} skaters bereikt. Verwijder eerst een skater om iemand anders toe te voegen.",
     "benchFull": "Je hebt het maximum van {max} bench staff bereikt. Verwijder eerst iemand om een ander toe te voegen.",
     "errorFull": "Het maximum is bereikt, er kan niemand meer bij."
+  },
+  "Privacy": {
+    "title": "Privacy",
+    "lead": "Op deze site van het Small Teams Tournament gaan we zorgvuldig om met je gegevens. Hier lees je wat we verzamelen en wat we ermee doen.",
+    "whoHeading": "Wie is verantwoordelijk?",
+    "whoBody": "De vereniging Roadkill Rollers Nijmegen. Vragen of een verzoek? Mail info@smallteamstournament.nl.",
+    "whatHeading": "Welke gegevens?",
+    "whatBody": "• Foto's die je uploadt, met je naam als je die invult. Locatiegegevens halen we er vooraf af.\n• Van spelers en teamstaf: derbynaam, rugnummer, voornaamwoorden en portretfoto, zoals het team ze aanlevert.\n• Van vrijwilligers: je naam en de diensten waarvoor je je inschrijft.\n• Als je meldingen aanzet: een technisch adres van je toestel. Geen naam of e-mailadres.\n• Bij MVP-stemmen: een anoniem cookie, zodat je één keer per wedstrijd stemt.",
+    "whyHeading": "Waarvoor?",
+    "whyBody": "Alleen om het toernooi te organiseren en te laten zien: programma, teams, vrijwilligersrooster, fotogalerij en meldingen op de dag zelf. Geen advertenties, en we verkopen niets door.",
+    "photosHeading": "Foto's en AI-controle",
+    "photosBody": "Elke foto wordt automatisch gecontroleerd op ongepaste inhoud door een AI-model (Claude van Anthropic, via Vercel). De foto wordt alleen daarvoor gebruikt en niet om AI te trainen. De AI-dienst bewaart hem hooguit 30 dagen voor controle op misbruik. Twijfelgevallen bekijkt de organisatie.\n\nBij het uploaden kies je of anderen je foto's mogen downloaden en delen. Sta je op een foto en wil je dat die weg gaat? Gebruik de knop Verwijderverzoek bij de foto of mail ons.",
+    "cookiesHeading": "Cookies",
+    "cookiesBody": "We gebruiken alleen cookies die nodig zijn om de site te laten werken, zoals je taalkeuze, je MVP-stem en het inloggen voor teams en organisatie. Geen analytics, geen trackers.",
+    "sharingHeading": "Met wie delen we gegevens?",
+    "sharingBody": "Alleen met de diensten waarop de site draait: Vercel (hosting en opslag van foto's), Turso (database) en Anthropic (fotocontrole). Zij gebruiken de gegevens alleen voor die taak.",
+    "retentionHeading": "Hoe lang bewaren we het?",
+    "retentionBody": "Alle gegevens, ook de foto's, verwijderen we uiterlijk 30 dagen na het toernooi: voor 21 december 2026.",
+    "rightsHeading": "Jouw rechten",
+    "rightsBody": "Je mag altijd vragen welke gegevens we van je hebben, en ze laten aanpassen of verwijderen. Mail info@smallteamstournament.nl. Kom je er met ons niet uit, dan kun je een klacht indienen bij de Autoriteit Persoonsgegevens.",
+    "updated": "Laatst bijgewerkt: 18 oktober 2026"
   }
 }

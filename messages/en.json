@@ -156,7 +156,8 @@
       "doneApproved": "{count, plural, one {1 photo is online!} other {# photos are online!}}",
       "donePending": "{count, plural, one {1 photo will be reviewed by the organisers first.} other {# photos will be reviewed by the organisers first.}}",
       "doneFailed": "{count, plural, one {1 photo could not be uploaded.} other {# photos could not be uploaded.}} Please try again.",
-      "closed": "Photo uploads are currently closed."
+      "closed": "Photo uploads are currently closed.",
+      "privacyLink": "More about privacy"
     }
   },
   "Mvp": {
@@ -379,7 +380,8 @@
   },
   "Footer": {
     "line": "Small Teams Tournament · Roadkill Rollers Nijmegen · 21 Nov 2026 · Sportzaal De Horstacker",
-    "admin": "Admin"
+    "admin": "Admin",
+    "privacy": "Privacy"
   },
   "LanguageSwitcher": {
     "label": "Language",
@@ -451,6 +453,10 @@
     "info": {
       "title": "Info pack",
       "description": "Day schedule, officials roster and practical info for teams and officials at the Small Teams Tournament."
+    },
+    "privacy": {
+      "title": "Privacy",
+      "description": "What data the Small Teams Tournament site collects and what we do with it."
     }
   },
   "Toernooi": {
@@ -538,5 +544,26 @@
     "skatersFull": "You have reached the maximum of {max} skaters. Remove a skater first to add someone else.",
     "benchFull": "You have reached the maximum of {max} bench staff. Remove someone first to add another person.",
     "errorFull": "The maximum has been reached, no one else can be added."
+  },
+  "Privacy": {
+    "title": "Privacy",
+    "lead": "On this Small Teams Tournament site we handle your data with care. Here you can read what we collect and what we do with it.",
+    "whoHeading": "Who is responsible?",
+    "whoBody": "The association Roadkill Rollers Nijmegen. Questions or a request? Email info@smallteamstournament.nl.",
+    "whatHeading": "What data?",
+    "whatBody": "• Photos you upload, with your name if you enter it. We remove location data first.\n• From skaters and team staff: derby name, number, pronouns and headshot, as supplied by the team.\n• From volunteers: your name and the shifts you sign up for.\n• If you turn on notifications: a technical address of your device. No name or email address.\n• For MVP votes: an anonymous cookie, so you vote once per game.",
+    "whyHeading": "What for?",
+    "whyBody": "Only to organise and show the tournament: schedule, teams, volunteer rota, photo gallery and notifications on the day. No ads, and we never sell anything on.",
+    "photosHeading": "Photos and AI check",
+    "photosBody": "Every photo is checked automatically for inappropriate content by an AI model (Claude by Anthropic, via Vercel). The photo is only used for that check and not to train AI. The AI service keeps it for at most 30 days for abuse monitoring. Borderline cases are reviewed by the organisers.\n\nWhen uploading, you choose whether others may download and share your photos. Are you in a photo and want it removed? Use the Request removal button on the photo or email us.",
+    "cookiesHeading": "Cookies",
+    "cookiesBody": "We only use cookies the site needs to work, such as your language choice, your MVP vote and logging in for teams and organisers. No analytics, no trackers.",
+    "sharingHeading": "Who do we share data with?",
+    "sharingBody": "Only with the services the site runs on: Vercel (hosting and photo storage), Turso (database) and Anthropic (photo check). They only use the data for that task.",
+    "retentionHeading": "How long do we keep it?",
+    "retentionBody": "We delete all data, photos included, no later than 30 days after the tournament: before 21 December 2026.",
+    "rightsHeading": "Your rights",
+    "rightsBody": "You can always ask which data we have about you, and have it corrected or deleted. Email info@smallteamstournament.nl. If we can't sort it out together, you can file a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).",
+    "updated": "Last updated: 18 October 2026"
   }
 }

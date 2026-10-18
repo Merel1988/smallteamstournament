@@ -2,7 +2,7 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-18**: FB30 foto's klaar voor het toernooi (verkleinen in de browser, thumbnails + "Laad meer", toestemming delen/alleen bekijken, downloaden met selectie, AI-controle met wachtrij, verwijderverzoeken, uploads aan/uit). Prod-migratie foto's gedraaid (2026-10-18). Fotopagina staat nog uit in `/admin/zichtbaarheid`.
+Laatste update: **2026-10-18**: FB30 foto's klaar voor het toernooi (verkleinen in de browser, thumbnails + "Laad meer", toestemming delen/alleen bekijken, downloaden met selectie, AI-controle met wachtrij, verwijderverzoeken, uploads aan/uit). Prod-migratie foto's gedraaid (2026-10-18). Fotopagina staat nog uit in `/admin/zichtbaarheid`. **Privacyverklaring `/privacy` live** (footer + uploadformulier, bewaartermijn: alles weg vóór 21 dec 2026). **Nog niet live (lokaal, wacht op Pro + ZDR):** nieuwe fototeksten (AI-uitleg bij upload, privacy-oproep bij "alleen bekijken"), ZDR altijd aan, en in `/privacy` "bewaart hooguit 30 dagen" vervangen door "bewaart niet".
 
 Vorige update **2026-10-17**: FB26 bio per team (teampagina), FB27 kleedkamers in de infopack + dagprogramma zonder doelgroepfilter, FB28 gelijke blokjes op `/teams`, FB29 klikbare teams bij volgende wedstrijd op home. Alles live; **prod-migratie kleedkamers nog door Merel te draaien** (zie "Nu te doen"). Claude mag de productie-DB niet aanraken: prod-scripts draait Merel zelf.
 
