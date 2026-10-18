@@ -108,6 +108,7 @@ model MvpVote {
 model BingoPrompt {
   id       String  @id @default(cuid())
   text     String
+  textEn   String?
   category String?
   active   Boolean @default(true)
 }

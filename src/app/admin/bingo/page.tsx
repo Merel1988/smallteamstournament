@@ -10,8 +10,18 @@ async function createPrompt(formData: FormData) {
   await requireAdmin();
   const text = String(formData.get("text") || "").trim();
   if (!text) return;
+  const textEn = String(formData.get("textEn") || "").trim() || null;
   const category = String(formData.get("category") || "").trim() || null;
-  await prisma.bingoPrompt.create({ data: { text, category } });
+  await prisma.bingoPrompt.create({ data: { text, textEn, category } });
+  revalidatePath("/admin/bingo");
+  revalidatePath("/bingo");
+}
+
+async function updateTextEn(id: string, formData: FormData) {
+  "use server";
+  await requireAdmin();
+  const textEn = String(formData.get("textEn") || "").trim() || null;
+  await prisma.bingoPrompt.update({ where: { id }, data: { textEn } });
   revalidatePath("/admin/bingo");
   revalidatePath("/bingo");
 }
@@ -59,6 +69,11 @@ export default async function AdminBingoPage() {
           className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
         />
         <input
+          name="textEn"
+          placeholder="Engelse tekst (optioneel), bijv. Someone gets a cut penalty"
+          className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
+        />
+        <input
           name="category"
           placeholder="categorie (optioneel)"
           className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
@@ -96,6 +111,24 @@ export default async function AdminBingoPage() {
               <div className={p.active ? "" : "line-through opacity-50"}>
                 {p.text}
               </div>
+              <form
+                action={updateTextEn.bind(null, p.id)}
+                className="mt-1 flex gap-2"
+              >
+                <input
+                  name="textEn"
+                  defaultValue={p.textEn ?? ""}
+                  placeholder="Engelse tekst"
+                  aria-label={`Engelse tekst voor: ${p.text}`}
+                  className="flex-1 min-w-0 text-sm border border-derby-ink/20 rounded-lg px-2 py-1"
+                />
+                <SubmitButton
+                  type="submit"
+                  className="text-sm text-derby-ink underline"
+                >
+                  opslaan
+                </SubmitButton>
+              </form>
               {p.category && (
                 <div className="text-xs text-derby-ink/50">{p.category}</div>
               )}

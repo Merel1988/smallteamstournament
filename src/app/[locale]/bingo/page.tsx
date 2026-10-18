@@ -27,7 +27,13 @@ export default async function BingoPage({
   const t = await getTranslations("Bingo");
 
   const prompts = await prisma.bingoPrompt
-    .findMany({ where: { active: true }, select: { id: true, text: true } })
+    .findMany({ where: { active: true }, select: { id: true, text: true, textEn: true } })
+    .then((rows) =>
+      rows.map(({ id, text, textEn }) => ({
+        id,
+        text: locale === "en" && textEn ? textEn : text,
+      })),
+    )
     .catch(() => []);
 
   return (
