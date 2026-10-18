@@ -555,7 +555,7 @@
     "whyHeading": "Waarvoor?",
     "whyBody": "Alleen om het toernooi te organiseren en te laten zien: programma, teams, vrijwilligersrooster, fotogalerij en meldingen op de dag zelf. Geen advertenties, en we verkopen niets door.",
     "photosHeading": "Foto's en AI-controle",
-    "photosBody": "Elke foto wordt automatisch gecontroleerd op ongepaste inhoud door een AI-model (Claude van Anthropic, via Vercel). De foto wordt alleen daarvoor gebruikt en niet om AI te trainen. De AI-dienst bewaart hem hooguit 30 dagen voor controle op misbruik. Twijfelgevallen bekijkt de organisatie.\n\nBij het uploaden kies je of anderen je foto's mogen downloaden en delen. Sta je op een foto en wil je dat die weg gaat? Gebruik de knop Verwijderverzoek bij de foto of mail ons.",
+    "photosBody": "Elke foto wordt automatisch gecontroleerd op ongepaste inhoud door een AI-model (Claude van Anthropic, via Vercel). De foto wordt alleen daarvoor gebruikt en niet om AI te trainen. De AI-dienst bewaart hem niet. Twijfelgevallen bekijkt de organisatie.\n\nBij het uploaden kies je of anderen je foto's mogen downloaden en delen. Sta je op een foto en wil je dat die weg gaat? Gebruik de knop Verwijderverzoek bij de foto of mail ons.",
     "cookiesHeading": "Cookies",
     "cookiesBody": "We gebruiken alleen cookies die nodig zijn om de site te laten werken, zoals je taalkeuze, je MVP-stem en het inloggen voor teams en organisatie. Geen analytics, geen trackers.",
     "sharingHeading": "Met wie delen we gegevens?",

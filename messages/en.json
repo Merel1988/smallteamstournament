@@ -555,7 +555,7 @@
     "whyHeading": "What for?",
     "whyBody": "Only to organise and show the tournament: schedule, teams, volunteer rota, photo gallery and notifications on the day. No ads, and we never sell anything on.",
     "photosHeading": "Photos and AI check",
-    "photosBody": "Every photo is checked automatically for inappropriate content by an AI model (Claude by Anthropic, via Vercel). The photo is only used for that check and not to train AI. The AI service keeps it for at most 30 days for abuse monitoring. Borderline cases are reviewed by the organisers.\n\nWhen uploading, you choose whether others may download and share your photos. Are you in a photo and want it removed? Use the Request removal button on the photo or email us.",
+    "photosBody": "Every photo is checked automatically for inappropriate content by an AI model (Claude by Anthropic, via Vercel). The photo is only used for that check and not to train AI. The AI service does not store it. Borderline cases are reviewed by the organisers.\n\nWhen uploading, you choose whether others may download and share your photos. Are you in a photo and want it removed? Use the Request removal button on the photo or email us.",
     "cookiesHeading": "Cookies",
     "cookiesBody": "We only use cookies the site needs to work, such as your language choice, your MVP vote and logging in for teams and organisers. No analytics, no trackers.",
     "sharingHeading": "Who do we share data with?",
