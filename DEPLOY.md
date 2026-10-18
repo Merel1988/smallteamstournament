@@ -66,7 +66,7 @@ De app draait in productie. Stappen 1 t/m 5 zijn klaar. Wat nog open staat:
 ## Foto's rond het toernooi (FB30)
 
 **Vooraf**
-- [ ] Prod-migratie: `node --env-file=.env.production.local scripts/migrate-photos-prod.mjs`
+- [x] Prod-migratie (2026-10-18): `node --env-file=.env.production.local scripts/migrate-photos-prod.mjs`
 - [x] AI Gateway-tegoed gekocht ($10, 2026-10-18)
 - [ ] Rond 14 november: Vercel Pro aanzetten (Settings → Billing), Spend Management-melding op ca. $30
 - [ ] Na Pro: env `PHOTO_MODERATION_ZDR=1` op Production zetten en opnieuw deployen

@@ -2,13 +2,13 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-18**: FB30 foto's klaar voor het toernooi (verkleinen in de browser, thumbnails + "Laad meer", toestemming delen/alleen bekijken, downloaden met selectie, AI-controle met wachtrij, verwijderverzoeken, uploads aan/uit). **Prod-migratie foto's nog door Merel te draaien.**
+Laatste update: **2026-10-18**: FB30 foto's klaar voor het toernooi (verkleinen in de browser, thumbnails + "Laad meer", toestemming delen/alleen bekijken, downloaden met selectie, AI-controle met wachtrij, verwijderverzoeken, uploads aan/uit). Prod-migratie foto's gedraaid (2026-10-18). Fotopagina staat nog uit in `/admin/zichtbaarheid`.
 
 Vorige update **2026-10-17**: FB26 bio per team (teampagina), FB27 kleedkamers in de infopack + dagprogramma zonder doelgroepfilter, FB28 gelijke blokjes op `/teams`, FB29 klikbare teams bij volgende wedstrijd op home. Alles live; **prod-migratie kleedkamers nog door Merel te draaien** (zie "Nu te doen"). Claude mag de productie-DB niet aanraken: prod-scripts draait Merel zelf.
 
 ## ▶ Nu te doen (in deze volgorde)
 
-0. **Foto's (FB30):** `node --env-file=.env.production.local scripts/migrate-photos-prod.mjs` draaien, daarna op `/fotos` een testfoto uploaden en in `/admin/fotos` verwijderen.
+0. **Foto's (FB30):** migratie ✅ gedaan. Fotopagina aanzetten in `/admin/zichtbaarheid`, dan op de telefoon testen (upload met beide keuzes, downloaden, verwijderverzoek) en de testfoto's in `/admin/fotos` verwijderen.
 1. **Kleedkamers (FB27):** `node --env-file=.env.production.local scripts/migrate-lockerroom-prod.mjs` draaien, daarna `/info#kleedkamers` en `/admin/infopack` checken.
 2. Live checken: `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.
 3. Content invullen in `/admin/infopack`: dagprogramma (deuren open, captains/officials meeting, warm-ups, prijsuitreiking, opruimen) en per wedstrijd de officials roster (kopieerknop voor een gelijke crew).
@@ -296,7 +296,7 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 ### Deploy-notitie
 - **Git→Vercel auto-deploy haperde** bij de push van `9229f86` (na 8 min geen build). Handmatig gedeployed met `vercel --prod --yes` (READY op productie). Bij een volgende push: controleer of de auto-deploy triggert; zo niet, `vercel --prod --yes` als fallback.
 
-### FB30 · Foto's klaar voor het toernooi ✅ code live (2026-10-18), ⚠️ prod-migratie nog draaien
+### FB30 · Foto's klaar voor het toernooi ✅ AF (live + prod-migratie gedaan 2026-10-18), device-test nog doen
 - **Upload:** meerdere foto's tegelijk; de browser verkleint naar een grote versie (2048 px bij "mag gedeeld worden", 1280 px bij "alleen bekijken") + thumbnail 480 px, als JPEG (EXIF/GPS gaat eraf). Server (`src/app/api/photos/route.ts`) zet beide in Blob, laat de grote versie controleren door `anthropic/claude-haiku-5.5` via AI Gateway (`src/lib/photo-moderation.ts`) en zet de foto op `approved` of `pending`. Lukt de controle niet, dan `pending` (veilig). Naam optioneel, toestemming verplicht. Geen limiet per persoon (besluit Merel).
 - **Galerij:** 30 thumbnails per keer + "Laad meer" (cursor op id); grote versie pas in de lightbox (pijltjes/vegen). Selectiemodus + download: mobiel via deelmenu, desktop als zip (`fflate`). "Alleen bekijken"-foto's: niet selecteerbaar, geen downloadknop, rechtsklik/slepen/lang-indrukken geblokkeerd, doorzichtige laag over de foto; `/fotos` heeft `noimageindex`.
 - **Verwijderverzoek:** knop in de lightbox verbergt de foto direct (`reportedAt`) tot een admin hem goedkeurt of verwijdert. Contact: info@.
