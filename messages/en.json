@@ -140,7 +140,7 @@
     "previous": "Previous photo",
     "next": "Next photo",
     "by": "Photo: {name}",
-    "viewOnly": "View only: the photographer does not want this photo downloaded or shared.",
+    "viewOnly": "View only. Please respect the photographer's privacy and don't try to save this photo some other way.",
     "upload": {
       "heading": "Send in your photos",
       "fileLabel": "Choose one or more photos",
@@ -149,7 +149,7 @@
       "consentLegend": "May others download and share these photos?",
       "consentYes": "Yes, others may download and share them, for example on social media.",
       "consentNo": "No, view only on this site.",
-      "moderationNote": "Photos are checked automatically. Borderline cases are reviewed by the organisers first. Location data is removed from your photos.",
+      "moderationNote": "Photos are checked by an AI model. It does not store your photo or train on it. Photos with questionable content are reviewed by the organisers before they go online. For more information, you can <link>read our privacy statement here</link>.",
       "submit": "Upload",
       "busy": "Uploading…",
       "progress": "Uploading: {done} of {total}",
@@ -157,7 +157,6 @@
       "donePending": "{count, plural, one {1 photo will be reviewed by the organisers first.} other {# photos will be reviewed by the organisers first.}}",
       "doneFailed": "{count, plural, one {1 photo could not be uploaded.} other {# photos could not be uploaded.}} Please try again.",
       "closed": "Photo uploads are currently closed.",
-      "privacyLink": "More about privacy",
       "preparing": "Your phone is getting the photos ready. With lots of photos this can take a moment…"
     }
   },

@@ -140,7 +140,7 @@
     "previous": "Vorige foto",
     "next": "Volgende foto",
     "by": "Foto: {name}",
-    "viewOnly": "Alleen bekijken: de maker wil niet dat deze foto wordt gedownload of gedeeld.",
+    "viewOnly": "Alleen bekijken. Respecteer de privacy van de maker en probeer deze foto niet via een omweg toch op te slaan.",
     "upload": {
       "heading": "Stuur je foto's in",
       "fileLabel": "Kies een of meer foto's",
@@ -149,7 +149,7 @@
       "consentLegend": "Mogen anderen deze foto's downloaden en delen?",
       "consentYes": "Ja, anderen mogen ze downloaden en delen, bijvoorbeeld op social media.",
       "consentNo": "Nee, alleen bekijken op deze site.",
-      "moderationNote": "Foto's worden automatisch gecontroleerd. Twijfelgevallen worden eerst door de organisatie bekeken. Locatiegegevens worden uit je foto's verwijderd.",
+      "moderationNote": "Foto's worden gecontroleerd door een AI-model. Dat bewaart je foto niet en traint er niet op. Foto's waarbij getwijfeld wordt over de inhoud bekijkt de organisatie eerst voor deze online komen. Voor meer informatie kan je <link>hier onze privacyverklaring lezen</link>.",
       "submit": "Upload",
       "busy": "Bezig…",
       "progress": "Uploaden: {done} van {total}",
@@ -157,7 +157,6 @@
       "donePending": "{count, plural, one {1 foto wordt eerst bekeken door de organisatie.} other {# foto's worden eerst bekeken door de organisatie.}}",
       "doneFailed": "{count, plural, one {1 foto kon niet worden geüpload.} other {# foto's konden niet worden geüpload.}} Probeer het nog eens.",
       "closed": "Foto's uploaden is op dit moment gesloten.",
-      "privacyLink": "Meer over privacy",
       "preparing": "Je telefoon zet de foto's klaar. Bij veel foto's kan dit even duren…"
     }
   },

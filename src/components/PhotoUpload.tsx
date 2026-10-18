@@ -163,10 +163,13 @@ export default function PhotoUpload({
       </fieldset>
 
       <p className="text-xs text-derby-ink/60">
-        {t("moderationNote")}{" "}
-        <Link href="/privacy#photos" className="underline">
-          {t("privacyLink")}
-        </Link>
+        {t.rich("moderationNote", {
+          link: (chunks) => (
+            <Link href="/privacy#photos" className="underline">
+              {chunks}
+            </Link>
+          ),
+        })}
       </p>
 
       {error && (
