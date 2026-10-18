@@ -1,88 +1,164 @@
 "use client";
 
-import { upload } from "@vercel/blob/client";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { prepareUpload } from "@/lib/image-resize";
 
-export default function PhotoUpload({ onUploaded }: { onUploaded?: () => void }) {
+type Consent = "yes" | "no";
+type Summary = { approved: number; pending: number; failed: number };
+
+const CONCURRENCY = 2;
+
+export default function PhotoUpload({
+  open,
+  onUploaded,
+}: {
+  open: boolean;
+  onUploaded?: () => void;
+}) {
   const t = useTranslations("Photos.upload");
-  const [file, setFile] = useState<File | null>(null);
-  const [caption, setCaption] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
   const [name, setName] = useState("");
-  const [busy, setBusy] = useState(false);
+  const [consent, setConsent] = useState<Consent | null>(null);
+  const [progress, setProgress] = useState<number | null>(null);
+  const [summary, setSummary] = useState<Summary | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [done, setDone] = useState(false);
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!file) return;
-    setBusy(true);
-    setError(null);
+  if (!open) {
+    return (
+      <div className="bg-white rounded-2xl p-5 shadow">
+        <h2 className="font-display text-2xl">{t("heading")}</h2>
+        <p className="text-derby-ink/70 mt-1">{t("closed")}</p>
+      </div>
+    );
+  }
+
+  async function uploadOne(file: File, shareable: Consent): Promise<keyof Summary> {
     try {
-      await upload(file.name, file, {
-        access: "public",
-        handleUploadUrl: "/api/photos",
-        clientPayload: JSON.stringify({
-          uploaderName: name || undefined,
-          caption: caption || undefined,
-        }),
-      });
-      setDone(true);
-      setFile(null);
-      setCaption("");
-      onUploaded?.();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t("error"));
-    } finally {
-      setBusy(false);
+      const { full, thumb } = await prepareUpload(file, shareable === "yes" ? 2048 : 1280);
+      const form = new FormData();
+      form.set("full", full.blob, "photo.jpg");
+      form.set("thumb", thumb.blob, "thumb.jpg");
+      form.set("width", String(full.width));
+      form.set("height", String(full.height));
+      form.set("shareable", shareable);
+      if (name.trim()) form.set("name", name.trim());
+      const res = await fetch("/api/photos", { method: "POST", body: form });
+      if (res.status === 403) setError(t("closed"));
+      if (!res.ok) return "failed";
+      const { status } = (await res.json()) as { status: string };
+      return status === "approved" ? "approved" : "pending";
+    } catch {
+      return "failed";
     }
   }
 
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!files.length || !consent) return;
+    setError(null);
+    setSummary(null);
+    setProgress(0);
+    const result: Summary = { approved: 0, pending: 0, failed: 0 };
+    const queue = [...files];
+    let done = 0;
+    await Promise.all(
+      Array.from({ length: Math.min(CONCURRENCY, queue.length) }, async () => {
+        for (let file = queue.shift(); file; file = queue.shift()) {
+          result[await uploadOne(file, consent)]++;
+          setProgress(++done);
+        }
+      }),
+    );
+    setProgress(null);
+    setSummary(result);
+    setFiles([]);
+    if (result.approved) onUploaded?.();
+  }
+
+  const busy = progress !== null;
+
   return (
-    <form
-      onSubmit={submit}
-      className="bg-white rounded-2xl p-5 shadow space-y-3"
-    >
+    <form onSubmit={submit} className="bg-white rounded-2xl p-5 shadow space-y-4">
       <h2 className="font-display text-2xl">{t("heading")}</h2>
 
-      <input
-        type="file"
-        accept="image/*"
-        aria-label={t("fileLabel")}
-        onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-        className="block w-full text-sm"
-      />
+      <label className="block">
+        <span className="block text-sm font-bold mb-1">{t("fileLabel")}</span>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          disabled={busy}
+          onChange={(e) => {
+            setFiles(Array.from(e.target.files ?? []));
+            setSummary(null);
+          }}
+          className="block w-full text-sm"
+        />
+        {files.length > 0 && (
+          <span className="block text-sm text-derby-ink/70 mt-1">
+            {t("selected", { count: files.length })}
+          </span>
+        )}
+      </label>
+
       <input
         type="text"
         aria-label={t("namePlaceholder")}
         placeholder={t("namePlaceholder")}
         value={name}
+        maxLength={60}
+        disabled={busy}
         onChange={(e) => setName(e.target.value)}
         className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
       />
-      <input
-        type="text"
-        aria-label={t("captionPlaceholder")}
-        placeholder={t("captionPlaceholder")}
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
-      />
+
+      <fieldset className="space-y-2">
+        <legend className="text-sm font-bold mb-1">{t("consentLegend")}</legend>
+        {(["yes", "no"] as const).map((value) => (
+          <label key={value} className="flex items-start gap-2 text-sm">
+            <input
+              type="radio"
+              name="consent"
+              value={value}
+              checked={consent === value}
+              disabled={busy}
+              onChange={() => setConsent(value)}
+              required
+              className="mt-1"
+            />
+            <span>{value === "yes" ? t("consentYes") : t("consentNo")}</span>
+          </label>
+        ))}
+      </fieldset>
+
+      <p className="text-xs text-derby-ink/60">{t("moderationNote")}</p>
 
       {error && (
         <p role="alert" className="text-sm text-derby-accent">
           {error}
         </p>
       )}
-      {done && (
-        <p role="status" className="text-sm text-green-700">
-          {t("done")}
+      {busy && (
+        <p role="status" className="text-sm">
+          {t("progress", { done: progress, total: files.length })}
         </p>
+      )}
+      {summary && (
+        <div role="status" className="text-sm space-y-1">
+          {summary.approved > 0 && (
+            <p className="text-green-700">{t("doneApproved", { count: summary.approved })}</p>
+          )}
+          {summary.pending > 0 && <p>{t("donePending", { count: summary.pending })}</p>}
+          {summary.failed > 0 && (
+            <p className="text-derby-accent">{t("doneFailed", { count: summary.failed })}</p>
+          )}
+        </div>
       )}
 
       <button
         type="submit"
-        disabled={!file || busy}
+        disabled={!files.length || !consent || busy}
         className="bg-derby-accent text-white rounded-full px-5 py-2 font-bold disabled:opacity-40"
       >
         {busy ? t("busy") : t("submit")}

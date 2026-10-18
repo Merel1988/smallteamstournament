@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import PhotoGallery from "@/components/PhotoGallery";
 import { assertPageVisible } from "@/lib/page-visibility";
-import { prisma } from "@/lib/prisma";
+import { listPublicPhotos, uploadsOpen } from "@/lib/photos";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return pageMetadata({ locale, page: "fotos", path: "fotos" });
+  const meta = await pageMetadata({ locale, page: "fotos", path: "fotos" });
+  return { ...meta, robots: { index: true, follow: true, noimageindex: true } };
 }
 
 export default async function FotosPage({
@@ -26,17 +27,10 @@ export default async function FotosPage({
   setRequestLocale(locale);
   const t = await getTranslations("Photos");
 
-  const photos = await prisma.photo
-    .findMany({ orderBy: { createdAt: "desc" }, take: 200 })
-    .catch(() => []);
-
-  const serialized = photos.map((p) => ({
-    id: p.id,
-    url: p.url,
-    uploaderName: p.uploaderName,
-    caption: p.caption,
-    createdAt: p.createdAt.toISOString(),
-  }));
+  const [{ photos, nextCursor }, open] = await Promise.all([
+    listPublicPhotos(),
+    uploadsOpen(),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -44,7 +38,7 @@ export default async function FotosPage({
         <h1 className="font-display text-5xl">{t("title")}</h1>
         <p className="text-derby-ink/70 mt-1">{t("subtitle")}</p>
       </header>
-      <PhotoGallery initial={serialized} />
+      <PhotoGallery initial={photos} initialCursor={nextCursor} uploadsOpen={open} />
     </div>
   );
 }

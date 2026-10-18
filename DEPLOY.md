@@ -63,6 +63,21 @@ De app draait in productie. Stappen 1 t/m 5 zijn klaar. Wat nog open staat:
 
 ---
 
+## Foto's rond het toernooi (FB30)
+
+**Vooraf**
+- [ ] Prod-migratie: `node --env-file=.env.production.local scripts/migrate-photos-prod.mjs`
+- [x] AI Gateway-tegoed gekocht ($10, 2026-10-18)
+- [ ] Rond 14 november: Vercel Pro aanzetten (Settings → Billing), Spend Management-melding op ca. $30
+- [ ] Na Pro: env `PHOTO_MODERATION_ZDR=1` op Production zetten en opnieuw deployen
+- [ ] Testen op iPhone en Android: uploaden (beide toestemmingskeuzes), downloaden via deelmenu, verwijderverzoek
+
+**Na het toernooi**
+- [ ] Uploads sluiten in `/admin/fotos`
+- [ ] Archiveren: `node --env-file=.env.production.local scripts/archive-photos-prod.mjs` (zet alles + `photos.csv` in `./photo-archive`, gitignored)
+- [ ] Na de bewaartermijn: foto's verwijderen (bulk in `/admin/fotos`) zodat Blob onder 1 GB blijft
+- [ ] Blob-store overzetten volgens de Vercel-downgrade-instructies en terug naar Hobby
+
 ## 📂 Relevante bestanden
 
 - `.env.production.local` — alle secrets, gitignored (niet verwijderen!)

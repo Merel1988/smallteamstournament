@@ -76,12 +76,21 @@ model Match {
 }
 
 model Photo {
-  id           String   @id @default(cuid())
-  url          String
-  thumbUrl     String?
-  uploaderName String?
-  caption      String?
-  createdAt    DateTime @default(now())
+  id             String    @id @default(cuid())
+  url            String
+  thumbUrl       String?
+  width          Int?
+  height         Int?
+  uploaderName   String?
+  caption        String?
+  shareable      Boolean   @default(false)
+  status         String    @default("approved")
+  moderationNote String?
+  reportedAt     DateTime?
+  reportReason   String?
+  createdAt      DateTime  @default(now())
+
+  @@index([status, createdAt])
 }
 
 model MvpVote {

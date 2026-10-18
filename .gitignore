@@ -36,3 +36,4 @@ dev.db-journal
 # claude
 .claude
 .env*
+/photo-archive

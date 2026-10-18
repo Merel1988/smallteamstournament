@@ -48,6 +48,7 @@ Shared-password gate (organisers share one password), not per-user accounts.
 ### External services
 
 - **Vercel Blob** for photos / team logos / player headshots. `BLOB_READ_WRITE_TOKEN` required in prod. `next.config.ts` whitelists `*.public.blob.vercel-storage.com` for `next/image`.
+- **Photos**: browser resizes to a full + thumb JPEG (`src/lib/image-resize.ts`), `POST /api/photos` stores both in Blob and runs AI moderation through AI Gateway (`src/lib/photo-moderation.ts`, OIDC auth, no key). `Photo.status` is `approved` or `pending`; `reportedAt` hides a photo after a removal request. Only `approved` + unreported photos are public. Upload switch = `PageVisibility` row `fotos-upload`.
 - **Web Push (PWA)** with self-hosted VAPID keys. `public/sw.js` is the service worker; `src/components/ServiceWorkerRegister.tsx` registers it. Subscriptions stored in `PushSubscription`. Sending happens in `src/app/api/push/send` (admin-gated).
 
 ### Conventions

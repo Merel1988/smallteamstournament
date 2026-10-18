@@ -7,13 +7,16 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboard() {
   await requireAdmin();
 
-  const [teams, players, matches, photos, prompts, rules] = await Promise.all([
+  const [teams, players, matches, photos, prompts, rules, photosToReview] = await Promise.all([
     prisma.team.count().catch(() => 0),
     prisma.player.count().catch(() => 0),
     prisma.match.count().catch(() => 0),
     prisma.photo.count().catch(() => 0),
     prisma.bingoPrompt.count({ where: { active: true } }).catch(() => 0),
     prisma.houseRule.count().catch(() => 0),
+    prisma.photo
+      .count({ where: { OR: [{ status: "pending" }, { reportedAt: { not: null } }] } })
+      .catch(() => 0),
   ]);
 
   const stats: { label: string; value: number }[] = [
@@ -21,6 +24,7 @@ export default async function AdminDashboard() {
     { label: "Spelers", value: players },
     { label: "Wedstrijden", value: matches },
     { label: "Foto's", value: photos },
+    { label: "Foto's te beoordelen", value: photosToReview },
     { label: "Bingo prompts", value: prompts },
     { label: "Huisregels", value: rules },
   ];
