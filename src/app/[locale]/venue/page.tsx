@@ -34,6 +34,7 @@ export default async function VenuePage({
   // Only show a card when its body has been filled in — an emptied field
   // should hide the whole card, not leave a blank white block.
   const infoCards = [
+    { title: t("ticketsTitle"), body: t("ticketsBody") },
     { title: t("foodTitle"), body: t("foodBody") },
     { title: t("firstAidTitle"), body: t("firstAidBody") },
     { title: t("changingTitle"), body: t("changingBody") },

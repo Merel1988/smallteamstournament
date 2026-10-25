@@ -348,6 +348,8 @@
     "houseDefault3": "Tassen uit de wisselzone, gebruik de kleedkamers.",
     "houseDefault4": "Foto's maken mag, flitslicht niet.",
     "houseDefault5": "EHBO / vragen? Loop naar de organisatietafel bij de ingang.",
+    "ticketsTitle": "🎟️ Entree",
+    "ticketsBody": "Entree voor bezoekers is € 5.",
     "foodTitle": "🥤 Eten & drinken",
     "foodBody": "In de kantine zijn snacks en broodjes te koop, ook vegan. Neem je eigen bidon mee.",
     "firstAidTitle": "🩹 EHBO",
@@ -481,7 +483,7 @@
     "links": {
       "toernooi": "Opzet van het toernooi en de wedstrijdregels",
       "schema": "Live blokkenschema en standen",
-      "venue": "Adres, vloer en wielen, huisregels",
+      "venue": "Adres, entree, vloer en wielen, huisregels",
       "regels": "Roller derby simpel uitgelegd"
     },
     "programHeading": "Dagprogramma",
@@ -502,7 +504,7 @@
       "other": "Overig"
     },
     "teamsHeading": "Voor teams",
-    "teamsBody": ""
+    "teamsBody": "Opwarmen kan op de kleine track naast de baan."
   },
   "TeamPortal": {
     "title": "Teampagina",

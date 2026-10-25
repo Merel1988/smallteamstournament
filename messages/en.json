@@ -348,6 +348,8 @@
     "houseDefault3": "Keep bags out of the track-side area, use the locker rooms.",
     "houseDefault4": "Photos are fine, no flash.",
     "houseDefault5": "First aid or questions? Head to the organizer's table by the entrance.",
+    "ticketsTitle": "🎟️ Entry",
+    "ticketsBody": "Entry for visitors is €5.",
     "foodTitle": "🥤 Food & drinks",
     "foodBody": "Snacks and sandwiches are for sale in the cafeteria, vegan options too. Bring your own water bottle.",
     "firstAidTitle": "🩹 First aid",
@@ -481,7 +483,7 @@
     "links": {
       "toernooi": "Tournament format and game rules",
       "schema": "Live timetable and standings",
-      "venue": "Address, floor and wheels, house rules",
+      "venue": "Address, entry, floor and wheels, house rules",
       "regels": "Roller derby explained simply"
     },
     "programHeading": "Day schedule",
@@ -502,7 +504,7 @@
       "other": "Other"
     },
     "teamsHeading": "For teams",
-    "teamsBody": ""
+    "teamsBody": "You can warm up on the small track next to the main track."
   },
   "TeamPortal": {
     "title": "Team page",

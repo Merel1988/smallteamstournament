@@ -2,7 +2,10 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-18**: alles hieronder is live.
+Laatste update: **2026-10-25**: alles hieronder is live.
+- **FB37 ontbrekende info:** entree (€ 5) als kaartje op `/venue`, opwarmen op de kleine track in het blok "Voor teams" op `/info`. Vuistregel: info voor bezoekers op `/venue`, voor teams/officials op `/info`, opzet en regels op `/toernooi`.
+
+Vorige update **2026-10-18**:
 - **FB30 foto's** klaar voor het toernooi, prod-migratie gedraaid. Merel en anderen testen nu; daarna gaat de fotopagina weer uit tot de toernooidag.
 - **FB31 privacyverklaring** `/privacy` (footer + uploadformulier). Verantwoordelijke: vereniging Roadkill Rollers Nijmegen; bewaartermijn: alles weg vóór 21 dec 2026.
 - **FB32 portretfoto's** van spelers/staf beschermd tegen even snel opslaan.
@@ -328,6 +331,9 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 
 ### FB34 · Adres gecorrigeerd ✅ AF (live, `65837bf`)
 - `src/lib/event.ts`: Horstacker 1401, 6546 EK Nijmegen (venue-pagina, Google Maps-link, JSON-LD).
+
+### FB37 · Entree en opwarmen ✅ AF (live, 2026-10-25)
+- `/venue`: nieuw eerste kaartje "🎟️ Entree" (`Venue.ticketsTitle/ticketsBody`), leeg = verborgen. `/info`: `Info.teamsBody` gevuld met de opwarmtrack, dus het blok "Voor teams" is nu zichtbaar. Alles bewerkbaar via `/admin/teksten`.
 
 ## 4b. E-mail — `info@smallteamstournament.nl` (los van de app)
 
