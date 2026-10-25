@@ -3,6 +3,7 @@
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
 Laatste update: **2026-10-25**: alles hieronder is live.
+- **FB38 wedstrijden op de teampagina:** `/teams/[id]` toont de wedstrijden van het team (tijd, tegenstander, poule, live-score, uitslag gewonnen/verloren/gelijk).
 - **FB37 ontbrekende info:** entree (€ 5) als kaartje op `/venue`, opwarmen op de kleine track in het blok "Voor teams" op `/info`. Vuistregel: info voor bezoekers op `/venue`, voor teams/officials op `/info`, opzet en regels op `/toernooi`.
 
 Vorige update **2026-10-18**:
@@ -334,6 +335,9 @@ Besluit Merel: **eigen wachtwoord per team, in te stellen in admin** (geen gehei
 
 ### FB37 · Entree en opwarmen ✅ AF (live, 2026-10-25)
 - `/venue`: nieuw eerste kaartje "🎟️ Entree" (`Venue.ticketsTitle/ticketsBody`), leeg = verborgen. `/info`: `Info.teamsBody` gevuld met de opwarmtrack, dus het blok "Voor teams" is nu zichtbaar. Alles bewerkbaar via `/admin/teksten`.
+
+### FB38 · Wedstrijden op de teampagina ✅ AF (live, 2026-10-25)
+- `/teams/[id]`: blok "Wedstrijden" boven de roster, alleen als de schema-pagina zichtbaar is. Pauzes/programma-items (`kindOf`) en kanten met een placeholder ("Winnaar poule A") tellen niet mee; zo verschijnt de finale pas bij een team als de placeholder in `/admin/schema` is leeggemaakt. Score vanaf live, uitslag bij afgerond. Teksten `Teams.matchesHeading/against/result.*`.
 
 ## 4b. E-mail — `info@smallteamstournament.nl` (los van de app)
 

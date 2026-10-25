@@ -75,7 +75,14 @@
     "backToAll": "← All teams",
     "roster": "Roster",
     "rosterEmpty": "The roster hasn't been published yet.",
-    "bench": "Bench staff"
+    "bench": "Bench staff",
+    "matchesHeading": "Games",
+    "against": "Against",
+    "result": {
+      "won": "Won",
+      "lost": "Lost",
+      "drawn": "Draw"
+    }
   },
   "Schema": {
     "title": "Schedule",

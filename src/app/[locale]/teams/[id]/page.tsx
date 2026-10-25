@@ -5,7 +5,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import ProtectedImage from "@/components/ProtectedImage";
 import { prisma } from "@/lib/prisma";
-import { assertPageVisible } from "@/lib/page-visibility";
+import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
+import { kindOf } from "@/lib/schedule";
+import { eventTimeFormatter } from "@/lib/time";
 import { SITE_NAME, SITE_URL, languageAlternates, localizedPath } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -59,6 +61,7 @@ export default async function TeamDetailPage({
   await assertPageVisible("teams");
   setRequestLocale(locale);
   const t = await getTranslations("Teams");
+  const ts = await getTranslations("Schema");
 
   const team = await prisma.team.findUnique({
     where: { id },
@@ -69,6 +72,46 @@ export default async function TeamDetailPage({
   });
 
   if (!team) notFound();
+
+  const hidden = await getHiddenPageKeys();
+  // A side with a placeholder label isn't really this team yet.
+  const matches = hidden.has("schema")
+    ? []
+    : (
+        await prisma.match
+          .findMany({
+            where: {
+              OR: [{ teamAId: id }, { teamBId: id }],
+            },
+            include: { teamA: true, teamB: true },
+            orderBy: { startsAt: "asc" },
+          })
+          .catch(() => [])
+      )
+        .filter(
+          (m) =>
+            kindOf(m.poule) === "match" &&
+            ((m.teamAId === id && !m.teamALabel?.trim()) ||
+              (m.teamBId === id && !m.teamBLabel?.trim())),
+        )
+        .map((m) => {
+          const isA = m.teamAId === id && !m.teamALabel?.trim();
+          const opponent = isA ? m.teamB : m.teamA;
+          const opponentLabel = (isA ? m.teamBLabel : m.teamALabel)?.trim();
+          const own = isA ? m.scoreA : m.scoreB;
+          const other = isA ? m.scoreB : m.scoreA;
+          return {
+            id: m.id,
+            startsAt: m.startsAt,
+            poule: m.poule,
+            status: m.status,
+            opponent: opponentLabel ? null : opponent,
+            opponentName: opponentLabel || opponent.name,
+            own,
+            other,
+          };
+        });
+  const timeFmt = eventTimeFormatter(locale);
 
   return (
     <div className="space-y-6">
@@ -108,6 +151,76 @@ export default async function TeamDetailPage({
           })()}
         </div>
       </header>
+
+      {matches.length > 0 && (
+        <section>
+          <h2 className="font-display text-3xl mb-3">{t("matchesHeading")}</h2>
+          <ul className="space-y-2">
+            {matches.map((m) => {
+              const hasScore = m.status !== "scheduled" && m.own != null && m.other != null;
+              const result =
+                m.status === "finished" && hasScore
+                  ? m.own! > m.other!
+                    ? "won"
+                    : m.own! < m.other!
+                      ? "lost"
+                      : "drawn"
+                  : null;
+              return (
+                <li
+                  key={m.id}
+                  className="bg-white rounded-xl p-4 shadow flex items-center gap-4"
+                >
+                  <div className="font-display text-2xl w-16 shrink-0">
+                    {timeFmt.format(m.startsAt)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="truncate">
+                      {t("against")}{" "}
+                      {m.opponent ? (
+                        <Link
+                          href={`/teams/${m.opponent.id}`}
+                          className="font-semibold hover:text-derby-accent hover:underline"
+                        >
+                          {m.opponentName}
+                        </Link>
+                      ) : (
+                        <span className="font-semibold">{m.opponentName}</span>
+                      )}
+                    </div>
+                    {m.poule && (
+                      <div className="text-xs text-derby-ink/60">{m.poule}</div>
+                    )}
+                  </div>
+                  <div className="text-right shrink-0">
+                    {m.status === "live" && (
+                      <div className="text-xs font-bold text-derby-accent">{ts("live")}</div>
+                    )}
+                    {hasScore && (
+                      <div className="font-display text-2xl">
+                        {m.own} – {m.other}
+                      </div>
+                    )}
+                    {result && (
+                      <div
+                        className={`text-xs font-semibold ${
+                          result === "won"
+                            ? "text-green-700"
+                            : result === "lost"
+                              ? "text-derby-accent"
+                              : "text-derby-ink/60"
+                        }`}
+                      >
+                        {t(`result.${result}`)}
+                      </div>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
 
       <section>
         <h2 className="font-display text-3xl mb-3">{t("roster")}</h2>

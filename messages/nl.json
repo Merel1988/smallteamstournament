@@ -75,7 +75,14 @@
     "backToAll": "← Alle teams",
     "roster": "Roster",
     "rosterEmpty": "De roster is nog niet bekend.",
-    "bench": "Bench staff"
+    "bench": "Bench staff",
+    "matchesHeading": "Wedstrijden",
+    "against": "Tegen",
+    "result": {
+      "won": "Gewonnen",
+      "lost": "Verloren",
+      "drawn": "Gelijk"
+    }
   },
   "Schema": {
     "title": "Speelschema",
