@@ -348,6 +348,9 @@
   "Venue": {
     "title": "Venue & info",
     "openMaps": "Open in Google Maps →",
+    "exteriorAlt": "Sports hall De Horstacker from outside, with red entrance doors",
+    "hallHeading": "A look inside the hall",
+    "hallAlt": "The De Horstacker sports hall with stands",
     "houseHeading": "House rules",
     "houseIntro": "So everyone has a good day, we keep to a few agreements inside the hall.",
     "houseDefault1": "Respect skaters, officials and the audience.",
@@ -484,7 +487,7 @@
   },
   "Info": {
     "title": "Info pack",
-    "lead": "Everything for teams and officials in one place: the day schedule, the officials roster and where to find the rest.",
+    "lead": "Everything for teams and officials in one place: the day schedule, the officials and where to find the rest.",
     "jumpLabel": "Jump to",
     "linksHeading": "Already on the site",
     "links": {
@@ -497,16 +500,12 @@
     "programNote": "Times are subject to change. Games from the schedule are added automatically.",
     "programEmpty": "The day schedule will follow soon.",
     "lockerHeading": "Locker rooms",
-    "rosterHeading": "Officials roster",
-    "rosterEmpty": "The officials roster will follow soon.",
+    "rosterHeading": "Officials",
+    "rosterEmpty": "The names of the officials will follow soon.",
     "officialsHeading": "Dress code",
     "officialsBody": "Don't wear team clothing or merchandise. Referees: black and white striped shirt and black bottoms. NSOs: black shirt without team logos.",
-    "searchLabel": "Find your name",
-    "searchPlaceholder": "Your derby name",
-    "found": "{count, plural, one {You're rostered for # game} other {You're rostered for # games}}",
-    "noneFound": "No positions found for this name.",
     "groups": {
-      "referees": "Referees",
+      "referees": "Referees (SOs)",
       "nsos": "NSOs",
       "other": "Other"
     },

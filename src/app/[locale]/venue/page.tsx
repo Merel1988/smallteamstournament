@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
@@ -58,17 +59,45 @@ export default async function VenuePage({
         <h1 className="font-display text-5xl">{t("title")}</h1>
       </header>
 
-      <section className="bg-white rounded-2xl p-6 shadow space-y-2">
-        <h2 className="font-display text-3xl">{EVENT.venue}</h2>
-        <p className="text-derby-ink/80">{EVENT.address}</p>
-        <a
-          href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block mt-2 text-derby-accent underline"
-        >
-          {t("openMaps")}
-        </a>
+      <section className="bg-white rounded-2xl p-6 shadow grid sm:grid-cols-2 gap-6 items-center">
+        <div className="space-y-2">
+          <h2 className="font-display text-3xl">{EVENT.venue}</h2>
+          <p className="text-derby-ink/80">{EVENT.address}</p>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block mt-2 text-derby-accent underline"
+          >
+            {t("openMaps")}
+          </a>
+        </div>
+        <Image
+          src="/venue/buitenkant.jpg"
+          alt={t("exteriorAlt")}
+          width={1600}
+          height={866}
+          sizes="(min-width: 640px) 50vw, 100vw"
+          priority
+          className="w-full h-auto rounded-xl"
+        />
+      </section>
+
+      <section className="bg-white rounded-2xl p-6 shadow space-y-3">
+        <h2 className="font-display text-3xl">{t("hallHeading")}</h2>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {[1, 2].map((n) => (
+            <Image
+              key={n}
+              src={`/venue/zaal-${n}.jpg`}
+              alt={t("hallAlt")}
+              width={1600}
+              height={1066}
+              sizes="(min-width: 640px) 50vw, 100vw"
+              className="w-full h-auto rounded-xl"
+            />
+          ))}
+        </div>
       </section>
 
       {infoCards.length > 0 && (

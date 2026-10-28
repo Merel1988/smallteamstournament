@@ -348,6 +348,9 @@
   "Venue": {
     "title": "Venue & info",
     "openMaps": "Open in Google Maps →",
+    "exteriorAlt": "Sporthal De Horstacker van buiten, met rode entreedeuren",
+    "hallHeading": "Een kijkje in de zaal",
+    "hallAlt": "De sportzaal van De Horstacker met tribune",
     "houseHeading": "Huisregels",
     "houseIntro": "Zodat iedereen een leuke dag heeft, houden we ons aan een paar afspraken in de hal.",
     "houseDefault1": "Respecteer skaters, officials en publiek.",
@@ -484,7 +487,7 @@
   },
   "Info": {
     "title": "Infopack",
-    "lead": "Alles voor teams en officials op één plek: het dagprogramma, de officials roster en waar je de rest van de info vindt.",
+    "lead": "Alles voor teams en officials op één plek: het dagprogramma, de officials en waar je de rest van de info vindt.",
     "jumpLabel": "Ga naar",
     "linksHeading": "Al op de site",
     "links": {
@@ -497,16 +500,12 @@
     "programNote": "Tijden onder voorbehoud. De wedstrijden uit het speelschema staan er automatisch tussen.",
     "programEmpty": "Het dagprogramma volgt binnenkort.",
     "lockerHeading": "Kleedkamers",
-    "rosterHeading": "Officials roster",
-    "rosterEmpty": "De officials roster volgt binnenkort.",
+    "rosterHeading": "Officials",
+    "rosterEmpty": "De namen van de officials volgen binnenkort.",
     "officialsHeading": "Dresscode",
     "officialsBody": "Draag geen teamkleding of merchandise. Referees: zwart-wit gestreept shirt en een zwarte broek. NSO's: zwart shirt zonder teamlogo.",
-    "searchLabel": "Zoek je naam",
-    "searchPlaceholder": "Je derby name",
-    "found": "{count, plural, one {Je staat bij # wedstrijd ingeroosterd} other {Je staat bij # wedstrijden ingeroosterd}}",
-    "noneFound": "Geen posities gevonden voor deze naam.",
     "groups": {
-      "referees": "Referees",
+      "referees": "Referees (SO's)",
       "nsos": "NSO's",
       "other": "Overig"
     },

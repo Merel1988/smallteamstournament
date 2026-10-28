@@ -24,13 +24,3 @@ export function crewGroup(position: string): CrewGroup {
   if (parts.some((p) => NSO_SET.has(p))) return "nsos";
   return "other";
 }
-
-export type Assignment = { id: string; position: string; name: string; pronouns: string | null };
-
-export type RosterMatch = {
-  id: string;
-  start: number;
-  label: string;
-  poule: string | null;
-  assignments: Assignment[];
-};
