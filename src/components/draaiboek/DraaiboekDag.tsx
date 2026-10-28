@@ -17,7 +17,8 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
   const nameOf = (id: string) => S.volunteers.find((v) => v.id === id)?.name ?? "?";
 
   const add = async () => {
-    const r = await api("addTask", { name, area, from: s2m(from), to: s2m(to), need: Number(need), split: Number(split) });
+    const allDay = split === "allday";
+    const r = await api("addTask", { name, area, from: s2m(from), to: s2m(to), need: Number(need), split: allDay ? 0 : Number(split), allDay });
     if (r.ok) setName("");
   };
 
@@ -39,11 +40,11 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
           </div>
           <div>
             <label className={label} htmlFor="tFrom">Van</label>
-            <input id="tFrom" type="time" step={900} className={input} value={from} onChange={(e) => setFrom(e.target.value)} />
+            <input id="tFrom" type="time" step={300} className={input} disabled={split === "allday"} value={from} onChange={(e) => setFrom(e.target.value)} />
           </div>
           <div>
             <label className={label} htmlFor="tTo">Tot</label>
-            <input id="tTo" type="time" step={900} className={input} value={to} onChange={(e) => setTo(e.target.value)} />
+            <input id="tTo" type="time" step={300} className={input} disabled={split === "allday"} value={to} onChange={(e) => setTo(e.target.value)} />
           </div>
           <div>
             <label className={label} htmlFor="tNeed">Mensen</label>
@@ -53,6 +54,11 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
             <label className={label} htmlFor="tSplit">Verdeling</label>
             <select id="tSplit" className={input} value={split} onChange={(e) => setSplit(e.target.value)}>
               <option value="0">één blok</option>
+              <option value="allday">hele dag (bijv. aanspreekpunt)</option>
+              <option value="30">blokken van 30 min</option>
+              <option value="45">blokken van 45 min</option>
+              <option value="60">blokken van 1 uur</option>
+              <option value="90">blokken van 1,5 uur</option>
               <option value="120">blokken van 2 uur</option>
               <option value="180">blokken van 3 uur</option>
             </select>

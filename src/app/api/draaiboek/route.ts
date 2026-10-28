@@ -93,8 +93,15 @@ export async function POST(req: NextRequest) {
         const name = str(body.name, 80);
         if (!name) return json({ error: "Geef de post een naam." }, 400);
         const area = str(body.area) in AREAS ? str(body.area) : "algemeen";
-        const from = int(body.from, 0, 1439);
-        const to = int(body.to, 0, 1440);
+        let from = int(body.from, 0, 1439);
+        let to = int(body.to, 0, 1440);
+        if (body.allDay === true) {
+          const span = await prisma.volunteerShift.aggregate({ _min: { start: true }, _max: { end: true } });
+          if (span._min.start != null && span._max.end != null) {
+            from = span._min.start;
+            to = span._max.end;
+          }
+        }
         const need = int(body.need, 1, 30) || 1;
         const split = int(body.split, 0, 600) || 0;
         if (Number.isNaN(from) || Number.isNaN(to) || to <= from)
@@ -118,8 +125,9 @@ export async function POST(req: NextRequest) {
         const taskId = str(body.taskId);
         const last = await prisma.volunteerShift.findFirst({ where: { taskId }, orderBy: { end: "desc" } });
         const start = last ? last.end : 12 * 60;
+        const length = last ? last.end - last.start : 120;
         await prisma.volunteerShift.create({
-          data: { taskId, start, end: Math.min(start + 120, 1439), need: last?.need ?? 1 },
+          data: { taskId, start, end: Math.min(start + length, 1440), need: last?.need ?? 1 },
         });
         break;
       }

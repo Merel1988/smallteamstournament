@@ -47,11 +47,11 @@ export default function ShiftDrawer({ S, shiftId, api, onClose }: { S: Draaiboek
             </div>
             <div>
               <label className={label}>Van</label>
-              <input type="time" step={900} className={input} value={from} onChange={(e) => setFrom(e.target.value)} onBlur={save} />
+              <input type="time" step={300} className={input} value={from} onChange={(e) => setFrom(e.target.value)} onBlur={save} />
             </div>
             <div>
               <label className={label}>Tot</label>
-              <input type="time" step={900} className={input} value={to} onChange={(e) => setTo(e.target.value)} onBlur={save} />
+              <input type="time" step={300} className={input} value={to} onChange={(e) => setTo(e.target.value)} onBlur={save} />
             </div>
           </div>
           <p className="text-sm text-derby-ink/60 mb-2">

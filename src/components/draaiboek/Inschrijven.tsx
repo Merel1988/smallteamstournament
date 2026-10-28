@@ -130,7 +130,7 @@ export default function Inschrijven({
 
       <Card
         title="Open plekken"
-        sub="Tik aan waar je bij kunt. Sta je bij een team, dan zie je diensten tijdens je eigen wedstrijden niet, en krijg je een waarschuwing als een dienst dicht op een wedstrijd zit."
+        sub="Tik aan waar je bij kunt. Sta je bij een team, dan zie je diensten tijdens je eigen wedstrijden niet, en krijg je een waarschuwing als een dienst dicht op een wedstrijd zit. Overlapt een dienst met iets wat je al doet, dan zie je dat en kun je hem er toch bij nemen."
       >
         {open.length === 0 && (
           <div className="text-center text-derby-ink/60 border border-dashed border-derby-ink/20 rounded-lg py-4 text-sm">Alles is gevuld, dank je!</div>
@@ -142,17 +142,20 @@ export default function Inschrijven({
             <div key={s.id} className="flex flex-wrap items-center gap-2.5 py-2 border-b border-derby-ink/10 last:border-b-0 text-sm">
               <span className="font-mono w-28 shrink-0">{m2s(s.start)} tot {m2s(s.end)}</span>
               <span className="flex-1 font-medium min-w-[130px]">{s.task.name}</span>
-              {st.k === "clash" ? (
-                <Pill tone="bad">{st.t}</Pill>
-              ) : (
-                <>
-                  {st.k === "soft" && <Pill tone="soft">{st.t}</Pill>}
-                  <Pill>nog {s.need - s.who.length} nodig</Pill>
-                  <button type="button" className={btnRed} disabled={busy} onClick={() => api("signup", { shiftId: s.id, volunteerId: v.id })}>
-                    Ik doe deze
-                  </button>
-                </>
-              )}
+              {st.k === "clash" && <Pill tone="bad">{st.t}</Pill>}
+              {st.k === "soft" && <Pill tone="soft">{st.t}</Pill>}
+              <Pill>nog {s.need - s.who.length} nodig</Pill>
+              <button
+                type="button"
+                className={btnRed}
+                disabled={busy}
+                onClick={() => {
+                  if (st.k === "clash" && !confirm(`Je ${st.t} op dit tijdstip. Wil je deze dienst er toch bij doen?`)) return;
+                  api("signup", { shiftId: s.id, volunteerId: v.id });
+                }}
+              >
+                {st.k === "clash" ? "Toch doen" : "Ik doe deze"}
+              </button>
             </div>
           );
         })}
