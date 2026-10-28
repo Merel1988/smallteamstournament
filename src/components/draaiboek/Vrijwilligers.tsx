@@ -85,6 +85,19 @@ export default function Vrijwilligers({ S, org, api, busy }: { S: DraaiboekState
                 {org && (
                   <button
                     type="button"
+                    className="px-2 text-derby-ink/50 hover:text-derby-accent text-sm underline"
+                    aria-label={`Naam van ${v.name} wijzigen`}
+                    onClick={() => {
+                      const n = prompt("Nieuwe naam", v.name)?.trim();
+                      if (n && n !== v.name) api("renameVolunteer", { id: v.id, name: n });
+                    }}
+                  >
+                    naam wijzigen
+                  </button>
+                )}
+                {org && (
+                  <button
+                    type="button"
                     className="px-2 text-derby-ink/50 hover:text-derby-accent text-lg"
                     aria-label={`${v.name} verwijderen`}
                     onClick={() => confirm(`${v.name} verwijderen, inclusief alle diensten?`) && api("removeVolunteer", { id: v.id })}

@@ -72,6 +72,16 @@ export async function POST(req: NextRequest) {
         break;
       }
       // ---- organisation only ----
+      case "renameVolunteer": {
+        if (!org) return json({ error: "Alleen voor de organisatie." }, 403);
+        const id = str(body.id);
+        const name = str(body.name, 80);
+        if (!name) return json({ error: "Vul een naam in." }, 400);
+        const dup = await prisma.volunteer.findFirst({ where: { name, NOT: { id } } });
+        if (dup) return json({ error: "Die naam staat er al." }, 409);
+        await prisma.volunteer.update({ where: { id }, data: { name } });
+        break;
+      }
       case "removeVolunteer": {
         if (!org) return json({ error: "Alleen voor de organisatie." }, 403);
         await prisma.volunteer.delete({ where: { id: str(body.id) } });
