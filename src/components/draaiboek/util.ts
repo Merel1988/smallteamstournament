@@ -31,14 +31,14 @@ export type Status = { k: "game" | "soft" | "clash" | "free"; t: string };
 
 export function status(S: DraaiboekState, v: VolunteerDTO, sh: ShiftDTO): Status {
   for (const g of myGames(S, v)) {
-    if (overlaps(g.start, g.end, sh.start, sh.end)) return { k: "game", t: `speelt om ${m2s(g.start)}` };
+    if (overlaps(g.start, g.end, sh.start, sh.end)) return { k: "game", t: `je speelt zelf om ${m2s(g.start)}` };
     if (overlaps(g.start - S.pre, g.end + S.post, sh.start, sh.end))
-      return { k: "soft", t: `wedstrijd om ${m2s(g.start)}` };
+      return { k: "soft", t: `jouw wedstrijd start om ${m2s(g.start)}` };
   }
   const c = allShifts(S).find(
     (o) => o.id !== sh.id && o.who.includes(v.id) && overlaps(o.start, o.end, sh.start, sh.end),
   );
-  if (c) return { k: "clash", t: `staat al bij ${c.task.name}` };
+  if (c) return { k: "clash", t: `je staat al bij ${c.task.name}` };
   return { k: "free", t: "kan" };
 }
 

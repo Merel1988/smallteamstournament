@@ -106,7 +106,7 @@ export default function Inschrijven({
           className={btnRed}
           disabled={busy}
           onClick={() => {
-            if (warn && !confirm(`Je ${st.t} tijdens deze dienst. Wil je hem toch doen?`)) return;
+            if (warn && !confirm(`Let op: ${st.t}. Wil je deze dienst toch doen?`)) return;
             api("signup", { shiftId: s.id, volunteerId: v.id });
           }}
         >
