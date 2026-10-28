@@ -130,6 +130,24 @@ export async function POST(req: NextRequest) {
         });
         break;
       }
+      case "updateTask": {
+        if (!org) return json({ error: "Alleen voor de organisatie." }, 403);
+        const task = await prisma.volunteerTask.findUnique({ where: { id: str(body.id) } });
+        if (!task) return json({ error: "Deze post bestaat niet meer." }, 404);
+        const name = str(body.name, 80);
+        if (!name) return json({ error: "Geef de post een naam." }, 400);
+        const area = str(body.area) in AREAS ? str(body.area) : task.area;
+        // Keep the done state of checklist lines whose text did not change.
+        const doneByText = new Map(safeJson(task.info).map((i) => [i.text, i.done]));
+        const lines = Array.isArray(body.info) ? body.info : [];
+        const info = lines
+          .map((l) => str(l, 200))
+          .filter(Boolean)
+          .slice(0, 30)
+          .map((text) => ({ text, done: doneByText.get(text) ?? false }));
+        await prisma.volunteerTask.update({ where: { id: task.id }, data: { name, area, info: JSON.stringify(info) } });
+        break;
+      }
       case "deleteTask": {
         if (!org) return json({ error: "Alleen voor de organisatie." }, 403);
         await prisma.volunteerTask.delete({ where: { id: str(body.id) } });
@@ -156,7 +174,8 @@ export async function POST(req: NextRequest) {
         const end = int(body.end, 0, 1440);
         const need = int(body.need, 1, 30);
         const data: { start?: number; end?: number; need?: number } = {};
-        if (!Number.isNaN(start) && !Number.isNaN(end) && end > start) Object.assign(data, { start, end });
+        if (body.friday === true) Object.assign(data, FRIDAY_SHIFT);
+        else if (!Number.isNaN(start) && !Number.isNaN(end) && end > start) Object.assign(data, { start, end });
         if (!Number.isNaN(need)) data.need = need;
         await prisma.volunteerShift.update({ where: { id: str(body.id) }, data });
         break;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { DraaiboekState } from "@/lib/draaiboek-types";
+import type { DraaiboekState, TaskDTO } from "@/lib/draaiboek-types";
 import { AREAS } from "@/lib/draaiboek-types";
 import type { Api } from "./Draaiboek";
 import { AREA_COLOR, s2m, when } from "./util";
@@ -14,6 +14,7 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
   const [to, setTo] = useState("18:00");
   const [need, setNeed] = useState("2");
   const [split, setSplit] = useState("120");
+  const [editing, setEditing] = useState<string | null>(null);
   const nameOf = (id: string) => S.volunteers.find((v) => v.id === id)?.name ?? "?";
 
   const add = async () => {
@@ -93,9 +94,11 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
             <Card>
               {list.map((t) => (
                 <div key={t.id} className="border border-derby-ink/10 rounded-xl p-3 mb-2.5 last:mb-0">
-                  <div className="flex flex-wrap items-center gap-2">
+                  {editing === t.id && <TaskEditor task={t} api={api} onDone={() => setEditing(null)} />}
+                  <div className={`flex flex-wrap items-center gap-2 ${editing === t.id ? "hidden" : ""}`}>
                     <span className="font-display text-xl flex-1 min-w-[150px]">{t.name}</span>
                     <Pill>{t.shifts.length} dienst{t.shifts.length === 1 ? "" : "en"}</Pill>
+                    <button type="button" className={btnGhost} onClick={() => setEditing(t.id)}>Bewerken</button>
                     <button type="button" className={btnGhost} onClick={() => api("addShift", { taskId: t.id })}>+ dienst</button>
                     <button
                       type="button"
@@ -138,5 +141,41 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
         );
       })}
     </>
+  );
+}
+
+function TaskEditor({ task, api, onDone }: { task: TaskDTO; api: Api; onDone: () => void }) {
+  const [name, setName] = useState(task.name);
+  const [area, setArea] = useState<string>(task.area);
+  const [info, setInfo] = useState(task.info.map((i) => i.text).join("\n"));
+
+  const save = async () => {
+    const r = await api("updateTask", { id: task.id, name, area, info: info.split("\n") });
+    if (r.ok) onDone();
+  };
+
+  return (
+    <div className="grid gap-3 sm:grid-cols-3 mb-2">
+      <div className="sm:col-span-2">
+        <label className={label} htmlFor={`eName-${task.id}`}>Naam post</label>
+        <input id={`eName-${task.id}`} className={input} value={name} onChange={(e) => setName(e.target.value)} />
+      </div>
+      <div>
+        <label className={label} htmlFor={`eArea-${task.id}`}>Onderdeel</label>
+        <select id={`eArea-${task.id}`} className={input} value={area} onChange={(e) => setArea(e.target.value)}>
+          {Object.entries(AREAS).map(([k, l]) => (
+            <option key={k} value={k}>{l}</option>
+          ))}
+        </select>
+      </div>
+      <div className="sm:col-span-3">
+        <label className={label} htmlFor={`eInfo-${task.id}`}>Checklist, één punt per regel</label>
+        <textarea id={`eInfo-${task.id}`} rows={Math.max(3, task.info.length + 1)} className={input} value={info} onChange={(e) => setInfo(e.target.value)} />
+      </div>
+      <div className="sm:col-span-3 flex gap-2">
+        <button type="button" className={btnRed} disabled={!name.trim()} onClick={save}>Opslaan</button>
+        <button type="button" className={btnGhost} onClick={onDone}>Annuleren</button>
+      </div>
+    </div>
   );
 }

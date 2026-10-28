@@ -24,6 +24,11 @@ export default function ShiftDrawer({ S, shiftId, api, onClose }: { S: Draaiboek
   const friday = isFriday(s.start);
   const save = () =>
     api("updateShift", friday ? { id: s.id, need: Number(need) } : { id: s.id, start: s2m(from), end: s2m(to), need: Number(need) });
+  const toSaturday = () => {
+    setFrom("09:00");
+    setTo("10:00");
+    api("updateShift", { id: s.id, start: 9 * 60, end: 10 * 60 });
+  };
   const rank = (v: DraaiboekState["volunteers"][number]) => {
     const on = s.who.includes(v.id);
     const k = status(S, v, s).k;
@@ -43,6 +48,22 @@ export default function ShiftDrawer({ S, shiftId, api, onClose }: { S: Draaiboek
           <button type="button" className="text-white/60 hover:text-white text-2xl px-2" onClick={onClose} aria-label="Sluiten">×</button>
         </div>
         <div className="p-4 overflow-y-auto flex-1">
+          <div className="flex gap-1.5 mb-3" role="group" aria-label="Dag">
+            {[
+              { k: false, l: "Zaterdag" },
+              { k: true, l: "Vrijdagavond" },
+            ].map(({ k, l }) => (
+              <button
+                key={l}
+                type="button"
+                aria-pressed={friday === k}
+                className={`rounded-full border px-3 py-1 text-sm font-bold ${friday === k ? "bg-derby-ink text-white border-derby-ink" : "border-derby-ink/20 hover:border-derby-ink/50"}`}
+                onClick={() => friday !== k && (k ? api("updateShift", { id: s.id, friday: true }) : toSaturday())}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
           <div className="grid grid-cols-3 gap-2 mb-4">
             <div>
               <label className={label}>Nodig</label>
