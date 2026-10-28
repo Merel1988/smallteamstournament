@@ -83,6 +83,16 @@ export default async function VenuePage({
         />
       </section>
 
+      {infoCards.length > 0 && (
+        <section className="grid sm:grid-cols-2 gap-4">
+          {infoCards.map((c) => (
+            <InfoCard key={c.title} title={c.title}>
+              {c.body}
+            </InfoCard>
+          ))}
+        </section>
+      )}
+
       <section className="bg-white rounded-2xl p-6 shadow space-y-3">
         <h2 className="font-display text-3xl">{t("hallHeading")}</h2>
         <div className="grid sm:grid-cols-2 gap-4">
@@ -99,16 +109,6 @@ export default async function VenuePage({
           ))}
         </div>
       </section>
-
-      {infoCards.length > 0 && (
-        <section className="grid sm:grid-cols-2 gap-4">
-          {infoCards.map((c) => (
-            <InfoCard key={c.title} title={c.title}>
-              {c.body}
-            </InfoCard>
-          ))}
-        </section>
-      )}
 
       <section className="bg-white rounded-2xl p-6 shadow space-y-3">
         <h2 className="font-display text-3xl">{t("houseHeading")}</h2>
