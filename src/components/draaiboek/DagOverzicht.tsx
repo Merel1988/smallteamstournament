@@ -32,8 +32,10 @@ export default function DagOverzicht({
     ["Knelpunten", clashes, clashes > 0 ? "bg-derby-accent" : "bg-green-600"],
   ];
 
-  // Timeline bounds, snapped to whole hours. Friday-evening shifts are listed below, not on the timeline.
+  // Timeline bounds, snapped to whole hours. Friday-evening shifts get their own block above the timeline.
   const day = sh.filter((s) => !isFriday(s.start));
+  const friday = sh.filter((s) => isFriday(s.start));
+  const nameOf = (id: string) => S.volunteers.find((v) => v.id === id)?.name ?? "?";
   let a = 9 * 60;
   let b = 21 * 60;
   day.forEach((s) => {
@@ -71,6 +73,32 @@ export default function DagOverzicht({
             : "Bovenin de wedstrijden, daaronder de posten. Gearceerd betekent: hier missen nog handen. Inschrijven doe je op het tabblad Inschrijven."
         }
       >
+        {friday.length > 0 && (
+          <div className="bg-derby-ink rounded-xl p-3 mb-3">
+            <div className="text-white text-sm font-semibold uppercase mb-2">Vrijdagavond (tijdens training)</div>
+            <div className="flex flex-wrap gap-2">
+              {friday.map((s) => {
+                const Tag = org ? "button" : "div";
+                const full = s.who.length >= s.need;
+                return (
+                  <Tag
+                    key={s.id}
+                    type={org ? "button" : undefined}
+                    onClick={org ? () => onOpenShift(s.id) : undefined}
+                    className={`rounded-md px-2.5 py-1.5 text-white text-left text-xs border-l-4 bg-white/10 ${org ? "cursor-pointer hover:bg-white/20" : ""}`}
+                    style={{ borderColor: AREA_COLOR[s.task.area] }}
+                  >
+                    <span className="block font-semibold uppercase">{s.task.name}</span>
+                    <span className="font-mono">
+                      <b className={full ? "text-green-400" : "text-derby-accent"}>{s.who.length}/{s.need}</b>{" "}
+                      <span className="text-white/60">{s.who.map(nameOf).join(", ")}</span>
+                    </span>
+                  </Tag>
+                );
+              })}
+            </div>
+          </div>
+        )}
         <div className="bg-derby-ink rounded-xl overflow-x-auto">
           {/* ruler */}
           <div className="flex border-b border-white/10">
