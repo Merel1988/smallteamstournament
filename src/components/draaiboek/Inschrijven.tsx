@@ -88,6 +88,33 @@ export default function Inschrijven({
   const open = allShifts(S)
     .filter((s) => s.who.length < s.need && !s.who.includes(v.id))
     .sort((a, b) => a.start - b.start);
+  const withStatus = open.map((s) => ({ s, st: status(S, v, s) }));
+  const free = withStatus.filter((x) => x.st.k !== "game");
+  const duringGame = withStatus.filter((x) => x.st.k === "game");
+
+  const row = ({ s, st }: (typeof withStatus)[number]) => {
+    const warn = st.k === "clash" || st.k === "game";
+    return (
+      <div key={s.id} className="flex flex-wrap items-center gap-2.5 py-2 border-b border-derby-ink/10 last:border-b-0 text-sm">
+        <span className="font-mono w-28 shrink-0">{m2s(s.start)} tot {m2s(s.end)}</span>
+        <span className="flex-1 font-medium min-w-[130px]">{s.task.name}</span>
+        {warn && <Pill tone="bad">{st.t}</Pill>}
+        {st.k === "soft" && <Pill tone="soft">{st.t}</Pill>}
+        <Pill>nog {s.need - s.who.length} nodig</Pill>
+        <button
+          type="button"
+          className={btnRed}
+          disabled={busy}
+          onClick={() => {
+            if (warn && !confirm(`Je ${st.t} tijdens deze dienst. Wil je hem toch doen?`)) return;
+            api("signup", { shiftId: s.id, volunteerId: v.id });
+          }}
+        >
+          {warn ? "Toch doen" : "Ik doe deze"}
+        </button>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -130,35 +157,23 @@ export default function Inschrijven({
 
       <Card
         title="Open plekken"
-        sub="Tik aan waar je bij kunt. Sta je bij een team, dan zie je diensten tijdens je eigen wedstrijden niet, en krijg je een waarschuwing als een dienst dicht op een wedstrijd zit. Overlapt een dienst met iets wat je al doet, dan zie je dat en kun je hem er toch bij nemen."
+        sub="Tik aan waar je bij kunt. Sta je bij een team, dan staan diensten tijdens je eigen wedstrijden apart onderaan, en krijg je een waarschuwing als een dienst dicht op een wedstrijd zit. Overlapt een dienst met iets wat je al doet, dan zie je dat en kun je hem er toch bij nemen."
       >
         {open.length === 0 && (
           <div className="text-center text-derby-ink/60 border border-dashed border-derby-ink/20 rounded-lg py-4 text-sm">Alles is gevuld, dank je!</div>
         )}
-        {open.map((s) => {
-          const st = status(S, v, s);
-          if (st.k === "game") return null;
-          return (
-            <div key={s.id} className="flex flex-wrap items-center gap-2.5 py-2 border-b border-derby-ink/10 last:border-b-0 text-sm">
-              <span className="font-mono w-28 shrink-0">{m2s(s.start)} tot {m2s(s.end)}</span>
-              <span className="flex-1 font-medium min-w-[130px]">{s.task.name}</span>
-              {st.k === "clash" && <Pill tone="bad">{st.t}</Pill>}
-              {st.k === "soft" && <Pill tone="soft">{st.t}</Pill>}
-              <Pill>nog {s.need - s.who.length} nodig</Pill>
-              <button
-                type="button"
-                className={btnRed}
-                disabled={busy}
-                onClick={() => {
-                  if (st.k === "clash" && !confirm(`Je ${st.t} op dit tijdstip. Wil je deze dienst er toch bij doen?`)) return;
-                  api("signup", { shiftId: s.id, volunteerId: v.id });
-                }}
-              >
-                {st.k === "clash" ? "Toch doen" : "Ik doe deze"}
-              </button>
-            </div>
-          );
-        })}
+        {free.map(row)}
+        {duringGame.length > 0 && (
+          <details className="mt-3 border border-derby-ink/15 rounded-lg px-3 py-2">
+            <summary className="cursor-pointer text-sm font-bold">
+              Tijdens je eigen wedstrijden ({duringGame.length})
+            </summary>
+            <p className="text-xs text-derby-ink/60 mt-1 mb-1">
+              Deze diensten vallen samen met een wedstrijd van je team. Kies er alleen een als je het echt kunt combineren, bijv. als aanspreekpunt.
+            </p>
+            {duringGame.map(row)}
+          </details>
+        )}
       </Card>
     </>
   );
