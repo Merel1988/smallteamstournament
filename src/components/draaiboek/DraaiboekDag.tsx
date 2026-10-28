@@ -18,7 +18,17 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
 
   const add = async () => {
     const allDay = split === "allday";
-    const r = await api("addTask", { name, area, from: s2m(from), to: s2m(to), need: Number(need), split: allDay ? 0 : Number(split), allDay });
+    const perGame = split === "pergame";
+    const r = await api("addTask", {
+      name,
+      area,
+      from: s2m(from),
+      to: s2m(to),
+      need: Number(need),
+      split: allDay || perGame ? 0 : Number(split),
+      allDay,
+      perGame,
+    });
     if (r.ok) setName("");
   };
 
@@ -40,11 +50,11 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
           </div>
           <div>
             <label className={label} htmlFor="tFrom">Van</label>
-            <input id="tFrom" type="time" step={300} className={input} disabled={split === "allday"} value={from} onChange={(e) => setFrom(e.target.value)} />
+            <input id="tFrom" type="time" step={300} className={input} disabled={split === "allday" || split === "pergame"} value={from} onChange={(e) => setFrom(e.target.value)} />
           </div>
           <div>
             <label className={label} htmlFor="tTo">Tot</label>
-            <input id="tTo" type="time" step={300} className={input} disabled={split === "allday"} value={to} onChange={(e) => setTo(e.target.value)} />
+            <input id="tTo" type="time" step={300} className={input} disabled={split === "allday" || split === "pergame"} value={to} onChange={(e) => setTo(e.target.value)} />
           </div>
           <div>
             <label className={label} htmlFor="tNeed">Mensen</label>
@@ -55,6 +65,7 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
             <select id="tSplit" className={input} value={split} onChange={(e) => setSplit(e.target.value)}>
               <option value="0">één blok</option>
               <option value="allday">hele dag (bijv. aanspreekpunt)</option>
+              <option value="pergame">per wedstrijd (bijv. track monkey)</option>
               <option value="30">blokken van 30 min</option>
               <option value="45">blokken van 45 min</option>
               <option value="60">blokken van 1 uur</option>

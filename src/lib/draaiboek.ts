@@ -6,6 +6,7 @@ import { AREAS, GAME_MINUTES, PRE_GAME_MARGIN, POST_GAME_MARGIN } from "@/lib/dr
 
 export * from "@/lib/draaiboek-types";
 import { DEFAULT_ITEMS, DEFAULT_TASKS, toMinutes } from "@/lib/draaiboek-seed";
+import { kindOf } from "@/lib/schedule";
 
 
 function same(a: string | undefined, b: string | undefined): boolean {
@@ -71,6 +72,17 @@ function localMinutes(d: Date): number {
 // Days until the event, computed outside render (server helper).
 export function daysToEvent(): number {
   return Math.max(0, Math.ceil((EVENT.date.getTime() - Date.now()) / 86400000));
+}
+
+// One slot per real game (breaks and programme items skipped), starting 5 min early like the seeded crew shifts.
+export async function gameSlots(): Promise<{ start: number; end: number }[]> {
+  const matches = await prisma.match.findMany({ select: { startsAt: true, poule: true }, orderBy: { startsAt: "asc" } });
+  return matches
+    .filter((m) => kindOf(m.poule) === "match")
+    .map((m) => {
+      const start = localMinutes(m.startsAt);
+      return { start: Math.max(0, start - 5), end: start + GAME_MINUTES };
+    });
 }
 
 export async function loadState(): Promise<DraaiboekState> {

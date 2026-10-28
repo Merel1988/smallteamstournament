@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { loadState, roleForToken, safeJson, AREAS } from "@/lib/draaiboek";
+import { gameSlots, loadState, roleForToken, safeJson, AREAS } from "@/lib/draaiboek";
 
 export const dynamic = "force-dynamic";
 
@@ -117,7 +117,11 @@ export async function POST(req: NextRequest) {
         if (Number.isNaN(from) || Number.isNaN(to) || to <= from)
           return json({ error: "De eindtijd moet na de begintijd liggen." }, 400);
         const shifts: { start: number; end: number; need: number }[] = [];
-        if (split > 0) for (let m = from; m < to; m += split) shifts.push({ start: m, end: Math.min(m + split, to), need });
+        if (body.perGame === true) {
+          const slots = await gameSlots();
+          if (slots.length === 0) return json({ error: "Er staan nog geen wedstrijden in het speelschema." }, 400);
+          shifts.push(...slots.map((s) => ({ ...s, need })));
+        } else if (split > 0) for (let m = from; m < to; m += split) shifts.push({ start: m, end: Math.min(m + split, to), need });
         else shifts.push({ start: from, end: to, need });
         const max = await prisma.volunteerTask.aggregate({ _max: { sortOrder: true } });
         await prisma.volunteerTask.create({
