@@ -23,7 +23,7 @@ export default function Voorbereiding({ S, api }: { S: DraaiboekState; api: Api 
         {issues.map((i) => (
           <div key={i.id} className="flex items-start gap-2 py-1 text-sm group">
             <input type="checkbox" className="mt-1 accent-derby-accent" checked={i.done} onChange={(e) => patch(i.id, { done: e.target.checked })} id={`q${i.id}`} />
-            <label htmlFor={`q${i.id}`} className={`flex-1 ${i.done ? "line-through text-derby-ink/50" : ""}`}>{i.text}</label>
+            <EditableText value={i.text} onSave={(text) => patch(i.id, { text })} className={`flex-1 ${i.done ? "line-through text-derby-ink/50" : ""}`} />
             <DeleteButton onClick={() => remove(i)} />
           </div>
         ))}
@@ -60,8 +60,14 @@ export default function Voorbereiding({ S, api }: { S: DraaiboekState; api: Api 
                             <input type="checkbox" className="accent-derby-accent" checked={p.done} onChange={(e) => patch(p.id, { done: e.target.checked })} />
                           </td>
                           <td className={`py-1.5 pr-2 ${p.done ? "line-through text-derby-ink/50" : ""}`}>
-                            <b>{p.text}</b>
-                            {p.note && <div className="text-xs text-derby-ink/60">{p.note}</div>}
+                            <EditableText value={p.text} onSave={(text) => patch(p.id, { text })} className="font-bold" />
+                            <EditableText
+                              value={p.note}
+                              onSave={(note) => patch(p.id, { note })}
+                              allowEmpty
+                              placeholder="+ toelichting"
+                              className="text-xs text-derby-ink/60"
+                            />
                           </td>
                           <td className="py-1.5 pr-2">
                             <input className={cell} defaultValue={p.wie} placeholder="naam" onBlur={(e) => e.target.value !== p.wie && patch(p.id, { wie: e.target.value })} />
@@ -92,7 +98,9 @@ export default function Voorbereiding({ S, api }: { S: DraaiboekState; api: Api 
               <tbody>
                 {roles.filter((r) => r.fase === f).map((r) => (
                   <tr key={r.id} className="border-t border-derby-ink/10">
-                    <td className="py-1.5 pr-2">{r.text}</td>
+                    <td className="py-1.5 pr-2">
+                      <EditableText value={r.text} onSave={(text) => patch(r.id, { text })} />
+                    </td>
                     <td className="py-1.5 w-52">
                       <input className={cell} defaultValue={r.wie} placeholder="naam" onBlur={(e) => e.target.value !== r.wie && patch(r.id, { wie: e.target.value })} />
                     </td>
@@ -144,5 +152,60 @@ function AddForm({ api, kind, fase = "", placeholder, withNote }: { api: Api; ki
       )}
       <button type="button" className={btnRed} disabled={!text.trim()} onClick={add}>+</button>
     </div>
+  );
+}
+
+function EditableText({
+  value,
+  onSave,
+  className = "",
+  allowEmpty,
+  placeholder,
+}: {
+  value: string;
+  onSave: (v: string) => void;
+  className?: string;
+  allowEmpty?: boolean;
+  placeholder?: string;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value);
+  const commit = () => {
+    const v = draft.trim();
+    setEditing(false);
+    if (v === value || (!v && !allowEmpty)) return setDraft(value);
+    onSave(v);
+  };
+
+  if (editing) {
+    return (
+      <input
+        autoFocus
+        className={`${cell} ${className}`}
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") commit();
+          if (e.key === "Escape") {
+            setDraft(value);
+            setEditing(false);
+          }
+        }}
+      />
+    );
+  }
+  return (
+    <button
+      type="button"
+      title="Klik om te wijzigen"
+      className={`block text-left w-full rounded hover:bg-derby-ink/5 ${!value ? "opacity-0 hover:opacity-100 focus:opacity-100" : ""} ${className}`}
+      onClick={() => {
+        setDraft(value);
+        setEditing(true);
+      }}
+    >
+      {value || placeholder}
+    </button>
   );
 }

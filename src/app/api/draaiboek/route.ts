@@ -192,6 +192,8 @@ export async function POST(req: NextRequest) {
         if ("done" in patch) data.done = !!patch.done;
         if ("wie" in patch) data.wie = str(patch.wie, 120);
         if ("datum" in patch) data.datum = str(patch.datum, 20);
+        if ("text" in patch && str(patch.text, 300)) data.text = str(patch.text, 300);
+        if ("note" in patch) data.note = str(patch.note, 300);
         await prisma.draaiboekItem.update({ where: { id: str(body.id) }, data });
         break;
       }
