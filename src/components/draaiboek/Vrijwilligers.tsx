@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { DraaiboekState } from "@/lib/draaiboek-types";
+import { isFriday } from "@/lib/draaiboek-types";
 import type { Api } from "./Draaiboek";
 import { hours, m2s, myGames, status, teamName, volMinutes, volShifts } from "./util";
 import { Card, Pill, btnRed, input, label } from "./ui";
@@ -118,7 +119,7 @@ export default function Vrijwilligers({ S, org, api, busy }: { S: DraaiboekState
                   const tone = st.k === "free" ? "bg-derby-bg border-derby-ink/15" : st.k === "soft" ? "bg-amber-50 border-amber-200 text-amber-800" : "bg-red-50 border-red-200 text-red-800";
                   return (
                     <span key={s.id} className={`inline-flex items-center gap-1 border rounded-full pl-2.5 pr-1 py-0.5 text-xs ${tone}`} title={st.t}>
-                      {m2s(s.start)} {s.task.name}
+                      {isFriday(s.start) ? "vr" : m2s(s.start)} {s.task.name}
                       {org && (
                         <button
                           type="button"

@@ -17,6 +17,10 @@ export const PRE_GAME_MARGIN = 45;
 export const POST_GAME_MARGIN = 15;
 export const GAME_MINUTES = MATCH_MINUTES;
 
+// Friday-evening shifts (during training) are stored before event-day midnight so they never overlap Saturday.
+export const FRIDAY_SHIFT = { start: -240, end: -60 };
+export const isFriday = (start: number) => start < 0;
+
 
 export type InfoItem = { text: string; done: boolean };
 export type ShiftDTO = {

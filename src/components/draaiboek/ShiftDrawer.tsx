@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import type { DraaiboekState } from "@/lib/draaiboek-types";
+import { isFriday } from "@/lib/draaiboek-types";
 import type { Api } from "./Draaiboek";
-import { hours, m2s, s2m, status, volMinutes } from "./util";
+import { hours, m2s, when, s2m, status, volMinutes } from "./util";
 import { Pill, btnGhost, input, label } from "./ui";
 
 export default function ShiftDrawer({ S, shiftId, api, onClose }: { S: DraaiboekState; shiftId: string; api: Api; onClose: () => void }) {
@@ -20,7 +21,9 @@ export default function ShiftDrawer({ S, shiftId, api, onClose }: { S: Draaiboek
 
   if (!found) return null;
   const { t, s } = found;
-  const save = () => api("updateShift", { id: s.id, start: s2m(from), end: s2m(to), need: Number(need) });
+  const friday = isFriday(s.start);
+  const save = () =>
+    api("updateShift", friday ? { id: s.id, need: Number(need) } : { id: s.id, start: s2m(from), end: s2m(to), need: Number(need) });
   const rank = (v: DraaiboekState["volunteers"][number]) => {
     const on = s.who.includes(v.id);
     const k = status(S, v, s).k;
@@ -35,7 +38,7 @@ export default function ShiftDrawer({ S, shiftId, api, onClose }: { S: Draaiboek
         <div className="bg-derby-ink text-white p-4 border-b-4 border-derby-accent flex justify-between gap-3">
           <div>
             <h2 className="font-display text-2xl leading-tight">{t.name}</h2>
-            <div className="font-mono text-sm text-derby-accent">{m2s(s.start)} tot {m2s(s.end)}</div>
+            <div className="font-mono text-sm text-derby-accent">{when(s)}</div>
           </div>
           <button type="button" className="text-white/60 hover:text-white text-2xl px-2" onClick={onClose} aria-label="Sluiten">×</button>
         </div>
@@ -45,14 +48,18 @@ export default function ShiftDrawer({ S, shiftId, api, onClose }: { S: Draaiboek
               <label className={label}>Nodig</label>
               <input type="number" min={1} max={30} className={input} value={need} onChange={(e) => setNeed(e.target.value)} onBlur={save} />
             </div>
-            <div>
-              <label className={label}>Van</label>
-              <input type="time" step={300} className={input} value={from} onChange={(e) => setFrom(e.target.value)} onBlur={save} />
-            </div>
-            <div>
-              <label className={label}>Tot</label>
-              <input type="time" step={300} className={input} value={to} onChange={(e) => setTo(e.target.value)} onBlur={save} />
-            </div>
+            {!friday && (
+              <>
+                <div>
+                  <label className={label}>Van</label>
+                  <input type="time" step={300} className={input} value={from} onChange={(e) => setFrom(e.target.value)} onBlur={save} />
+                </div>
+                <div>
+                  <label className={label}>Tot</label>
+                  <input type="time" step={300} className={input} value={to} onChange={(e) => setTo(e.target.value)} onBlur={save} />
+                </div>
+              </>
+            )}
           </div>
           <p className="text-sm text-derby-ink/60 mb-2">
             <b className="font-mono text-derby-ink">{s.who.length}/{s.need}</b> ingedeeld. Klik een naam aan of uit.

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { DraaiboekState } from "@/lib/draaiboek-types";
 import type { Api } from "./Draaiboek";
-import { allShifts, hours, m2s, myGames, status, volMinutes, volShifts } from "./util";
+import { allShifts, hours, m2s, when, myGames, status, volMinutes, volShifts } from "./util";
 import { Card, Pill, btnDark, btnGhost, btnRed, input, label } from "./ui";
 
 export default function Inschrijven({
@@ -96,7 +96,7 @@ export default function Inschrijven({
     const warn = st.k === "clash" || st.k === "game";
     return (
       <div key={s.id} className="flex flex-wrap items-center gap-2.5 py-2 border-b border-derby-ink/10 last:border-b-0 text-sm">
-        <span className="font-mono w-28 shrink-0">{m2s(s.start)} tot {m2s(s.end)}</span>
+        <span className="font-mono w-28 shrink-0">{when(s)}</span>
         <span className="flex-1 font-medium min-w-[130px]">{s.task.name}</span>
         {warn && <Pill tone="bad">{st.t}</Pill>}
         {st.k === "soft" && <Pill tone="soft">{st.t}</Pill>}
@@ -133,7 +133,7 @@ export default function Inschrijven({
             const tone = st.k === "free" ? "bg-derby-bg border-derby-ink/15" : st.k === "soft" ? "bg-amber-50 border-amber-200 text-amber-800" : "bg-red-50 border-red-200 text-red-800";
             return (
               <span key={s.id} className={`inline-flex items-center gap-1.5 border rounded-full pl-3 pr-1 py-0.5 text-sm ${tone}`}>
-                {m2s(s.start)} tot {m2s(s.end)} {s.task.name}
+                {when(s)} {s.task.name}
                 <button
                   type="button"
                   aria-label="Afmelden"

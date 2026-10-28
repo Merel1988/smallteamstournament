@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import type { DraaiboekState } from "@/lib/draaiboek-types";
-import { AREAS } from "@/lib/draaiboek-types";
-import { allShifts, m2s, myGames, volShifts } from "./util";
+import { AREAS, isFriday } from "@/lib/draaiboek-types";
+import { allShifts, m2s, myGames, volShifts, when } from "./util";
 import { Card, btnDark } from "./ui";
 
 export default function Delen({ S }: { S: DraaiboekState }) {
@@ -13,7 +13,7 @@ export default function Delen({ S }: { S: DraaiboekState }) {
 
   const oproep =
     `Small Teams Tournament, zaterdag 21 november, De Horstacker\nWe zoeken nog handen. Laat weten waar je kunt:\n\n` +
-    (gaps.map((s) => `• ${m2s(s.start)} tot ${m2s(s.end)}  ${s.task.name}, nog ${s.need - s.who.length} nodig`).join("\n") ||
+    (gaps.map((s) => `• ${when(s)}  ${s.task.name}, nog ${s.need - s.who.length} nodig`).join("\n") ||
       "• Niets meer open, we zijn rond!") +
     `\n\nSkate je zelf mee? Geef je team door, dan plannen we om je wedstrijden heen.`;
 
@@ -25,7 +25,7 @@ export default function Delen({ S }: { S: DraaiboekState }) {
         return (
           `${v.name}\n` +
           (g.length ? `  Eigen wedstrijden: ${g.map((x) => m2s(x.start)).join(", ")}\n` : "") +
-          (sh.map((s) => `  ${m2s(s.start)} tot ${m2s(s.end)}  ${s.task.name}`).join("\n") || "  (nog geen dienst)")
+          (sh.map((s) => `  ${when(s)}  ${s.task.name}`).join("\n") || "  (nog geen dienst)")
         );
       })
       .join("\n\n") || "(nog geen vrijwilligers)";
@@ -38,7 +38,7 @@ export default function Delen({ S }: { S: DraaiboekState }) {
     list.forEach((t) => {
       run += `\n\n${t.name}`;
       t.shifts.forEach((s) => {
-        run += `\n  ${m2s(s.start)} tot ${m2s(s.end)}  ${s.need} pers.  ${s.who.map(nameOf).join(", ") || "-"}`;
+        run += `\n  ${when(s)}  ${s.need} pers.  ${s.who.map(nameOf).join(", ") || "-"}`;
       });
       t.info.forEach((i) => (run += `\n    - ${i.done ? "[x] " : "[ ] "}${i.text}`));
     });
@@ -48,7 +48,7 @@ export default function Delen({ S }: { S: DraaiboekState }) {
   allShifts(S)
     .sort((a, b) => a.start - b.start)
     .forEach((s) =>
-      rows.push([AREAS[s.task.area], m2s(s.start), m2s(s.end), s.task.name, String(s.need), String(s.who.length), s.who.map(nameOf).join(" / ")]),
+      rows.push([AREAS[s.task.area], isFriday(s.start) ? "vrijdagavond" : m2s(s.start), isFriday(s.start) ? "" : m2s(s.end), s.task.name, String(s.need), String(s.who.length), s.who.map(nameOf).join(" / ")]),
     );
   const csv = rows.map((r) => r.map((c) => (/[",;\n]/.test(c) ? `"${c.replace(/"/g, '""')}"` : c)).join(",")).join("\n");
 

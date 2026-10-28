@@ -1,4 +1,5 @@
 import type { DraaiboekState, ShiftDTO, TaskDTO, VolunteerDTO } from "@/lib/draaiboek-types";
+import { isFriday } from "@/lib/draaiboek-types";
 
 export const m2s = (m: number) =>
   `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
@@ -6,6 +7,8 @@ export const s2m = (s: string) => {
   const [a, b] = s.split(":").map(Number);
   return (a || 0) * 60 + (b || 0);
 };
+export const when = (s: { start: number; end: number }) =>
+  isFriday(s.start) ? "vrijdagavond" : `${m2s(s.start)} tot ${m2s(s.end)}`;
 export const overlaps = (a1: number, a2: number, b1: number, b2: number) => a1 < b2 && b1 < a2;
 
 export type ShiftWithTask = ShiftDTO & { task: TaskDTO };

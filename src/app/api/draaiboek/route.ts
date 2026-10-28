@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { gameSlots, loadState, roleForToken, safeJson, AREAS } from "@/lib/draaiboek";
+import { gameSlots, loadState, roleForToken, safeJson, AREAS, FRIDAY_SHIFT, isFriday } from "@/lib/draaiboek";
 
 export const dynamic = "force-dynamic";
 
@@ -117,7 +117,8 @@ export async function POST(req: NextRequest) {
         if (Number.isNaN(from) || Number.isNaN(to) || to <= from)
           return json({ error: "De eindtijd moet na de begintijd liggen." }, 400);
         const shifts: { start: number; end: number; need: number }[] = [];
-        if (body.perGame === true) {
+        if (body.friday === true) shifts.push({ ...FRIDAY_SHIFT, need });
+        else if (body.perGame === true) {
           const slots = await gameSlots();
           if (slots.length === 0) return json({ error: "Er staan nog geen wedstrijden in het speelschema." }, 400);
           shifts.push(...slots.map((s) => ({ ...s, need })));
@@ -138,6 +139,10 @@ export async function POST(req: NextRequest) {
         if (!org) return json({ error: "Alleen voor de organisatie." }, 403);
         const taskId = str(body.taskId);
         const last = await prisma.volunteerShift.findFirst({ where: { taskId }, orderBy: { end: "desc" } });
+        if (last && isFriday(last.start)) {
+          await prisma.volunteerShift.create({ data: { taskId, ...FRIDAY_SHIFT, need: last.need } });
+          break;
+        }
         const start = last ? last.end : 12 * 60;
         const length = last ? last.end - last.start : 120;
         await prisma.volunteerShift.create({

@@ -1,8 +1,8 @@
 "use client";
 
 import type { DraaiboekState } from "@/lib/draaiboek-types";
-import { AREAS } from "@/lib/draaiboek-types";
-import { AREA_COLOR, allShifts, hard, m2s, status, teamName } from "./util";
+import { AREAS, isFriday } from "@/lib/draaiboek-types";
+import { AREA_COLOR, allShifts, hard, m2s, when, status, teamName } from "./util";
 import { Card, btnGhost } from "./ui";
 
 export default function DagOverzicht({
@@ -32,10 +32,11 @@ export default function DagOverzicht({
     ["Knelpunten", clashes, clashes > 0 ? "bg-derby-accent" : "bg-green-600"],
   ];
 
-  // Timeline bounds, snapped to whole hours.
+  // Timeline bounds, snapped to whole hours. Friday-evening shifts are listed below, not on the timeline.
+  const day = sh.filter((s) => !isFriday(s.start));
   let a = 9 * 60;
   let b = 21 * 60;
-  sh.forEach((s) => {
+  day.forEach((s) => {
     a = Math.min(a, s.start);
     b = Math.max(b, s.end);
   });
@@ -126,7 +127,7 @@ export default function DagOverzicht({
           {/* tasks */}
           {(Object.keys(AREAS) as (keyof typeof AREAS)[]).map((ar) =>
             S.tasks
-              .filter((t) => t.area === ar)
+              .filter((t) => t.area === ar && t.shifts.some((s) => !isFriday(s.start)))
               .map((t) => {
                 const col = AREA_COLOR[t.area];
                 return (
@@ -139,7 +140,7 @@ export default function DagOverzicht({
                       {range(a, b, 60).map((m) => (
                         <div key={m} className="absolute top-0 bottom-0 border-l border-white/10" style={{ left: (m - a) * px }} />
                       ))}
-                      {t.shifts.map((s) => {
+                      {t.shifts.filter((s) => !isFriday(s.start)).map((s) => {
                         const g = Math.min(s.who.length, s.need);
                         const pct = Math.round((g / s.need) * 100);
                         const w = Math.max(30, (s.end - s.start) * px);
@@ -151,7 +152,7 @@ export default function DagOverzicht({
                             onClick={org ? () => onOpenShift(s.id) : undefined}
                             className={`absolute top-1.5 bottom-1.5 rounded-md overflow-hidden text-white text-left ${org ? "cursor-pointer" : ""}`}
                             style={{ left: (s.start - a) * px, width: w, background: col }}
-                            title={`${t.name} ${m2s(s.start)} tot ${m2s(s.end)} · ${g}/${s.need}`}
+                            title={`${t.name} ${when(s)} · ${g}/${s.need}`}
                           >
                             <span className="absolute inset-0 bg-black/45">
                               <i className="absolute left-0 top-0 bottom-0" style={{ width: `${pct}%`, background: col }} />
@@ -200,7 +201,7 @@ export default function DagOverzicht({
         ) : (
           gaps.map((s) => (
             <div key={s.id} className="flex flex-wrap items-center gap-2.5 py-2 border-b border-derby-ink/10 last:border-b-0 text-sm">
-              <span className="font-mono w-28 shrink-0">{m2s(s.start)} tot {m2s(s.end)}</span>
+              <span className="font-mono w-28 shrink-0">{when(s)}</span>
               <span className="flex-1 font-medium min-w-[130px]">{s.task.name}</span>
               <span className="font-mono text-xs font-bold bg-derby-accent text-white rounded-full px-2.5 py-0.5">
                 nog {s.need - s.who.length}

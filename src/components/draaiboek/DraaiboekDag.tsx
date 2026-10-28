@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { DraaiboekState } from "@/lib/draaiboek-types";
 import { AREAS } from "@/lib/draaiboek-types";
 import type { Api } from "./Draaiboek";
-import { AREA_COLOR, m2s, s2m } from "./util";
+import { AREA_COLOR, s2m, when } from "./util";
 import { Card, Pill, btnGhost, btnRed, input, label } from "./ui";
 
 export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekState; api: Api; onOpenShift: (id: string) => void }) {
@@ -19,15 +19,17 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
   const add = async () => {
     const allDay = split === "allday";
     const perGame = split === "pergame";
+    const friday = split === "friday";
     const r = await api("addTask", {
       name,
       area,
       from: s2m(from),
       to: s2m(to),
       need: Number(need),
-      split: allDay || perGame ? 0 : Number(split),
+      split: allDay || perGame || friday ? 0 : Number(split),
       allDay,
       perGame,
+      friday,
     });
     if (r.ok) setName("");
   };
@@ -50,11 +52,11 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
           </div>
           <div>
             <label className={label} htmlFor="tFrom">Van</label>
-            <input id="tFrom" type="time" step={300} className={input} disabled={split === "allday" || split === "pergame"} value={from} onChange={(e) => setFrom(e.target.value)} />
+            <input id="tFrom" type="time" step={300} className={input} disabled={["allday", "pergame", "friday"].includes(split)} value={from} onChange={(e) => setFrom(e.target.value)} />
           </div>
           <div>
             <label className={label} htmlFor="tTo">Tot</label>
-            <input id="tTo" type="time" step={300} className={input} disabled={split === "allday" || split === "pergame"} value={to} onChange={(e) => setTo(e.target.value)} />
+            <input id="tTo" type="time" step={300} className={input} disabled={["allday", "pergame", "friday"].includes(split)} value={to} onChange={(e) => setTo(e.target.value)} />
           </div>
           <div>
             <label className={label} htmlFor="tNeed">Mensen</label>
@@ -66,6 +68,7 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
               <option value="0">één blok</option>
               <option value="allday">hele dag (bijv. aanspreekpunt)</option>
               <option value="pergame">per wedstrijd (bijv. track monkey)</option>
+              <option value="friday">vrijdagavond (tijdens training)</option>
               <option value="30">blokken van 30 min</option>
               <option value="45">blokken van 45 min</option>
               <option value="60">blokken van 1 uur</option>
@@ -105,7 +108,7 @@ export default function DraaiboekDag({ S, api, onOpenShift }: { S: DraaiboekStat
                   </div>
                   {t.shifts.map((s) => (
                     <div key={s.id} className="flex flex-wrap items-center gap-2.5 py-1.5 border-t border-dotted border-derby-ink/10 text-sm">
-                      <span className="font-mono w-28 shrink-0">{m2s(s.start)} tot {m2s(s.end)}</span>
+                      <span className="font-mono w-28 shrink-0">{when(s)}</span>
                       <span className={`font-mono text-xs font-bold ${s.who.length >= s.need ? "text-green-700" : "text-derby-accent"}`}>
                         {s.who.length}/{s.need}
                       </span>
