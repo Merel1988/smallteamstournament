@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -10,6 +11,9 @@ import { pageMetadata } from "@/lib/seo";
 import { getHiddenPageKeys } from "@/lib/page-visibility";
 import { eventTimeFormatter } from "@/lib/time";
 import { sideName } from "@/lib/match-teams";
+import { kindOf } from "@/lib/schedule";
+
+const UPCOMING_COUNT = 3;
 
 export const dynamic = "force-dynamic";
 
@@ -31,32 +35,37 @@ export default async function HomePage({
   setRequestLocale(locale);
   const t = await getTranslations("Home");
   const tEvent = await getTranslations("Event");
+  const tVenue = await getTranslations("Venue");
+  const tNav = await getTranslations("Nav");
   const hidden = await getHiddenPageKeys();
   // Editable via /admin/teksten (Home.eventInfo); only shown when filled.
   const eventInfo = t("eventInfo").trim();
 
   const now = new Date();
-  // The live/next-match blocks expose team names (teams page) and the schedule
+  // The match blocks expose team names (teams page) and the schedule
   // (schema page), so only show them when both of those pages are visible.
   const showMatches = !hidden.has("teams") && !hidden.has("schema");
-  const liveMatch = showMatches
-    ? await prisma.match
-        .findFirst({
-          where: { status: "live" },
-          include: { teamA: true, teamB: true },
-        })
-        .catch(() => null)
-    : null;
-
-  const nextMatch = showMatches
-    ? await prisma.match
-        .findFirst({
-          where: { status: "scheduled", startsAt: { gte: now } },
-          orderBy: { startsAt: "asc" },
-          include: { teamA: true, teamB: true },
-        })
-        .catch(() => null)
-    : null;
+  const [openMatches, teams] = await Promise.all([
+    showMatches
+      ? prisma.match
+          .findMany({
+            where: { status: { not: "finished" } },
+            orderBy: { startsAt: "asc" },
+            include: { teamA: true, teamB: true },
+          })
+          .catch(() => [])
+      : [],
+    hidden.has("teams")
+      ? []
+      : prisma.team
+          .findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, logoUrl: true } })
+          .catch(() => []),
+  ]);
+  const bouts = openMatches.filter((m) => kindOf(m.poule) === "match");
+  const liveMatch = bouts.find((m) => m.status === "live") ?? null;
+  const upcoming = bouts
+    .filter((m) => m.status === "scheduled" && m.startsAt >= now)
+    .slice(0, liveMatch ? UPCOMING_COUNT - 1 : UPCOMING_COUNT);
 
   const beforeEvent = EVENT.date.getTime() > now.getTime();
   const timeFormatter = eventTimeFormatter(locale);
@@ -64,6 +73,22 @@ export default async function HomePage({
     name: sideName(team, label),
     href: label?.trim() ? null : `/teams/${team.id}`,
   });
+  const mapsQuery = encodeURIComponent(EVENT.address);
+  const visitInfo = [
+    { title: tVenue("ticketsTitle"), body: tVenue("ticketsBody") },
+    { title: tVenue("foodTitle"), body: tVenue("foodBody") },
+    { title: tVenue("parkingTitle"), body: tVenue("parkingBody") },
+  ].filter((item) => item.body.trim());
+  const funCards = [
+    { href: "/bingo", label: t("cards.bingo"), emoji: "🎯" },
+    { href: "/fotos", label: t("cards.photos"), emoji: "📸" },
+    { href: "/mvp", label: t("cards.mvpVote"), emoji: "⭐" },
+    { href: "/nickname", label: t("cards.nickname"), emoji: "💀" },
+  ].filter((card) => !hidden.has(card.href.slice(1)));
+  const teamLinks = [
+    { key: "info", href: "/info", label: tNav("info") },
+    { key: "toernooi", href: "/toernooi", label: tNav("toernooi") },
+  ].filter((link) => !hidden.has(link.key));
 
   return (
     <div className="space-y-8">
@@ -105,6 +130,25 @@ export default async function HomePage({
               </div>
             )}
           </div>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            {!hidden.has("schema") && (
+              <Link
+                href="/schema"
+                className="rounded-full bg-derby-accent text-white px-5 py-2 font-bold hover:bg-white hover:text-derby-ink transition"
+              >
+                {t("ctaSchedule")}
+              </Link>
+            )}
+            {!hidden.has("regels") && (
+              <Link
+                href="/regels"
+                className="rounded-full border border-white/60 text-white px-5 py-2 font-bold hover:bg-white hover:text-derby-ink transition"
+              >
+                {t("ctaRules")}
+              </Link>
+            )}
+          </div>
         </div>
       </section>
 
@@ -114,80 +158,185 @@ export default async function HomePage({
         </section>
       )}
 
-      <section className="grid gap-3 sm:grid-cols-3">
-        {[
-          { href: "/aanmelden", label: t("primary.aanmelden.label"), desc: t("primary.aanmelden.desc"), emoji: "📝" },
-          { href: "/toernooi", label: t("primary.toernooi.label"), desc: t("primary.toernooi.desc"), emoji: "🏆" },
-          { href: "/regels", label: t("primary.regels.label"), desc: t("primary.regels.desc"), emoji: "📖" },
-        ]
-          .filter((block) => !hidden.has(block.href.slice(1)))
-          .map((block) => (
-            <Link
-              key={block.href}
-              href={block.href}
-              className="group bg-derby-ink text-white rounded-2xl p-6 shadow-lg hover:bg-derby-accent transition flex flex-col"
-            >
-              <div className="text-3xl">{block.emoji}</div>
-              <div className="font-display text-2xl text-white group-hover:text-white mt-2">
-                {block.label}
-              </div>
-              <p className="text-sm text-white/80 mt-1">{block.desc}</p>
+      {(liveMatch || upcoming.length > 0) && (
+        <section aria-labelledby="matches-heading" className="space-y-3">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 id="matches-heading" className="font-display text-3xl">
+              {t("matchesHeading")}
+            </h2>
+            <Link href="/schema" className="text-sm font-bold text-derby-accent hover:underline">
+              {t("allMatches")}
             </Link>
-          ))}
-      </section>
-
-      {liveMatch && (
-        <section className="border-2 border-derby-accent rounded-2xl p-5 bg-white">
-          <p className="text-xs uppercase tracking-wider text-derby-accent font-bold">
-            {t("liveNow")}
-          </p>
-          <MatchRow
-            teamA={side(liveMatch.teamA, liveMatch.teamALabel)}
-            teamB={side(liveMatch.teamB, liveMatch.teamBLabel)}
-            scoreA={liveMatch.scoreA}
-            scoreB={liveMatch.scoreB}
-            vsLabel={t("vs")}
-            timeFormatter={timeFormatter}
-          />
+          </div>
+          <ul className="space-y-3">
+            {liveMatch && (
+              <li className="border-2 border-derby-accent rounded-2xl p-5 bg-white">
+                <p className="text-xs uppercase tracking-wider text-derby-accent font-bold">
+                  {t("liveNow")}
+                  {liveMatch.poule && <span className="text-derby-ink/60"> · {liveMatch.poule}</span>}
+                </p>
+                <MatchRow
+                  teamA={side(liveMatch.teamA, liveMatch.teamALabel)}
+                  teamB={side(liveMatch.teamB, liveMatch.teamBLabel)}
+                  scoreA={liveMatch.scoreA}
+                  scoreB={liveMatch.scoreB}
+                  vsLabel={t("vs")}
+                  timeFormatter={timeFormatter}
+                />
+              </li>
+            )}
+            {upcoming.map((m, i) => (
+              <li key={m.id} className="border border-derby-ink/10 rounded-2xl p-5 bg-white">
+                <p className="text-xs uppercase tracking-wider text-derby-ink/60 font-bold">
+                  {i === 0 && !liveMatch ? t("nextMatch") : m.poule}
+                  {i === 0 && !liveMatch && m.poule && <span> · {m.poule}</span>}
+                </p>
+                <MatchRow
+                  teamA={side(m.teamA, m.teamALabel)}
+                  teamB={side(m.teamB, m.teamBLabel)}
+                  when={m.startsAt}
+                  vsLabel={t("vs")}
+                  timeFormatter={timeFormatter}
+                />
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 
-      {nextMatch && !liveMatch && (
-        <section className="border border-derby-ink/10 rounded-2xl p-5 bg-white">
-          <p className="text-xs uppercase tracking-wider text-derby-ink/60 font-bold">
-            {t("nextMatch")}
-          </p>
-          <MatchRow
-            teamA={side(nextMatch.teamA, nextMatch.teamALabel)}
-            teamB={side(nextMatch.teamB, nextMatch.teamBLabel)}
-            when={nextMatch.startsAt}
-            vsLabel={t("vs")}
-            timeFormatter={timeFormatter}
-          />
+      {teams.length > 0 && (
+        <section aria-labelledby="teams-heading" className="space-y-3">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 id="teams-heading" className="font-display text-3xl">
+              {t("teamsHeading")}
+            </h2>
+            <Link href="/teams" className="text-sm font-bold text-derby-accent hover:underline">
+              {t("allTeams")}
+            </Link>
+          </div>
+          <ul className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {teams.map((team) => (
+              <li key={team.id} className="flex">
+                <Link
+                  href={`/teams/${team.id}`}
+                  className="group bg-white rounded-xl p-4 shadow flex flex-1 flex-col items-center text-center gap-2 hover:-rotate-1 hover:shadow-lg transition"
+                >
+                  {team.logoUrl ? (
+                    <Image
+                      src={team.logoUrl}
+                      alt=""
+                      width={80}
+                      height={80}
+                      className="w-20 h-20 rounded-lg object-contain"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-lg stripes" aria-hidden />
+                  )}
+                  <span className="font-display text-lg leading-tight group-hover:text-derby-accent">
+                    {team.name}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 
-      <section className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {[
-          { href: "/teams", label: t("cards.teams"), emoji: "🛼" },
-          { href: "/schema", label: t("cards.schema"), emoji: "📅" },
-          { href: "/bingo", label: t("cards.bingo"), emoji: "🎯" },
-          { href: "/fotos", label: t("cards.photos"), emoji: "📸" },
-          { href: "/mvp", label: t("cards.mvpVote"), emoji: "⭐" },
-          { href: "/nickname", label: t("cards.nickname"), emoji: "💀" },
-        ]
-          .filter((card) => !hidden.has(card.href.slice(1)))
-          .map((card) => (
-          <Link
-            key={card.href}
-            href={card.href}
-            className="bg-white hover:bg-derby-accent hover:text-white rounded-xl p-5 text-center shadow transition"
+      <div className="grid gap-4 md:grid-cols-2">
+        {!hidden.has("regels") && (
+          <section aria-labelledby="learn-heading" className="bg-derby-ink text-white rounded-2xl p-6 shadow-lg flex flex-col">
+            <h2 id="learn-heading" className="font-display text-3xl text-white">
+              {t("learnHeading")}
+            </h2>
+            <p className="text-white/80 mt-1">{t("learnIntro")}</p>
+            <ul className="mt-3 space-y-2">
+              {(["learnPoint1", "learnPoint2", "learnPoint3"] as const).map((key) => (
+                <li key={key} className="flex gap-2">
+                  <span className="text-derby-accent" aria-hidden>
+                    ★
+                  </span>
+                  <span>{t(key)}</span>
+                </li>
+              ))}
+            </ul>
+            <Link href="/regels" className="mt-auto pt-4 font-bold text-derby-accent hover:underline">
+              {t("learnCta")}
+            </Link>
+          </section>
+        )}
+
+        <section aria-labelledby="visit-heading" className="bg-white rounded-2xl p-6 shadow flex flex-col">
+          <h2 id="visit-heading" className="font-display text-3xl">
+            {t("visitHeading")}
+          </h2>
+          <p className="mt-1">
+            <strong>{tEvent("dateLine")}</strong>
+          </p>
+          <p className="text-derby-ink/80">
+            {EVENT.venue}, {EVENT.address}
+          </p>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-derby-accent underline"
           >
-            <div className="text-3xl">{card.emoji}</div>
-            <div className="font-display text-xl mt-2">{card.label}</div>
-          </Link>
-        ))}
-      </section>
+            {tVenue("openMaps")}
+          </a>
+          {visitInfo.length > 0 && (
+            <dl className="mt-3 space-y-2">
+              {visitInfo.map((item) => (
+                <div key={item.title}>
+                  <dt className="font-bold">{item.title}</dt>
+                  <dd className="text-derby-ink/80">{item.body}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          {!hidden.has("venue") && (
+            <Link href="/venue" className="mt-auto pt-4 font-bold text-derby-accent hover:underline">
+              {t("visitMore")}
+            </Link>
+          )}
+        </section>
+      </div>
+
+      {funCards.length > 0 && (
+        <section aria-labelledby="fun-heading" className="space-y-3">
+          <h2 id="fun-heading" className="font-display text-3xl">
+            {t("funHeading")}
+          </h2>
+          <ul className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {funCards.map((card) => (
+              <li key={card.href} className="flex">
+                <Link
+                  href={card.href}
+                  className="flex-1 bg-white hover:bg-derby-accent hover:text-white rounded-xl p-5 text-center shadow transition"
+                >
+                  <div className="text-3xl" aria-hidden>
+                    {card.emoji}
+                  </div>
+                  <div className="font-display text-xl mt-2">{card.label}</div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {teamLinks.length > 0 && (
+        <p className="text-sm text-derby-ink/70">
+          {t("forTeams")}{" "}
+          {teamLinks.map((link, i) => (
+            <span key={link.key}>
+              {i > 0 && " · "}
+              <Link href={link.href} className="font-bold underline hover:text-derby-accent">
+                {link.label}
+              </Link>
+            </span>
+          ))}
+        </p>
+      )}
     </div>
   );
 }

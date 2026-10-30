@@ -32,27 +32,27 @@
     "nextMatch": "Volgende wedstrijd",
     "vs": "vs",
     "cards": {
-      "teams": "Teams",
-      "schema": "Schema",
       "bingo": "Bingo",
       "photos": "Foto's",
       "mvpVote": "MVP stem",
       "nickname": "Derby-naam"
     },
-    "primary": {
-      "aanmelden": {
-        "label": "Aanmelden",
-        "desc": "Meld je team aan voor het toernooi."
-      },
-      "toernooi": {
-        "label": "Over het toernooi",
-        "desc": "Alles over het Small Teams Tournament."
-      },
-      "regels": {
-        "label": "Regels",
-        "desc": "Zo werkt roller derby, in het kort."
-      }
-    }
+    "ctaSchedule": "Bekijk het schema",
+    "ctaRules": "Nieuw bij roller derby?",
+    "matchesHeading": "Komende wedstrijden",
+    "allMatches": "Volledig schema →",
+    "teamsHeading": "De teams",
+    "allTeams": "Alle teams →",
+    "learnHeading": "Eerste keer roller derby?",
+    "learnIntro": "Zo volg je het spel al snel:",
+    "learnPoint1": "Elk team heeft één jammer, te herkennen aan de ster op de helm. Alleen de jammer scoort.",
+    "learnPoint2": "De jammer verdient een punt voor elke tegenstander die de jammer legaal inhaalt.",
+    "learnPoint3": "Een jam duurt maximaal 2 minuten. Een wedstrijd op dit toernooi duurt 20 minuten.",
+    "learnCta": "Roller derby simpel uitgelegd →",
+    "visitHeading": "Komen kijken",
+    "visitMore": "Alles over de locatie →",
+    "funHeading": "Tijdens de wedstrijden",
+    "forTeams": "Speel of officiate je mee? Alle praktische info staat in het infopack."
   },
   "Countdown": {
     "days": "dagen",

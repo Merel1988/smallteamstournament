@@ -32,27 +32,27 @@
     "nextMatch": "Next bout",
     "vs": "vs",
     "cards": {
-      "teams": "Teams",
-      "schema": "Schedule",
       "bingo": "Bingo",
       "photos": "Photos",
       "mvpVote": "MVP vote",
       "nickname": "Derby name"
     },
-    "primary": {
-      "aanmelden": {
-        "label": "Register",
-        "desc": "Sign your team up for the tournament."
-      },
-      "toernooi": {
-        "label": "About the tournament",
-        "desc": "Everything about the Small Teams Tournament."
-      },
-      "regels": {
-        "label": "Rules",
-        "desc": "How roller derby works, in short."
-      }
-    }
+    "ctaSchedule": "See the schedule",
+    "ctaRules": "New to roller derby?",
+    "matchesHeading": "Upcoming bouts",
+    "allMatches": "Full schedule →",
+    "teamsHeading": "The teams",
+    "allTeams": "All teams →",
+    "learnHeading": "First time at roller derby?",
+    "learnIntro": "Here's how to follow the game:",
+    "learnPoint1": "Each team has one jammer, recognisable by the star on their helmet. Only the jammer scores.",
+    "learnPoint2": "The jammer earns a point for every opponent they legally pass.",
+    "learnPoint3": "A jam lasts up to 2 minutes. A game at this tournament lasts 20 minutes.",
+    "learnCta": "Roller derby explained →",
+    "visitHeading": "Come and watch",
+    "visitMore": "Everything about the venue →",
+    "funHeading": "During the games",
+    "forTeams": "Playing or officiating? All practical info is in the info pack."
   },
   "Countdown": {
     "days": "days",
