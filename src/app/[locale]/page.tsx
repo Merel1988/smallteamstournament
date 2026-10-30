@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import AutoRefresh from "@/components/AutoRefresh";
 import Countdown from "@/components/Countdown";
 import RoadkillLogo from "@/components/RoadkillLogo";
 import EventJsonLd from "@/components/EventJsonLd";
@@ -14,6 +15,7 @@ import { sideName } from "@/lib/match-teams";
 import { kindOf } from "@/lib/schedule";
 
 const UPCOMING_COUNT = 3;
+const LIVE_REFRESH_MS = 10_000;
 
 export const dynamic = "force-dynamic";
 
@@ -93,6 +95,7 @@ export default async function HomePage({
   return (
     <div className="space-y-8">
       <EventJsonLd description={tEvent("description")} />
+      {liveMatch && <AutoRefresh intervalMs={LIVE_REFRESH_MS} />}
       <section className="relative overflow-hidden bg-derby-ink text-white rounded-2xl p-6 pb-8 sm:p-10 sm:pb-12 shadow-lg">
         <div
           className="pointer-events-none absolute -right-16 -top-6 w-56 opacity-30 rotate-[-8deg] sm:w-80 lg:-right-10 lg:top-4 lg:opacity-100"
