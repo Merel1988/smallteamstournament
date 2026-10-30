@@ -81,49 +81,18 @@ export async function deleteLockerRoom(id: string) {
   refresh();
 }
 
-export async function saveRoster(matchId: string, formData: FormData) {
+export async function saveOfficials(formData: FormData) {
   await requireAdmin();
-  const positions = formData.getAll("position").map(String);
-  const names = formData.getAll("name").map(String);
-  const pronouns = formData.getAll("pronouns").map(String);
-  const rows = positions
-    .map((position, i) => ({
-      matchId,
-      position: position.trim(),
-      name: (names[i] ?? "").trim(),
-      pronouns: (pronouns[i] ?? "").trim() || null,
-      sortOrder: i,
-    }))
-    .filter((r) => r.position && r.name);
+  const lines = String(formData.get("names") ?? "")
+    .split("\n")
+    .map((n) => n.trim())
+    .filter(Boolean);
+  const names = [...new Map(lines.map((n) => [n.toLowerCase(), n])).values()];
 
   await prisma.$transaction([
-    prisma.officialAssignment.deleteMany({ where: { matchId } }),
-    prisma.officialAssignment.createMany({ data: rows }),
+    prisma.official.deleteMany(),
+    prisma.official.createMany({ data: names.map((name, sortOrder) => ({ name, sortOrder })) }),
   ]);
   refresh();
-  redirect(`/admin/infopack?match=${encodeURIComponent(matchId)}&saved=1#roster`);
-}
-
-export async function copyRoster(matchId: string, formData: FormData) {
-  await requireAdmin();
-  const sourceId = String(formData.get("source") ?? "");
-  if (!sourceId || sourceId === matchId) return;
-  const source = await prisma.officialAssignment.findMany({
-    where: { matchId: sourceId },
-    orderBy: { sortOrder: "asc" },
-  });
-  await prisma.$transaction([
-    prisma.officialAssignment.deleteMany({ where: { matchId } }),
-    prisma.officialAssignment.createMany({
-      data: source.map(({ position, name, pronouns, sortOrder }) => ({
-        matchId,
-        position,
-        name,
-        pronouns,
-        sortOrder,
-      })),
-    }),
-  ]);
-  refresh();
-  redirect(`/admin/infopack?match=${encodeURIComponent(matchId)}&saved=1#roster`);
+  redirect("/admin/infopack?saved=1#officials");
 }

@@ -273,3 +273,10 @@ model OfficialAssignment {
 
   @@index([matchId])
 }
+
+model Official {
+  id        String   @id @default(cuid())
+  name      String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}

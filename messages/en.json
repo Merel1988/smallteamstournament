@@ -504,11 +504,6 @@
     "rosterEmpty": "The names of the officials will follow soon.",
     "officialsHeading": "Dress code",
     "officialsBody": "Don't wear team clothing or merchandise. Referees: black and white striped shirt and black bottoms. NSOs: black shirt without team logos.",
-    "groups": {
-      "referees": "Referees (SOs)",
-      "nsos": "NSOs",
-      "other": "Other"
-    },
     "teamsHeading": "For teams",
     "teamsBody": "You can warm up on the small track next to the main track."
   },

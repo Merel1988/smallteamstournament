@@ -504,11 +504,6 @@
     "rosterEmpty": "De namen van de officials volgen binnenkort.",
     "officialsHeading": "Dresscode",
     "officialsBody": "Draag geen teamkleding of merchandise. Referees: zwart-wit gestreept shirt en een zwarte broek. NSO's: zwart shirt zonder teamlogo.",
-    "groups": {
-      "referees": "Referees (SO's)",
-      "nsos": "NSO's",
-      "other": "Overig"
-    },
     "teamsHeading": "Voor teams",
     "teamsBody": "Opwarmen kan op de kleine track naast de baan."
   },

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import DayProgram from "@/components/DayProgram";
 import { Link } from "@/i18n/navigation";
 import { MATCH_MINUTES } from "@/lib/event";
-import { crewGroup, type CrewGroup, type ProgramEntry } from "@/lib/infopack";
+import type { ProgramEntry } from "@/lib/infopack";
 import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
 import type { PageKey } from "@/lib/pages";
 import { prisma } from "@/lib/prisma";
@@ -44,16 +44,17 @@ export default async function InfoPage({
   const en = locale === "en";
 
   const hidden = await getHiddenPageKeys();
-  const [items, matches, lockerRooms, teams] = await Promise.all([
+  const [items, matches, lockerRooms, teams, officials] = await Promise.all([
     prisma.programItem.findMany({ orderBy: { start: "asc" } }).catch(() => []),
     prisma.match
       .findMany({
         orderBy: { startsAt: "asc" },
-        include: { teamA: true, teamB: true, officials: { orderBy: { sortOrder: "asc" } } },
+        include: { teamA: true, teamB: true },
       })
       .catch(() => []),
     prisma.lockerRoom.findMany({ orderBy: { sortOrder: "asc" } }).catch(() => []),
     prisma.team.findMany({ select: { id: true, name: true, color: true } }).catch(() => []),
+    prisma.official.findMany({ select: { id: true, name: true } }).catch(() => []),
   ]);
   const teamByName = new Map(
     hidden.has("teams") ? [] : teams.map((team) => [team.name.toLowerCase(), team]),
@@ -86,24 +87,7 @@ export default async function InfoPage({
     }),
   ].sort((a, b) => a.start - b.start || (a.kind === "match" ? 1 : -1));
 
-  const crew = new Map<CrewGroup, Map<string, { name: string; pronouns: string | null }>>();
-  for (const m of matches) {
-    if (kindOf(m.poule) !== "match") continue;
-    for (const a of m.officials) {
-      const name = a.name.trim();
-      if (!name) continue;
-      const group = crew.get(crewGroup(a.position)) ?? new Map();
-      crew.set(crewGroup(a.position), group);
-      const prev = group.get(name.toLowerCase());
-      group.set(name.toLowerCase(), { name, pronouns: prev?.pronouns || a.pronouns });
-    }
-  }
-  const crewGroups = (["referees", "nsos", "other"] as const)
-    .map((g) => ({
-      group: g,
-      people: [...(crew.get(g)?.values() ?? [])].sort((a, b) => a.name.localeCompare(b.name, locale)),
-    }))
-    .filter((g) => g.people.length > 0);
+  const officialNames = officials.map((o) => o.name).sort((a, b) => a.localeCompare(b, locale));
 
   const links = LINKS.filter((l) => !hidden.has(l.key));
 
@@ -223,24 +207,14 @@ export default async function InfoPage({
             <p className="text-derby-ink/80 whitespace-pre-line">{t("officialsBody")}</p>
           </div>
         )}
-        {crewGroups.length === 0 ? (
+        {officialNames.length === 0 ? (
           <p className="text-derby-ink/60">{t("rosterEmpty")}</p>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
-            {crewGroups.map(({ group, people }) => (
-              <div key={group} className="bg-white rounded-2xl p-5 shadow">
-                <h3 className="font-display text-2xl mb-2">{t(`groups.${group}`)}</h3>
-                <ul className="space-y-1">
-                  {people.map((p) => (
-                    <li key={p.name}>
-                      {p.name}
-                      {p.pronouns && <span className="opacity-60"> ({p.pronouns})</span>}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <ul className="bg-white rounded-2xl p-5 shadow grid gap-x-6 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
+            {officialNames.map((name) => (
+              <li key={name}>{name}</li>
             ))}
-          </div>
+          </ul>
         )}
       </section>
 
