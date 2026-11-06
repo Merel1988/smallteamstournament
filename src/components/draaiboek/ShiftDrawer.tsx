@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { DraaiboekState } from "@/lib/draaiboek-types";
-import { isFriday } from "@/lib/draaiboek-types";
+import { HALL_OPEN, isFriday } from "@/lib/draaiboek-types";
 import type { Api } from "./Draaiboek";
 import { hours, m2s, when, s2m, status, volMinutes } from "./util";
 import { Pill, btnGhost, input, label } from "./ui";
@@ -25,9 +25,9 @@ export default function ShiftDrawer({ S, shiftId, api, onClose }: { S: Draaiboek
   const save = () =>
     api("updateShift", friday ? { id: s.id, need: Number(need) } : { id: s.id, start: s2m(from), end: s2m(to), need: Number(need) });
   const toSaturday = () => {
-    setFrom("09:00");
-    setTo("10:00");
-    api("updateShift", { id: s.id, start: 9 * 60, end: 10 * 60 });
+    setFrom(m2s(HALL_OPEN));
+    setTo(m2s(HALL_OPEN + 60));
+    api("updateShift", { id: s.id, start: HALL_OPEN, end: HALL_OPEN + 60 });
   };
   const rank = (v: DraaiboekState["volunteers"][number]) => {
     const on = s.who.includes(v.id);

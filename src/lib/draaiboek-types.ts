@@ -21,6 +21,10 @@ export const GAME_MINUTES = MATCH_MINUTES;
 export const FRIDAY_SHIFT = { start: -240, end: -60 };
 export const isFriday = (start: number) => start < 0;
 
+// Hall reservation on event day.
+export const HALL_OPEN = 10 * 60;
+export const HALL_CLOSE = 19 * 60;
+
 
 export type InfoItem = { text: string; done: boolean };
 export type ShiftDTO = {

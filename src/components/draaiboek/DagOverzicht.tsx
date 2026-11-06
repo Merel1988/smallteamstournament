@@ -1,7 +1,7 @@
 "use client";
 
 import type { DraaiboekState } from "@/lib/draaiboek-types";
-import { AREAS, isFriday } from "@/lib/draaiboek-types";
+import { AREAS, HALL_CLOSE, HALL_OPEN, isFriday } from "@/lib/draaiboek-types";
 import { AREA_COLOR, allShifts, hard, m2s, when, status, teamName } from "./util";
 import { Card, btnGhost } from "./ui";
 
@@ -36,8 +36,8 @@ export default function DagOverzicht({
   const day = sh.filter((s) => !isFriday(s.start));
   const friday = sh.filter((s) => isFriday(s.start));
   const nameOf = (id: string) => S.volunteers.find((v) => v.id === id)?.name ?? "?";
-  let a = 9 * 60;
-  let b = 21 * 60;
+  let a = HALL_OPEN;
+  let b = HALL_CLOSE;
   day.forEach((s) => {
     a = Math.min(a, s.start);
     b = Math.max(b, s.end);
