@@ -51,7 +51,7 @@ export default async function AdminInfopackPage({
           <Link href="/info" className="underline">
             /info
           </Link>
-          . De wedstrijden zelf komen uit Schema en verschijnen automatisch in het dagprogramma.
+          . De wedstrijden zelf komen uit Schema en verschijnen automatisch in het dagprogramma, met per team een warm-upslot van 10 minuten op de zijbaan.
         </p>
       </header>
 
@@ -68,7 +68,7 @@ export default async function AdminInfopackPage({
         {items.length === 0 ? (
           <p className="text-derby-ink/60">
             Nog niets toegevoegd. Denk aan: deuren open voor teams en officials, captains meeting,
-            officials meeting, warm-ups, deuren open voor publiek, prijsuitreiking, opruimen.
+            officials meeting, deuren open voor publiek, prijsuitreiking, opruimen.
           </p>
         ) : (
           <ul className="space-y-3">

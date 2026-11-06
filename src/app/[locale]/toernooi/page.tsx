@@ -32,7 +32,6 @@ export default async function ToernooiPage({
     { heading: "introHeading", body: "introBody" },
     { heading: "formatHeading", body: "formatBody" },
     { heading: "gamesHeading", body: "gamesBody" },
-    { heading: "scheduleHeading", body: "scheduleBody" },
     { heading: "officialsHeading", body: "officialsBody" },
   ];
 

@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import DayProgram from "@/components/DayProgram";
 import { Link } from "@/i18n/navigation";
-import { MATCH_MINUTES } from "@/lib/event";
+import { MATCH_MINUTES, WARMUP_MINUTES } from "@/lib/event";
 import type { ProgramEntry } from "@/lib/infopack";
 import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
 import type { PageKey } from "@/lib/pages";
@@ -29,6 +29,8 @@ const LINKS: { key: PageKey; navKey: string; href: string; emoji: string }[] = [
   { key: "venue", navKey: "venue", href: "/venue", emoji: "📍" },
   { key: "regels", navKey: "rules", href: "/regels", emoji: "📖" },
 ];
+
+const KIND_ORDER: Record<ProgramEntry["kind"], number> = { item: 0, break: 1, warmup: 2, match: 3 };
 
 export default async function InfoPage({
   params,
@@ -70,22 +72,44 @@ export default async function InfoPage({
       note: (en && i.noteEn) || i.noteNl,
       kind: "item" as const,
     })),
-    ...(showMatches ? matches : []).map((m) => {
+    ...(showMatches ? matches : []).flatMap((m): ProgramEntry[] => {
       const kind = kindOf(m.poule);
       const start = eventMinutes(m.startsAt);
-      return {
-        id: m.id,
-        start,
-        end: kind === "match" ? start + MATCH_MINUTES : null,
-        title:
-          kind === "match"
-            ? `${m.poule ? `${m.poule} · ` : ""}${sideName(m.teamA, m.teamALabel)} vs ${sideName(m.teamB, m.teamBLabel)}`
-            : (m.poule ?? ""),
-        note: null,
-        kind: kind === "break" ? ("break" as const) : kind === "match" ? ("match" as const) : ("item" as const),
-      };
+      if (kind !== "match") {
+        return [{ id: m.id, start, end: null, title: m.poule ?? "", note: null, kind: kind === "break" ? "break" : "item" }];
+      }
+      const sides = [
+        { team: m.teamA, label: m.teamALabel },
+        { team: m.teamB, label: m.teamBLabel },
+      ];
+      const warmups = sides.map(({ team, label }, i): ProgramEntry => {
+        const warmupStart = start - (sides.length - i) * WARMUP_MINUTES;
+        return {
+          id: `${m.id}-warmup-${i}`,
+          start: warmupStart,
+          end: warmupStart + WARMUP_MINUTES,
+          title: t("warmup", { team: sideName(team, label) }),
+          note: t("warmupNote"),
+          kind: "warmup",
+          color: label?.trim() ? null : team.color,
+        };
+      });
+      return [
+        ...warmups,
+        {
+          id: m.id,
+          start,
+          end: start + MATCH_MINUTES,
+          title: `${m.poule ? `${m.poule} · ` : ""}${sideName(m.teamA, m.teamALabel)} vs ${sideName(m.teamB, m.teamBLabel)}`,
+          note: null,
+          kind: "match",
+        },
+      ];
     }),
-  ].sort((a, b) => a.start - b.start || (a.kind === "match" ? 1 : -1));
+  ].sort((a, b) => a.start - b.start || KIND_ORDER[a.kind] - KIND_ORDER[b.kind]);
+
+  const teamColors = teams.filter((team) => team.color).sort((a, b) => a.name.localeCompare(b.name, locale));
+  const showTeamLinks = !hidden.has("teams");
 
   const officialNames = officials.map((o) => o.name).sort((a, b) => a.localeCompare(b, locale));
 
@@ -103,6 +127,11 @@ export default async function InfoPage({
           {lockerRooms.length > 0 && (
             <a href="#kleedkamers" className="rounded-full bg-derby-ink text-white px-4 py-1.5 font-bold hover:bg-derby-accent transition">
               {t("lockerHeading")}
+            </a>
+          )}
+          {teamColors.length > 0 && (
+            <a href="#kleuren" className="rounded-full bg-derby-ink text-white px-4 py-1.5 font-bold hover:bg-derby-accent transition">
+              {t("colorsHeading")}
             </a>
           )}
           <a href="#officials" className="rounded-full bg-derby-ink text-white px-4 py-1.5 font-bold hover:bg-derby-accent transition">
@@ -193,6 +222,40 @@ export default async function InfoPage({
                 </ul>
               </li>
             ))}
+          </ul>
+        </section>
+      )}
+
+      {teamColors.length > 0 && (
+        <section id="kleuren" aria-labelledby="colors-heading" className="space-y-3 scroll-mt-32">
+          <h2 id="colors-heading" className="font-display text-3xl">
+            {t("colorsHeading")}
+          </h2>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {teamColors.map((team) => {
+              const content = (
+                <>
+                  <span
+                    className="w-8 h-8 rounded-full shrink-0 ring-2 ring-derby-ink/10"
+                    style={{ backgroundColor: team.color ?? undefined }}
+                    aria-hidden
+                  />
+                  {team.name}
+                </>
+              );
+              const box = "flex h-full items-center gap-3 bg-white rounded-2xl p-4 shadow font-bold";
+              return (
+                <li key={team.id}>
+                  {showTeamLinks ? (
+                    <Link href={`/teams/${team.id}`} className={`${box} hover:text-derby-accent`}>
+                      {content}
+                    </Link>
+                  ) : (
+                    <div className={box}>{content}</div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </section>
       )}

@@ -6,5 +6,6 @@ export type ProgramEntry = {
   end: number | null;
   title: string;
   note: string | null;
-  kind: "item" | "match" | "break";
+  kind: "item" | "match" | "break" | "warmup";
+  color?: string | null;
 };

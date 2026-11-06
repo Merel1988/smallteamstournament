@@ -1,4 +1,6 @@
 export const MATCH_MINUTES = 20;
+// Each team gets its own warm-up slot on the side track before a game, one team at a time.
+export const WARMUP_MINUTES = 10;
 
 export const EVENT = {
   name: "Small Teams Tournament",
