@@ -280,3 +280,13 @@ model Official {
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
 }
+
+model TombolaPrize {
+  id        String    @id @default(cuid())
+  ticket    String
+  // Normalised ticket number, so "042" and "42" or "Rood 7" and "rood7" match.
+  ticketKey String    @unique
+  prize     String
+  claimedAt DateTime?
+  createdAt DateTime  @default(now())
+}

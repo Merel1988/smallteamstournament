@@ -15,7 +15,8 @@
     "notifications": "Notificaties",
     "admin": "Admin",
     "fun": "Fun",
-    "infoGroup": "Info"
+    "infoGroup": "Info",
+    "tombola": "Tombola"
   },
   "Event": {
     "league": "Roadkill Rollers Nijmegen",
@@ -471,6 +472,10 @@
     "privacy": {
       "title": "Privacy",
       "description": "Welke gegevens de site van het Small Teams Tournament verzamelt en wat we ermee doen."
+    },
+    "tombola": {
+      "title": "Tombola",
+      "description": "Check of je lot gewonnen heeft bij de tombola van het Small Teams Tournament."
     }
   },
   "Toernooi": {
@@ -500,7 +505,6 @@
     "programNote": "Tijden onder voorbehoud. De wedstrijden uit het speelschema staan er automatisch tussen.",
     "programEmpty": "Het dagprogramma volgt binnenkort.",
     "warmup": "Warm-up: {team}",
-    "warmupNote": "Op de zijbaan",
     "lockerHeading": "Kleedkamers",
     "colorsHeading": "Teamkleuren",
     "rosterHeading": "Officials",
@@ -578,5 +582,19 @@
     "lead": "Deze pagina bestaat niet (meer). Kom snel terug op de track, voordat de ref je een cut penalty geeft.",
     "home": "Terug naar home",
     "schema": "Bekijk het schema"
+  },
+  "Tombola": {
+    "title": "🎟️ Tombola",
+    "lead": "De trekking is geweest! Vul je lotnummer in en zie meteen of je iets gewonnen hebt.",
+    "notDrawn": "De trekking is nog niet geweest. Houd je lot bij de hand en kom straks terug.",
+    "label": "Je lotnummer(s)",
+    "placeholder": "Bijvoorbeeld 42 of 42, 117",
+    "hint": "Meerdere loten? Zet er een komma tussen (maximaal {max}).",
+    "check": "Check mijn lot",
+    "won": "Gewonnen: {prize}",
+    "claimed": "Deze prijs is al opgehaald.",
+    "noPrize": "Helaas, geen prijs.",
+    "collect": "Gefeliciteerd! Haal je prijs op bij de merch- en tombolatafel en neem je lot mee.",
+    "nextTime": "Helaas, dit keer niet. Bedankt voor het steunen van Roadkill Rollers!"
   }
 }

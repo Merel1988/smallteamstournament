@@ -15,7 +15,8 @@
     "notifications": "Notifications",
     "admin": "Admin",
     "fun": "Fun",
-    "infoGroup": "Info"
+    "infoGroup": "Info",
+    "tombola": "Raffle"
   },
   "Event": {
     "league": "Roadkill Rollers Nijmegen",
@@ -471,6 +472,10 @@
     "privacy": {
       "title": "Privacy",
       "description": "What data the Small Teams Tournament site collects and what we do with it."
+    },
+    "tombola": {
+      "title": "Raffle",
+      "description": "Check whether your ticket won a prize in the Small Teams Tournament raffle."
     }
   },
   "Toernooi": {
@@ -500,7 +505,6 @@
     "programNote": "Times are subject to change. Games from the schedule are added automatically.",
     "programEmpty": "The day schedule will follow soon.",
     "warmup": "Warm-up: {team}",
-    "warmupNote": "On the side track",
     "lockerHeading": "Locker rooms",
     "colorsHeading": "Team colours",
     "rosterHeading": "Officials",
@@ -578,5 +582,19 @@
     "lead": "This page does not exist (anymore). Get back on the track before the ref calls a cut penalty.",
     "home": "Back to home",
     "schema": "View the schedule"
+  },
+  "Tombola": {
+    "title": "🎟️ Raffle",
+    "lead": "The draw is done! Enter your ticket number and see right away whether you won.",
+    "notDrawn": "The draw hasn't happened yet. Keep your ticket handy and check back later.",
+    "label": "Your ticket number(s)",
+    "placeholder": "For example 42 or 42, 117",
+    "hint": "More than one ticket? Separate them with a comma (up to {max}).",
+    "check": "Check my ticket",
+    "won": "You won: {prize}",
+    "claimed": "This prize has already been collected.",
+    "noPrize": "Sorry, no prize.",
+    "collect": "Congratulations! Collect your prize at the merch and raffle table and bring your ticket.",
+    "nextTime": "Not this time. Thanks for supporting Roadkill Rollers!"
   }
 }

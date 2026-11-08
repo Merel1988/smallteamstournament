@@ -18,6 +18,7 @@ const STATIC_PATHS = [
   "fotos",
   "mvp",
   "nickname",
+  "tombola",
   "regels",
   "venue",
   "privacy",

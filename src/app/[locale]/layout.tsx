@@ -77,6 +77,7 @@ export default async function LocaleLayout({
     ...link("nickname", "/nickname", tNav("nickname")),
     ...link("fotos", "/fotos", tNav("photos")),
     ...link("mvp", "/mvp", tNav("mvp")),
+    ...link("tombola", "/tombola", tNav("tombola")),
   ];
   const infoItems = [
     ...link("toernooi", "/toernooi", tNav("toernooi")),

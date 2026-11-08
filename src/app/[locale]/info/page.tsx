@@ -89,7 +89,7 @@ export default async function InfoPage({
           start: warmupStart,
           end: warmupStart + WARMUP_MINUTES,
           title: t("warmup", { team: sideName(team, label) }),
-          note: t("warmupNote"),
+          note: null,
           kind: "warmup",
           color: label?.trim() ? null : team.color,
         };
