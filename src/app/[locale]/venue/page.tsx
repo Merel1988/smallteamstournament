@@ -40,6 +40,7 @@ export default async function VenuePage({
     { title: t("firstAidTitle"), body: t("firstAidBody") },
     { title: t("changingTitle"), body: t("changingBody") },
     { title: t("parkingTitle"), body: t("parkingBody") },
+    { title: t("accessTitle"), body: t("accessBody") },
     { title: t("floorTitle"), body: t("floorBody") },
   ].filter((c) => c.body.trim().length > 0);
 
