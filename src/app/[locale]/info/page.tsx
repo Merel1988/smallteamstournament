@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import DayProgram from "@/components/DayProgram";
 import { Link } from "@/i18n/navigation";
-import { MATCH_MINUTES, WARMUP_MINUTES } from "@/lib/event";
+import { MATCH_MINUTES, WARMUP_GAP_MINUTES, WARMUP_MINUTES } from "@/lib/event";
 import type { ProgramEntry } from "@/lib/infopack";
 import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
 import type { PageKey } from "@/lib/pages";
@@ -83,7 +83,7 @@ export default async function InfoPage({
         { team: m.teamB, label: m.teamBLabel },
       ];
       const warmups = sides.map(({ team, label }, i): ProgramEntry => {
-        const warmupStart = start - (sides.length - i) * WARMUP_MINUTES;
+        const warmupStart = start - WARMUP_GAP_MINUTES - (sides.length - i) * WARMUP_MINUTES;
         return {
           id: `${m.id}-warmup-${i}`,
           start: warmupStart,

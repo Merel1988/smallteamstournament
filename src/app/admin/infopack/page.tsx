@@ -51,7 +51,7 @@ export default async function AdminInfopackPage({
           <Link href="/info" className="underline">
             /info
           </Link>
-          . De wedstrijden zelf komen uit Schema en verschijnen automatisch in het dagprogramma, met per team een warm-upslot van 10 minuten op de zijbaan.
+          . De wedstrijden zelf komen uit Schema en verschijnen automatisch in het dagprogramma, met per team een warm-upslot van 10 minuten op de zijbaan dat 5 minuten voor de wedstrijd eindigt.
         </p>
       </header>
 
