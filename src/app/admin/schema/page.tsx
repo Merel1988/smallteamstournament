@@ -51,6 +51,7 @@ export default async function AdminSchemaPage() {
           <TeamSelect name="teamAId" label="Team A" teams={teams} />
           <TeamSelect name="teamBId" label="Team B" teams={teams} />
           <LabelInputs />
+          <ShirtInputs />
           <label className="block sm:col-span-2">
             <span className="block text-sm mb-1">Notities</span>
             <textarea
@@ -80,6 +81,7 @@ export default async function AdminSchemaPage() {
             <TeamSelect name="teamAId" label="Team A" teams={teams} defaultValue={m.teamAId} />
             <TeamSelect name="teamBId" label="Team B" teams={teams} defaultValue={m.teamBId} />
             <LabelInputs a={m.teamALabel} b={m.teamBLabel} />
+            <ShirtInputs a={m.shirtA} b={m.shirtB} />
             <label className="block">
               <span className="block text-sm mb-1">Starttijd</span>
               <input
@@ -204,6 +206,31 @@ function LabelInputs({ a, b }: { a?: string | null; b?: string | null }) {
         Zolang een placeholder is ingevuld, toont de site die tekst in plaats van het gekozen team.
         Maak hem leeg zodra het echte team bekend is.
       </p>
+    </>
+  );
+}
+
+function ShirtInputs({ a, b }: { a?: string | null; b?: string | null }) {
+  return (
+    <>
+      <label className="block">
+        <span className="block text-sm mb-1">Shirtkleur team A (optioneel)</span>
+        <input
+          name="shirtA"
+          defaultValue={a ?? ""}
+          placeholder="bv. zwart"
+          className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
+        />
+      </label>
+      <label className="block">
+        <span className="block text-sm mb-1">Shirtkleur team B (optioneel)</span>
+        <input
+          name="shirtB"
+          defaultValue={b ?? ""}
+          placeholder="bv. wit"
+          className="w-full border border-derby-ink/20 rounded-lg px-3 py-2"
+        />
+      </label>
     </>
   );
 }

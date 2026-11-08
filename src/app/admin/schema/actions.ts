@@ -25,6 +25,8 @@ export async function createMatch(formData: FormData) {
       teamBId,
       teamALabel: label(formData, "teamALabel"),
       teamBLabel: label(formData, "teamBLabel"),
+      shirtA: label(formData, "shirtA"),
+      shirtB: label(formData, "shirtB"),
       poule,
       notes,
       status: "scheduled",
@@ -57,12 +59,15 @@ export async function updateMatch(id: string, formData: FormData) {
       teamBId,
       teamALabel: label(formData, "teamALabel"),
       teamBLabel: label(formData, "teamBLabel"),
+      shirtA: label(formData, "shirtA"),
+      shirtB: label(formData, "shirtB"),
     },
   });
   revalidatePath("/admin/schema");
   revalidatePath("/schema");
   revalidatePath("/");
   revalidatePath("/mvp");
+  revalidatePath("/info");
 }
 
 export async function deleteMatch(id: string) {

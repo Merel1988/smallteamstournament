@@ -65,6 +65,9 @@ model Match {
   // Shown instead of the team while it is unknown, e.g. "Winnaar poule A".
   teamALabel String?
   teamBLabel String?
+  // Shirt colour each side plays in, free text such as "zwart" or "paars of wit".
+  shirtA     String?
+  shirtB     String?
   scoreA     Int?
   scoreB     Int?
   status     String               @default("scheduled")

@@ -9,8 +9,9 @@ import type { PageKey } from "@/lib/pages";
 import { prisma } from "@/lib/prisma";
 import { kindOf } from "@/lib/schedule";
 import { pageMetadata } from "@/lib/seo";
-import { eventMinutes } from "@/lib/time";
+import { eventMinutes, formatMinutes } from "@/lib/time";
 import { sideName } from "@/lib/match-teams";
+import { shirtLabel, shirtSwatch } from "@/lib/shirts";
 
 export const dynamic = "force-dynamic";
 
@@ -110,6 +111,14 @@ export default async function InfoPage({
 
   const teamColors = teams.filter((team) => team.color).sort((a, b) => a.name.localeCompare(b.name, locale));
   const showTeamLinks = !hidden.has("teams");
+
+  const shirtPoules = new Map<string, typeof matches>();
+  for (const m of matches) {
+    if (kindOf(m.poule) !== "match" || (!m.shirtA && !m.shirtB)) continue;
+    const key = m.poule ?? "";
+    shirtPoules.set(key, [...(shirtPoules.get(key) ?? []), m]);
+  }
+  const showShirts = showMatches && shirtPoules.size > 0;
 
   const officialNames = officials.map((o) => o.name).sort((a, b) => a.localeCompare(b, locale));
 
@@ -260,6 +269,36 @@ export default async function InfoPage({
         </section>
       )}
 
+      {(hasText("teamsBody") || showShirts) && (
+        <section className="bg-white rounded-2xl p-6 shadow space-y-4">
+          <h2 className="font-display text-3xl">{t("teamsHeading")}</h2>
+          {hasText("teamsBody") && <p className="text-derby-ink/80 whitespace-pre-line">{t("teamsBody")}</p>}
+          {showShirts && (
+            <div className="space-y-4">
+              <h3 className="font-display text-2xl">{t("shirtsHeading")}</h3>
+              {[...shirtPoules].map(([poule, games]) => (
+                <div key={poule} className="space-y-2">
+                  {poule && <h4 className="font-bold">{poule}</h4>}
+                  <ul className="divide-y divide-derby-ink/10 border-y border-derby-ink/10">
+                    {games.map((m) => (
+                      <li key={m.id} className="py-2 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                        <span className="tabular-nums text-sm text-derby-ink/60 w-12 shrink-0">
+                          {formatMinutes(eventMinutes(m.startsAt))}
+                        </span>
+                        <span className="flex-1 grid gap-1 sm:grid-cols-2 min-w-56">
+                          <Shirt team={sideName(m.teamA, m.teamALabel)} shirt={m.shirtA} locale={locale} />
+                          <Shirt team={sideName(m.teamB, m.teamBLabel)} shirt={m.shirtB} locale={locale} />
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
       <section id="officials" aria-labelledby="officials-heading" className="space-y-3 scroll-mt-32">
         <h2 id="officials-heading" className="font-display text-3xl">
           {t("rosterHeading")}
@@ -281,12 +320,23 @@ export default async function InfoPage({
         )}
       </section>
 
-      {hasText("teamsBody") && (
-        <section className="bg-white rounded-2xl p-6 shadow space-y-2">
-          <h2 className="font-display text-3xl">{t("teamsHeading")}</h2>
-          <p className="text-derby-ink/80 whitespace-pre-line">{t("teamsBody")}</p>
-        </section>
-      )}
     </div>
+  );
+}
+
+function Shirt({ team, shirt, locale }: { team: string; shirt: string | null; locale: string }) {
+  const swatch = shirt ? shirtSwatch(shirt) : null;
+  return (
+    <span className="flex items-center gap-2">
+      <span
+        className="w-4 h-4 rounded-full shrink-0 ring-1 ring-derby-ink/30"
+        style={{ backgroundColor: swatch ?? "transparent" }}
+        aria-hidden
+      />
+      <span>
+        <span className="font-bold">{team}</span>
+        {shirt && <span className="text-derby-ink/70">: {shirtLabel(shirt, locale)}</span>}
+      </span>
+    </span>
   );
 }
