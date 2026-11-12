@@ -94,6 +94,7 @@
     "otherPoule": "Other",
     "boardHeading": "Timetable",
     "pause": "Break",
+    "overrun": "Buffer",
     "pauseMinutes": "{minutes} min",
     "now": "NOW",
     "onTrack": "On track now",

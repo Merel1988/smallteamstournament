@@ -7,7 +7,7 @@ import type { ProgramEntry } from "@/lib/infopack";
 import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
 import type { PageKey } from "@/lib/pages";
 import { prisma } from "@/lib/prisma";
-import { kindOf } from "@/lib/schedule";
+import { kindOf, translateBreakLabel } from "@/lib/schedule";
 import { pageMetadata } from "@/lib/seo";
 import { eventMinutes, formatMinutes } from "@/lib/time";
 import { sideName } from "@/lib/match-teams";
@@ -43,6 +43,7 @@ export default async function InfoPage({
   setRequestLocale(locale);
   const t = await getTranslations("Info");
   const tNav = await getTranslations("Nav");
+  const tSchema = await getTranslations("Schema");
   const hasText = (key: string) => String(t.raw(key) ?? "").trim().length > 0;
   const en = locale === "en";
 
@@ -77,7 +78,10 @@ export default async function InfoPage({
       const kind = kindOf(m.poule);
       const start = eventMinutes(m.startsAt);
       if (kind !== "match") {
-        return [{ id: m.id, start, end: null, title: m.poule ?? "", note: null, kind: kind === "break" ? "break" : "item" }];
+        const title = kind === "break" && en
+          ? translateBreakLabel(m.poule ?? "", { pause: tSchema("pause"), overrun: tSchema("overrun") })
+          : (m.poule ?? "");
+        return [{ id: m.id, start, end: null, title, note: null, kind: kind === "break" ? "break" : "item" }];
       }
       const sides = [
         { team: m.teamA, label: m.teamALabel },

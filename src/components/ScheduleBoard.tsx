@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
   buildBoard,
+  translateBreakLabel,
   yAt,
   type BoardBlock,
   type PouleStyle,
@@ -174,7 +175,11 @@ export default function ScheduleBoard({
                 {b.kind !== "match" ? (
                   <ItemBlock
                     kind={b.kind}
-                    label={b.poule ?? ""}
+                    label={
+                      b.kind === "break" && locale === "en"
+                        ? translateBreakLabel(b.poule ?? "", { pause: t("pause"), overrun: t("overrun") })
+                        : (b.poule ?? "")
+                    }
                     timeRange={`${time.format(b.start)} → ${time.format(b.end)}`}
                   />
                 ) : (

@@ -12,6 +12,11 @@ export function kindOf(poule: string | null): ItemKind {
   return "match";
 }
 
+// Break labels are free text from the admin; swap the Dutch words for the given translations.
+export function translateBreakLabel(label: string, words: { pause: string; overrun: string }): string {
+  return label.replace(/pauze/gi, words.pause).replace(/uitloop/gi, words.overrun.toLowerCase());
+}
+
 export type SchedulePlayer = { id: string; derbyName: string; number: string; headshotUrl: string | null };
 
 export type ScheduleTeam = {
