@@ -31,7 +31,7 @@ const LINKS: { key: PageKey; navKey: string; href: string; emoji: string }[] = [
   { key: "regels", navKey: "rules", href: "/regels", emoji: "📖" },
 ];
 
-const KIND_ORDER: Record<ProgramEntry["kind"], number> = { item: 0, break: 1, warmup: 2, match: 3 };
+const KIND_ORDER: Record<ProgramEntry["kind"], number> = { item: 0, break: 1, match: 2, warmup: 3 };
 
 export default async function InfoPage({
   params,
