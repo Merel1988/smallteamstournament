@@ -43,7 +43,7 @@ export const DEFAULT_TASKS: SeedTask[] = [
   { area: "officials", name: "Lunch refs & NSO's klaarzetten", shifts: [["12:30", "13:30", 2]], info: ["2x vegan groentesoep", "1x vegan pastasalade (15 personen)", "6 zakken volkoren bolletjes", "Smeerboter, kaas, hummus", "2 komkommers, 4 tomaten snijden", "Borden en bestek", "Drinken staat klaar in hun eigen ruimte, niet aan de bar"] },
   { area: "kantine", name: "Kas & pin klaarmaken", shifts: [["09:00", "09:30", 1]], info: ["Kas tellen en controleren", "Pinapparaat mee en testen, ontvangst valt regelmatig weg in de kantine", "App installeren voor pinapparaat"] },
   { area: "kantine", name: "Gastenlijsten mee", shifts: [["09:00", "09:30", 1]], info: ["Lijst aanmelding teams", "Lijst vrijwilligers", "Lijst ref/NSO"] },
-  { area: "kantine", name: "Inruimen bar", shifts: [["09:00", "12:00", 2]], info: ["Koffie en thee voor vroege vogels", "Fris en drank koud zetten", "Prijslijsten drankjes ophangen"] },
+  { area: "kantine", name: "Kantine klaarmaken", shifts: [["09:00", "12:00", 2]], info: ["Koffie en thee voor vroege vogels", "Fris en drank koud zetten", "Prijslijsten drankjes ophangen"] },
   { area: "kantine", name: "Merchandise opbouwen", shifts: [["09:00", "10:00", 1]], info: ["Tafels en stoelen klaarzetten", "Prijslijsten merchandise", "Bijhouden verkochte items"] },
   { area: "kantine", name: "Tombola opbouwen", shifts: [["09:00", "10:00", 1]], info: ["Tafel opbouwen", "Tickets klaarleggen", "Verkoop tickets kan ook aan de bar"] },
   { area: "kantine", name: "Entree opbouwen", shifts: [["09:00", "10:00", 2]], info: ["Tafel neerzetten", "Beachvlaggen buiten", "Programma ophangen"] },
