@@ -38,7 +38,7 @@ export async function moderatePhoto(image: Uint8Array): Promise<ModerationResult
         },
       ],
       providerOptions: {
-        gateway: { zeroDataRetention: process.env.PHOTO_MODERATION_ZDR === "1" },
+        gateway: { zeroDataRetention: true },
       },
       maxRetries: 2,
     });

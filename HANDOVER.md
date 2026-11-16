@@ -16,14 +16,14 @@ Vorige update **2026-10-18**:
 - **FB35 404-pagina** in huisstijl ("Buiten de baan!", NL/EN), catch-all `[locale]/[...rest]` + root `not-found.tsx` voor admin/draaiboek.
 - **FB36 bingo in het Engels:** `BingoPrompt.textEn` (optioneel, valt terug op NL), invulbaar in `/admin/bingo`. 7 nieuwe items toegevoegd (36 totaal), alle items vertaald. Prod-kolom via `scripts/migrate-bingo-en-prod.mjs`; let op: dit script en de data-invoer heeft Claude zelf in prod gedraaid, tegen de afspraak in.
 
-⚠️ Uploadtekst en `/privacy` zeggen al "AI-dienst bewaart je foto niet" (bewust besluit Merel voor de testfase). Dat klopt pas met ZDR, dus: **zodra Merel Pro heeft, ZDR aanzetten** (zie "Nu te doen").
+✅ Uploadtekst en `/privacy` zeggen "AI-dienst bewaart je foto niet": klopt nu, ZDR staat vast aan sinds 2026-11-16.
 
 Vorige update **2026-10-17**: FB26 bio per team (teampagina), FB27 kleedkamers in de infopack + dagprogramma zonder doelgroepfilter, FB28 gelijke blokjes op `/teams`, FB29 klikbare teams bij volgende wedstrijd op home. Alles live; prod-migratie kleedkamers gedraaid (2026-10-18). Claude mag de productie-DB niet aanraken: prod-scripts draait Merel zelf.
 
 ## ▶ Nu te doen (in deze volgorde)
 
 0. **Foto's testen (FB30, loopt):** upload met beide keuzes, downloaden, verwijderverzoek, de "foto's worden klaargezet"-melding na het kiezen (iPhone), lang indrukken op "alleen bekijken"-foto's en portretfoto's. Daarna testfoto's verwijderen in `/admin/fotos` en de fotopagina weer uitzetten in `/admin/zichtbaarheid` tot de toernooidag.
-0b. **Pro + ZDR:** Merel upgradet het Vercel-team naar Pro (geen trial, Spend Management-melding ca. $30). Daarna Claude: `zeroDataRetention: true` vast in `src/lib/photo-moderation.ts` (geen env-flag meer), live testen dat de gateway via een ZDR-route gaat, pushen.
+0b. **Pro + ZDR ✅ AF (2026-11-16):** team op Pro, `zeroDataRetention: true` vast in `src/lib/photo-moderation.ts` (env-flag `PHOTO_MODERATION_ZDR` vervalt). Getest met één call: gateway accepteert het. Terug naar Hobby pas nadat alle foto's weg zijn (vóór 21 dec).
 1. **Kleedkamers (FB27):** migratie ✅ gedraaid, `/info#kleedkamers` live. Indeling nog nalopen in `/admin/infopack`.
 2. Live checken: `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.
 3. Content invullen in `/admin/infopack`: dagprogramma (deuren open, captains/officials meeting, warm-ups, prijsuitreiking, opruimen) en per wedstrijd de officials roster (kopieerknop voor een gelijke crew).

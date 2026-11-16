@@ -68,8 +68,8 @@ De app draait in productie. Stappen 1 t/m 5 zijn klaar. Wat nog open staat:
 **Vooraf**
 - [x] Prod-migratie (2026-10-18): `node --env-file=.env.production.local scripts/migrate-photos-prod.mjs`
 - [x] AI Gateway-tegoed gekocht ($10, 2026-10-18)
-- [ ] Rond 14 november: Vercel Pro aanzetten (Settings → Billing), Spend Management-melding op ca. $30
-- [ ] Na Pro: env `PHOTO_MODERATION_ZDR=1` op Production zetten en opnieuw deployen
+- [x] Vercel Pro aangezet (2026-11-16), Spend Management-melding op ca. $30
+- [x] ZDR vast aan in `src/lib/photo-moderation.ts` (2026-11-16), getest: gateway accepteert het verzoek
 - [ ] Testen op iPhone en Android: uploaden (beide toestemmingskeuzes), downloaden via deelmenu, verwijderverzoek
 
 **Na het toernooi**
