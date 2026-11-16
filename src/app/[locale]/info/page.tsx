@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import DayProgram from "@/components/DayProgram";
 import { Link } from "@/i18n/navigation";
-import { MATCH_MINUTES, WARMUP_GAP_MINUTES, WARMUP_MINUTES } from "@/lib/event";
+import { EVENT, MATCH_MINUTES, WARMUP_GAP_MINUTES, WARMUP_MINUTES } from "@/lib/event";
 import type { ProgramEntry } from "@/lib/infopack";
 import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
 import type { PageKey } from "@/lib/pages";
@@ -83,10 +83,11 @@ export default async function InfoPage({
           : (m.poule ?? "");
         return [{ id: m.id, start, end: null, title, note: null, kind: kind === "break" ? "break" : "item" }];
       }
-      const sides = [
-        { team: m.teamA, label: m.teamALabel },
-        { team: m.teamB, label: m.teamBLabel },
-      ];
+      const sideA = { team: m.teamA, label: m.teamALabel };
+      const sideB = { team: m.teamB, label: m.teamBLabel };
+      // The host team warms up last so it has more time for setting up the venue.
+      const hostIsA = !m.teamALabel?.trim() && m.teamA.name === EVENT.league;
+      const sides = hostIsA ? [sideB, sideA] : [sideA, sideB];
       const warmups = sides.map(({ team, label }, i): ProgramEntry => {
         const warmupStart = start - WARMUP_GAP_MINUTES - (sides.length - i) * WARMUP_MINUTES;
         return {

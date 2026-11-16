@@ -67,8 +67,8 @@ export default async function AdminInfopackPage({
 
         {items.length === 0 ? (
           <p className="text-derby-ink/60">
-            Nog niets toegevoegd. Denk aan: deuren open voor teams en officials, captains meeting,
-            officials meeting, deuren open voor publiek, prijsuitreiking, opruimen.
+            Nog niets toegevoegd. Denk aan: deuren open voor teams en officials, officials meeting,
+            captains meeting, deuren open voor publiek, prijsuitreiking, opruimen.
           </p>
         ) : (
           <ul className="space-y-3">
