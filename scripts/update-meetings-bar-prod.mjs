@@ -1,4 +1,4 @@
-// Officials meeting at 11:00, captains meeting at 11:15; drop the "Bar & keuken" and "Captains meeting" volunteer tasks.
+// Doors open at 10:45, officials meeting at 11:00, captains meeting at 11:15; drop the "Bar & keuken" and "Captains meeting" volunteer tasks.
 // Usage: node --env-file=.env.production.local scripts/update-meetings-bar-prod.mjs
 import { createClient } from "@libsql/client";
 
@@ -9,14 +9,16 @@ if (!url) throw new Error("TURSO_DATABASE_URL missing");
 const db = createClient({ url, authToken });
 const now = new Date().toISOString();
 
-await db.execute({
-  sql: `UPDATE "ProgramItem" SET "start" = ?, "updatedAt" = ? WHERE "titleNl" = ?`,
-  args: [660, now, "Officials meeting"],
-});
-await db.execute({
-  sql: `UPDATE "ProgramItem" SET "start" = ?, "updatedAt" = ? WHERE "titleNl" = ?`,
-  args: [675, now, "Captains meeting"],
-});
+for (const [start, title] of [
+  [645, "Deuren open"],
+  [660, "Officials meeting"],
+  [675, "Captains meeting"],
+]) {
+  await db.execute({
+    sql: `UPDATE "ProgramItem" SET "start" = ?, "updatedAt" = ? WHERE "titleNl" = ?`,
+    args: [start, now, title],
+  });
+}
 
 for (const name of ["Bar & keuken", "Captains meeting"]) {
   const signups = await db.execute({
