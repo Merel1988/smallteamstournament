@@ -22,7 +22,7 @@ Vorige update **2026-10-17**: FB26 bio per team (teampagina), FB27 kleedkamers i
 
 ## ▶ Nu te doen (in deze volgorde)
 
-0. **Foto's testen (FB30, loopt):** upload met beide keuzes, downloaden, verwijderverzoek, de "foto's worden klaargezet"-melding na het kiezen (iPhone), lang indrukken op "alleen bekijken"-foto's en portretfoto's. Daarna testfoto's verwijderen in `/admin/fotos` en de fotopagina weer uitzetten in `/admin/zichtbaarheid` tot de toernooidag.
+0. **Foto's (FB30) ✅ klaar voor de dag (2026-11-16):** alle 36 testfoto's van 18 okt verwijderd (DB + 72 blobs, eenmalig door Claude met toestemming Merel), fotopagina staat weer aan. Let op: `.env.production.local` heeft een leeg `BLOB_READ_WRITE_TOKEN`; het token in `.env.local` hoort bij dezelfde prod-store.
 0b. **Pro + ZDR ✅ AF (2026-11-16):** team op Pro, `zeroDataRetention: true` vast in `src/lib/photo-moderation.ts` (env-flag `PHOTO_MODERATION_ZDR` vervalt). Getest met één call: gateway accepteert het. Terug naar Hobby pas nadat alle foto's weg zijn (vóór 21 dec).
 1. **Kleedkamers (FB27):** migratie ✅ gedraaid, `/info#kleedkamers` live. Indeling nog nalopen in `/admin/infopack`.
 2. Live checken: `/admin/infopack`, `/admin/schema` (placeholder-velden zichtbaar). In `/admin/schema` bij de finale "Winnaar poule A" / "Winnaar poule B" invullen.

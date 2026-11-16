@@ -209,14 +209,9 @@ export default async function HomePage({
 
       {teams.length > 0 && (
         <section aria-labelledby="teams-heading" className="space-y-3">
-          <div className="flex items-baseline justify-between gap-4">
-            <h2 id="teams-heading" className="font-display text-3xl">
-              {t("teamsHeading")}
-            </h2>
-            <Link href="/teams" className="text-sm font-bold text-derby-accent hover:underline">
-              {t("allTeams")}
-            </Link>
-          </div>
+          <h2 id="teams-heading" className="font-display text-3xl">
+            {t("teamsHeading")}
+          </h2>
           <ul className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {teams.map((team) => (
               <li key={team.id} className="flex">
