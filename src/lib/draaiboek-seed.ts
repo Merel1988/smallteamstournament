@@ -34,7 +34,6 @@ export const DEFAULT_TASKS: SeedTask[] = [
   { area: "zaal", name: "Kleedkamers klaarmaken", shifts: [["09:00", "10:00", 1]], info: ["Kleedkamers aanduiden en beplakken per team"] },
   { area: "zaal", name: "Scorebord & beamer", shifts: [["09:00", "10:30", 2]], info: ["Scorebordspullen klaarzetten", "Laptop en beamer mee", "Testen vóór captains meeting"] },
   { area: "zaal", name: "Banner & PR in zaal", shifts: [["09:00", "10:00", 1]], info: ["Banner ophangen"] },
-  { area: "zaal", name: "Captains meeting", shifts: [["11:15", "11:30", 1]], info: ["Huisregels", "Speelschema doornemen"] },
   { area: "zaal", name: "Zaalcoördinator tijdens toernooi", shifts: [["12:00", "18:00", 1]], info: ["Aanspreekpunt zaal", "Bewaakt de tijd van het speelschema"] },
   { area: "zaal", name: "Prijsuitreiking", shifts: [["17:45", "18:00", 1]], info: ["Prijzen top 3 klaarleggen", "Foto winnaars"] },
   { area: "zaal", name: "Opruimen zaal", shifts: [["18:00", "19:00", 4]], info: ["Track weghalen", "Banken, scorebord, papieren, stopwatch, beamer, laptop", "Kleedkamers leeg", "Vuilniszakken", "Laatste controle zaal en kleedkamers"] },

@@ -1,4 +1,4 @@
-// Officials meeting at 11:00, captains meeting at 11:15; drop the "Bar & keuken" volunteer task.
+// Officials meeting at 11:00, captains meeting at 11:15; drop the "Bar & keuken" and "Captains meeting" volunteer tasks.
 // Usage: node --env-file=.env.production.local scripts/update-meetings-bar-prod.mjs
 import { createClient } from "@libsql/client";
 
@@ -18,24 +18,20 @@ await db.execute({
   args: [675, now, "Captains meeting"],
 });
 
-await db.execute({
-  sql: `UPDATE "VolunteerShift" SET "start" = 675, "end" = 690
-        WHERE "taskId" IN (SELECT "id" FROM "VolunteerTask" WHERE "name" = 'Captains meeting')
-          AND "start" = 660 AND "end" = 675`,
-  args: [],
-});
-
-const signups = await db.execute(
-  `SELECT COUNT(*) AS n FROM "VolunteerSignup" WHERE "shiftId" IN
-     (SELECT s."id" FROM "VolunteerShift" s JOIN "VolunteerTask" t ON t."id" = s."taskId" WHERE t."name" = 'Bar & keuken')`,
-);
-if (Number(signups.rows[0].n) > 0) {
-  console.log(`"Bar & keuken" has ${signups.rows[0].n} signup(s); not deleted.`);
-} else {
+for (const name of ["Bar & keuken", "Captains meeting"]) {
+  const signups = await db.execute({
+    sql: `SELECT COUNT(*) AS n FROM "VolunteerSignup" WHERE "shiftId" IN
+            (SELECT s."id" FROM "VolunteerShift" s JOIN "VolunteerTask" t ON t."id" = s."taskId" WHERE t."name" = ?)`,
+    args: [name],
+  });
+  if (Number(signups.rows[0].n) > 0) {
+    console.log(`"${name}" has ${signups.rows[0].n} signup(s); not deleted.`);
+    continue;
+  }
   await db.batch(
     [
-      `DELETE FROM "VolunteerShift" WHERE "taskId" IN (SELECT "id" FROM "VolunteerTask" WHERE "name" = 'Bar & keuken')`,
-      `DELETE FROM "VolunteerTask" WHERE "name" = 'Bar & keuken'`,
+      { sql: `DELETE FROM "VolunteerShift" WHERE "taskId" IN (SELECT "id" FROM "VolunteerTask" WHERE "name" = ?)`, args: [name] },
+      { sql: `DELETE FROM "VolunteerTask" WHERE "name" = ?`, args: [name] },
     ],
     "write",
   );
