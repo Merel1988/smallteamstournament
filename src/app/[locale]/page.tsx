@@ -84,7 +84,7 @@ export default async function HomePage({
   const funCards = [
     { href: "/bingo", label: t("cards.bingo"), emoji: "🎯" },
     { href: "/fotos", label: t("cards.photos"), emoji: "📸" },
-    { href: "/mvp", label: t("cards.mvpVote"), emoji: "⭐" },
+    { href: "/quiz", label: t("cards.quiz"), emoji: "🧠" },
     { href: "/nickname", label: t("cards.nickname"), emoji: "💀" },
   ].filter((card) => !hidden.has(card.href.slice(1)));
   const teamLinks = [

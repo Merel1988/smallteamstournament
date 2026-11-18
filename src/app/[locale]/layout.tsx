@@ -75,7 +75,7 @@ export default async function LocaleLayout({
   const funItems = [
     ...link("bingo", "/bingo", tNav("bingo")),
     ...link("nickname", "/nickname", tNav("nickname")),
-    ...link("mvp", "/mvp", tNav("mvp")),
+    ...link("quiz", "/quiz", tNav("quiz")),
     ...link("tombola", "/tombola", tNav("tombola")),
   ];
   const infoItems = [

@@ -66,7 +66,6 @@ export async function updateMatch(id: string, formData: FormData) {
   revalidatePath("/admin/schema");
   revalidatePath("/schema");
   revalidatePath("/");
-  revalidatePath("/mvp");
   revalidatePath("/info");
 }
 

@@ -8,7 +8,7 @@
     "schema": "Schema",
     "bingo": "Bingo",
     "photos": "Foto's",
-    "mvp": "MVP",
+    "quiz": "Derby-quiz",
     "rules": "Regels",
     "venue": "Venue",
     "nickname": "Derby-naam",
@@ -35,7 +35,7 @@
     "cards": {
       "bingo": "Bingo",
       "photos": "Foto's",
-      "mvpVote": "MVP stem",
+      "quiz": "Derby-quiz",
       "nickname": "Derby-naam"
     },
     "ctaSchedule": "Bekijk het schema",
@@ -168,15 +168,267 @@
       "preparing": "Je telefoon zet de foto's klaar. Bij veel foto's kan dit even duren…"
     }
   },
-  "Mvp": {
-    "title": "MVP / Best Jammer",
-    "subtitle": "Stem per afgelopen wedstrijd op de speler die jou het meest indrukwekkend was.",
-    "noFinished": "Er zijn nog geen afgeronde wedstrijden om op te stemmen.",
-    "matchWithoutPlayers": "Geen spelers bekend voor deze wedstrijd.",
-    "submit": "Stem uitbrengen",
-    "busy": "Bezig…",
-    "thanks": "Bedankt voor je stem! 🎉",
-    "genericError": "Er ging iets mis."
+  "Quiz": {
+    "title": "🧠 Derby-quiz",
+    "lead": "Hoe goed ken jij roller derby? Elke ronde krijg je {count} willekeurige vragen uit {total}, dus speel gerust nog een keer.",
+    "correct": "Goed! 🎉",
+    "wrong": "Helaas. Het juiste antwoord is: {answer}",
+    "next": "Volgende vraag →",
+    "showResult": "Bekijk resultaat",
+    "done": "Klaar! 🛼",
+    "final": "Je score is {score} van {total}.",
+    "scoreLabel": "Jouw score",
+    "start": "Klaar voor de eerste jam?",
+    "startButton": "Start de quiz",
+    "restart": "Nieuwe ronde",
+    "perfect": "Alles goed! Jij kunt zo als referee de baan op.",
+    "good": "Goed bezig, jij weet waar je naar kijkt.",
+    "retry": "Nog even oefenen. Speel een nieuwe ronde of lees de uitleg.",
+    "best": "Jouw beste score: {score} van {total}",
+    "rulesHint": "Nog niet alles duidelijk?",
+    "rulesLink": "Lees de uitleg over de regels",
+    "questions": {
+      "q1": {
+        "q": "Hoe lang duurt een jam maximaal?",
+        "a1": "2 minuten",
+        "a2": "1 minuut",
+        "a3": "5 minuten",
+        "a4": "Tot er gescoord is",
+        "explain": "Een jam duurt maximaal twee minuten. De lead jammer kan hem eerder afroepen."
+      },
+      "q2": {
+        "q": "Hoeveel skaters per team staan er tijdens een jam op de baan?",
+        "a1": "5",
+        "a2": "4",
+        "a3": "6",
+        "a4": "8",
+        "explain": "Eén jammer en vier blockers, van wie er één de pivot kan zijn."
+      },
+      "q3": {
+        "q": "Hoe scoort een jammer punten?",
+        "a1": "Door tegenstanders legaal in te halen",
+        "a2": "Door de pivot een tik te geven",
+        "a3": "Door als eerste over de lijn te gaan",
+        "a4": "Door een tegenstander uit de baan te duwen",
+        "explain": "Vanaf de tweede doorgang door de pack krijgt de jammer een punt voor elke tegenstander die legaal ingehaald wordt."
+      },
+      "q4": {
+        "q": "Levert de eerste doorgang door de pack punten op?",
+        "a1": "Nee, dat is de initial pass",
+        "a2": "Ja, één punt per tegenstander",
+        "a3": "Ja, maar alleen voor de lead jammer",
+        "a4": "Alleen in de laatste jam",
+        "explain": "De eerste doorgang bepaalt alleen wie lead jammer wordt. Punten tellen vanaf de tweede doorgang."
+      },
+      "q5": {
+        "q": "Hoeveel punten haalt een jammer normaal maximaal in één scoring pass?",
+        "a1": "4",
+        "a2": "1",
+        "a3": "5",
+        "a4": "10",
+        "explain": "Eén punt per tegenstandende blocker, en een team heeft vier blockers op de baan."
+      },
+      "q6": {
+        "q": "Wie wordt lead jammer?",
+        "a1": "De jammer die als eerste legaal door de pack komt",
+        "a2": "De snelste skater van het team",
+        "a3": "De jammer met de meeste punten",
+        "a4": "Wie de referee vóór de jam aanwijst",
+        "explain": "De eerste jammer die bij de initial pass legaal voor de pack uitkomt, krijgt lead. De referee laat dat zien met twee korte fluitjes en door te wijzen."
+      },
+      "q7": {
+        "q": "Hoe roept de lead jammer de jam af?",
+        "a1": "Door herhaaldelijk met de handen op de heupen te tikken",
+        "a2": "Door de helmcover af te doen",
+        "a3": "Door te fluiten",
+        "a4": "Door een arm op te steken",
+        "explain": "Zodra de jammer op de heupen tikt, fluit de referee de jam af. Handig om te stoppen voordat de andere jammer kan scoren."
+      },
+      "q8": {
+        "q": "Wat gebeurt er bij een star pass?",
+        "a1": "De jammer geeft de helmcover met de ster aan de pivot",
+        "a2": "De jammer wisselt van team",
+        "a3": "De twee jammers ruilen van plek",
+        "a4": "De pivot krijgt een penalty",
+        "explain": "Na de star pass is de pivot de nieuwe jammer en kan die punten scoren."
+      },
+      "q9": {
+        "q": "Hoe lang zit je in de penalty box voor één penalty?",
+        "a1": "30 seconden",
+        "a2": "10 seconden",
+        "a3": "1 minuut",
+        "a4": "De rest van de jam",
+        "explain": "Je team speelt die tijd met een skater minder. Loopt de jam af, dan zit je de rest uit in de volgende jam."
+      },
+      "q10": {
+        "q": "Wat is een power jam?",
+        "a1": "Een jam waarin één van de jammers in de penalty box zit",
+        "a2": "Een jam met alleen jammers",
+        "a3": "De laatste jam van een wedstrijd",
+        "a4": "Een jam van vier minuten",
+        "explain": "Het andere team kan dan punten scoren zonder dat de tegenstander dat kan beantwoorden."
+      },
+      "q11": {
+        "q": "Wat is de pack?",
+        "a1": "De grootste groep blockers van beide teams dicht bij elkaar",
+        "a2": "Alle skaters op de baan",
+        "a3": "De bank met wissels",
+        "a4": "De groep referees",
+        "explain": "Blockers mogen alleen in en vlak bij de pack blokken, in de zogeheten engagement zone."
+      },
+      "q12": {
+        "q": "Mag een blocker ver voor de pack nog een jammer blokken?",
+        "a1": "Nee, die blocker is dan out of play",
+        "a2": "Ja, altijd",
+        "a3": "Alleen de pivot",
+        "a4": "Alleen in de laatste minuut",
+        "explain": "Blokken mag alleen in de engagement zone: de pack plus ongeveer 6 meter ervoor en erachter."
+      },
+      "q13": {
+        "q": "Met welk lichaamsdeel mag je niet blokken?",
+        "a1": "Je hoofd",
+        "a2": "Je schouder",
+        "a3": "Je heup",
+        "a4": "Je bovenbeen",
+        "explain": "Blokken met je hoofd, onderarmen, handen of je benen onder het midden van je dij mag niet. Schouders, heupen, borst en bovenbenen wel."
+      },
+      "q14": {
+        "q": "Waar mag je een tegenstander niet raken?",
+        "a1": "In de rug",
+        "a2": "Op de schouder",
+        "a3": "Op de heup",
+        "a4": "Op de borst",
+        "explain": "De rug, het hoofd en de benen onder het midden van de dij zijn geen geldige plekken om te raken."
+      },
+      "q15": {
+        "q": "Wat is cutting?",
+        "a1": "Tegenstanders inhalen via buiten de baan",
+        "a2": "Een tegenstander laten struikelen",
+        "a3": "Te vroeg starten",
+        "a4": "De jam afroepen",
+        "explain": "Ben je buiten de baan geweest? Dan moet je achter de tegenstanders terugkomen die je daar voorbij bent gegaan, anders krijg je een penalty."
+      },
+      "q16": {
+        "q": "In welke richting wordt er geskatet?",
+        "a1": "Tegen de klok in",
+        "a2": "Met de klok mee",
+        "a3": "Dat kiest elk team zelf",
+        "a4": "Dat wisselt per jam",
+        "explain": "Alle skaters gaan tegen de klok in rond de ovale baan."
+      },
+      "q17": {
+        "q": "Hoe begint een jam?",
+        "a1": "Met één fluitsignaal",
+        "a2": "Met vier fluitsignalen",
+        "a3": "Met een toeter",
+        "a4": "Met een aftelling van het publiek",
+        "explain": "Eén fluitsignaal is de start. Vier snelle fluitsignalen betekenen dat de jam voorbij is."
+      },
+      "q18": {
+        "q": "Wat doet een NSO?",
+        "a1": "Score, tijd en penalty's bijhouden zonder te skaten",
+        "a2": "Invallen als reservejammer",
+        "a3": "De warming-up leiden",
+        "a4": "Merch verkopen",
+        "explain": "NSO staat voor Non-Skating Official. Zonder hen geen wedstrijd!"
+      },
+      "q19": {
+        "q": "Wat mag niet als blockers samen een muur vormen?",
+        "a1": "Elkaars armen vastpakken",
+        "a2": "Schouder aan schouder staan",
+        "a3": "Samen afremmen",
+        "a4": "Met z'n vieren naast elkaar staan",
+        "explain": "Teamgenoten vastpakken of aan elkaar koppelen is een multiplayer block en levert een penalty op."
+      },
+      "q20": {
+        "q": "Wat is een apex jump?",
+        "a1": "Een sprong over de binnenkant van de bocht",
+        "a2": "Een sprong over een gevallen skater",
+        "a3": "Een sprong bij de start",
+        "a4": "Een sprong uit de penalty box",
+        "explain": "De jammer springt over de binnenrand van de bocht en landt weer binnen de baan. Spectaculair en gewoon toegestaan."
+      },
+      "q21": {
+        "q": "Wat is een whip?",
+        "a1": "Een teamgenoot geeft de jammer een zwiep naar voren",
+        "a2": "Een duw in de rug",
+        "a3": "Een snelle wissel",
+        "a4": "Een fluitsignaal van de referee",
+        "explain": "Een blocker pakt de jammer vast en slingert die vooruit. Je teamgenoot helpen mag gewoon."
+      },
+      "q22": {
+        "q": "Krijgt een jammer ook punten voor tegenstanders die in de penalty box zitten?",
+        "a1": "Ja",
+        "a2": "Nee",
+        "a3": "Alleen voor de pivot",
+        "a4": "Alleen als lead jammer",
+        "explain": "Een tegenstander in de penalty box telt in die doorgang ook als ingehaald."
+      },
+      "q23": {
+        "q": "Wat gebeurt er als de lead jammer een penalty krijgt?",
+        "a1": "De jammer kan de jam niet meer afroepen",
+        "a2": "Het team verliest al zijn punten",
+        "a3": "De jam stopt meteen",
+        "a4": "Er volgt een verplichte star pass",
+        "explain": "Het andere team krijgt dan alle tijd om te scoren, dus een penalty als lead jammer is extra zuur."
+      },
+      "q24": {
+        "q": "Waar ontstond begin jaren 2000 de moderne roller derby?",
+        "a1": "Austin, Texas",
+        "a2": "Londen",
+        "a3": "Amsterdam",
+        "a4": "Sydney",
+        "explain": "Daar kwam roller derby terug als sport die skaters zelf organiseren. Inmiddels wordt het over de hele wereld gespeeld."
+      },
+      "q25": {
+        "q": "Op wat voor skates wordt roller derby meestal gespeeld?",
+        "a1": "Quads: twee wielen voor en twee achter",
+        "a2": "Inline skates",
+        "a3": "Schaatsen",
+        "a4": "Skateboards",
+        "explain": "Quads zijn wendbaar en stabiel, ideaal om te blokken en snel van richting te veranderen."
+      },
+      "q26": {
+        "q": "Waarom hebben derbyspelers vaak een bijzondere naam?",
+        "a1": "Een derbynaam is traditie, vaak met een woordgrap",
+        "a2": "Dat is verplicht volgens de regels",
+        "a3": "Zodat de referee ze uit elkaar kan houden",
+        "a4": "Het is hun echte naam",
+        "explain": "Officieel tellen de rugnummers. De derbynaam is eigen stijl. Bedenk je eigen naam met de derbynaam-generator!"
+      },
+      "q27": {
+        "q": "Hoe lang duurt een wedstrijd op dit toernooi?",
+        "a1": "20 minuten",
+        "a2": "60 minuten",
+        "a3": "2 keer 30 minuten",
+        "a4": "10 minuten",
+        "explain": "Een gewone wedstrijd duurt 2 keer 30 minuten. Hier spelen we korte wedstrijden van 20 minuten zonder klokstop."
+      },
+      "q28": {
+        "q": "Na hoeveel penalty's in één wedstrijd volgt op dit toernooi een foul out?",
+        "a1": "4",
+        "a2": "7",
+        "a3": "3",
+        "a4": "10",
+        "explain": "Normaal ligt die grens op 7, maar omdat de wedstrijden hier korter zijn is het 4."
+      },
+      "q29": {
+        "q": "Uit hoeveel skaters bestaat een team op dit toernooi?",
+        "a1": "8",
+        "a2": "15",
+        "a3": "5",
+        "a4": "20",
+        "explain": "Een gewoon wedstrijdteam heeft er tot 15. Met 8 skaters sta je hier vaak op de baan."
+      },
+      "q30": {
+        "q": "Hoeveel team time-outs heeft een team per wedstrijd op dit toernooi?",
+        "a1": "1",
+        "a2": "3",
+        "a3": "0",
+        "a4": "2",
+        "explain": "Normaal zijn het er drie. Hier is het er één per wedstrijd, en official reviews zijn er niet."
+      }
+    }
   },
   "Nickname": {
     "title": "Derby-naam roller",
@@ -340,6 +592,8 @@
     "quizPerfect": "Perfect, jij kunt de basis volgen!",
     "quizGood": "Goed bezig, je hebt de belangrijkste begrippen te pakken.",
     "quizRetry": "Lees de uitleg nog een keer en probeer opnieuw.",
+    "quizMore": "Smaakt dit naar meer? In de derby-quiz staan nog veel meer vragen.",
+    "quizMoreLink": "Naar de derby-quiz",
     "sourceEyebrow": "10 • Officiële bron",
     "sourceHeading": "Meer weten?",
     "sourceBody": "Deze uitleg is bewust vereenvoudigd voor beginnende toeschouwers. Voor officiële definities, uitzonderingen en de volledige regels is het actuele WFTDA-regelboek leidend.",
@@ -445,9 +699,9 @@
       "title": "Foto's",
       "description": "Foto's van het Small Teams Tournament — bekijk en deel de mooiste momenten."
     },
-    "mvp": {
-      "title": "MVP-stemmen",
-      "description": "Stem op de MVP van elke wedstrijd tijdens het Small Teams Tournament."
+    "quiz": {
+      "title": "Derby-quiz",
+      "description": "Test je kennis van roller derby met de quiz van het Small Teams Tournament."
     },
     "nickname": {
       "title": "Derby-naam generator",
@@ -562,13 +816,13 @@
     "whoHeading": "Wie is verantwoordelijk?",
     "whoBody": "De vereniging Roadkill Rollers Nijmegen. Vragen of een verzoek? Mail info@smallteamstournament.nl.",
     "whatHeading": "Welke gegevens?",
-    "whatBody": "• Foto's die je uploadt, met je naam als je die invult. Locatiegegevens halen we er vooraf af.\n• Van spelers en teamstaf: derbynaam, rugnummer, voornaamwoorden en portretfoto, zoals het team ze aanlevert.\n• Van vrijwilligers: je naam en de diensten waarvoor je je inschrijft.\n• Als je meldingen aanzet: een technisch adres van je toestel. Geen naam of e-mailadres.\n• Bij MVP-stemmen: een anoniem cookie, zodat je één keer per wedstrijd stemt.",
+    "whatBody": "• Foto's die je uploadt, met je naam als je die invult. Locatiegegevens halen we er vooraf af.\n• Van spelers en teamstaf: derbynaam, rugnummer, voornaamwoorden en portretfoto, zoals het team ze aanlevert.\n• Van vrijwilligers: je naam en de diensten waarvoor je je inschrijft.\n• Als je meldingen aanzet: een technisch adres van je toestel. Geen naam of e-mailadres.",
     "whyHeading": "Waarvoor?",
     "whyBody": "Alleen om het toernooi te organiseren en te laten zien: programma, teams, vrijwilligersrooster, fotogalerij en meldingen op de dag zelf. Geen advertenties, en we verkopen niets door.",
     "photosHeading": "Foto's en AI-controle",
     "photosBody": "Elke foto wordt automatisch gecontroleerd op ongepaste inhoud door een AI-model (Claude van Anthropic, via Vercel). De foto wordt alleen daarvoor gebruikt en niet om AI te trainen. De AI-dienst bewaart hem niet. Twijfelgevallen bekijkt de organisatie.\n\nBij het uploaden kies je of anderen je foto's mogen downloaden en delen. Sta je op een foto en wil je dat die weg gaat? Gebruik de knop Verwijderverzoek bij de foto of mail ons.",
     "cookiesHeading": "Cookies",
-    "cookiesBody": "We gebruiken alleen cookies die nodig zijn om de site te laten werken, zoals je taalkeuze, je MVP-stem en het inloggen voor teams en organisatie. Geen analytics, geen trackers.",
+    "cookiesBody": "We gebruiken alleen cookies die nodig zijn om de site te laten werken, zoals je taalkeuze en het inloggen voor teams en organisatie. Geen analytics, geen trackers.",
     "sharingHeading": "Met wie delen we gegevens?",
     "sharingBody": "Alleen met de diensten waarop de site draait: Vercel (hosting en opslag van foto's), Turso (database) en Anthropic (fotocontrole). Zij gebruiken de gegevens alleen voor die taak.",
     "retentionHeading": "Hoe lang bewaren we het?",

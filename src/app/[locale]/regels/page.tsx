@@ -1,9 +1,10 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
-import { assertPageVisible } from "@/lib/page-visibility";
+import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
 import { RulesSectionNav } from "@/components/RulesSectionNav";
-import { RulesQuiz, type QuizQuestion } from "@/components/RulesQuiz";
+import { Quiz, type QuizQuestion } from "@/components/Quiz";
+import { Link } from "@/i18n/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +48,7 @@ export default async function RegelsPage({
   setRequestLocale(locale);
   const t = await getTranslations("Rules");
   const tA11y = await getTranslations("A11y");
+  const showMoreQuiz = !(await getHiddenPageKeys()).has("quiz");
 
   const rich = {
     strong: (chunks: React.ReactNode) => <strong>{chunks}</strong>,
@@ -319,7 +321,7 @@ export default async function RegelsPage({
 
       {/* 09 Quiz */}
       <Section id="quiz" eyebrow={t("quizEyebrow")} heading={t("quizHeading")}>
-        <RulesQuiz
+        <Quiz
           questions={questions}
           labels={{
             correct: t("quizCorrect"),
@@ -336,6 +338,14 @@ export default async function RegelsPage({
             retry: t("quizRetry"),
           }}
         />
+        {showMoreQuiz && (
+          <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-derby-ink/10 bg-white p-5">
+            <p className="min-w-60 flex-1 font-bold">{t("quizMore")}</p>
+            <Link href="/quiz" className={BTN}>
+              {t("quizMoreLink")}
+            </Link>
+          </div>
+        )}
       </Section>
 
       {/* 10 Officiële bron */}

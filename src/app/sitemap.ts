@@ -16,7 +16,7 @@ const STATIC_PATHS = [
   "schema",
   "bingo",
   "fotos",
-  "mvp",
+  "quiz",
   "nickname",
   "tombola",
   "regels",

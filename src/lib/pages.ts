@@ -16,7 +16,7 @@ export type PageKey =
   | "schema"
   | "bingo"
   | "fotos"
-  | "mvp"
+  | "quiz"
   | "regels"
   | "venue"
   | "nickname"
@@ -37,7 +37,7 @@ export const TOGGLABLE_PAGES: TogglablePage[] = [
   { key: "schema", path: "schema", navKey: "schema", adminLabel: "Schema" },
   { key: "bingo", path: "bingo", navKey: "bingo", adminLabel: "Bingo" },
   { key: "fotos", path: "fotos", navKey: "photos", adminLabel: "Foto's" },
-  { key: "mvp", path: "mvp", navKey: "mvp", adminLabel: "MVP" },
+  { key: "quiz", path: "quiz", navKey: "quiz", adminLabel: "Derby-quiz" },
   { key: "regels", path: "regels", navKey: "rules", adminLabel: "Huisregels" },
   { key: "venue", path: "venue", navKey: "venue", adminLabel: "Locatie" },
   { key: "nickname", path: "nickname", navKey: "nickname", adminLabel: "Bijnaam-generator" },

@@ -2,7 +2,13 @@
 
 > **Doel van dit document.** Eén plek waar we altijd zien waar we staan, welke keuzes we hebben gemaakt en wat de volgende stap is. Werk dit bij aan het **einde van elke sessie**: vink af wat af is, noteer nieuwe beslissingen, verplaats openstaande punten. Zo kan een nieuwe Claude-sessie (of Merel) in 2 minuten instappen.
 
-Laatste update: **2026-10-25**: alles hieronder is live.
+Laatste update: **2026-11-18**:
+- **MVP-stemmen verwijderd** (publieke pagina, API, admin, teksten, privacytekst). Tabel `MvpVote` staat nog in de DB (geen migratie), wordt bij de opruimronde na het toernooi leeg.
+- **FB39 derby-quiz** `/quiz` onder Fun (aan/uit via Zichtbaarheid): 30 vragen in namespace `Quiz.questions` (antwoord `a1` is altijd goed, wordt gehusseld), 10 per ronde, uitleg per vraag, beste score in localStorage. De mini-quiz op `/regels` verwijst ernaar.
+- **Foto's** staat als los kopje in het menu.
+- **Push getest op een echt toestel** (FB2): komt aan.
+
+Update **2026-10-25**: alles hieronder is live.
 - **FB38 wedstrijden op de teampagina:** `/teams/[id]` toont de wedstrijden van het team (tijd, tegenstander, poule, live-score, uitslag gewonnen/verloren/gelijk).
 - **FB37 ontbrekende info:** entree (€ 5) als kaartje op `/venue`, opwarmen op de kleine track in het blok "Voor teams" op `/info`. Vuistregel: info voor bezoekers op `/venue`, voor teams/officials op `/info`, opzet en regels op `/toernooi`.
 

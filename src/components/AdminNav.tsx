@@ -13,7 +13,6 @@ const items = [
   { href: "/admin/regels", label: "Regels" },
   { href: "/admin/teksten", label: "Teksten" },
   { href: "/admin/fotos", label: "Foto's" },
-  { href: "/admin/mvp", label: "MVP" },
   { href: "/admin/tombola", label: "Tombola" },
   { href: "/admin/push", label: "Push" },
   { href: "/admin/qr", label: "QR" },

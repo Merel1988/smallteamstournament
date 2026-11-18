@@ -8,7 +8,7 @@
     "schema": "Schedule",
     "bingo": "Bingo",
     "photos": "Photos",
-    "mvp": "MVP",
+    "quiz": "Derby quiz",
     "rules": "Rules",
     "venue": "Venue",
     "nickname": "Derby name",
@@ -35,7 +35,7 @@
     "cards": {
       "bingo": "Bingo",
       "photos": "Photos",
-      "mvpVote": "MVP vote",
+      "quiz": "Derby quiz",
       "nickname": "Derby name"
     },
     "ctaSchedule": "See the schedule",
@@ -168,15 +168,267 @@
       "preparing": "Your phone is getting the photos ready. With lots of photos this can take a moment…"
     }
   },
-  "Mvp": {
-    "title": "MVP / Best Jammer",
-    "subtitle": "Vote per finished bout for the skater who impressed you most.",
-    "noFinished": "No finished bouts to vote on yet.",
-    "matchWithoutPlayers": "No skaters registered for this bout.",
-    "submit": "Cast vote",
-    "busy": "Sending…",
-    "thanks": "Thanks for voting! 🎉",
-    "genericError": "Something went wrong."
+  "Quiz": {
+    "title": "🧠 Derby quiz",
+    "lead": "How well do you know roller derby? Each round gives you {count} random questions out of {total}, so feel free to play again.",
+    "correct": "Correct! 🎉",
+    "wrong": "Not quite. The right answer is: {answer}",
+    "next": "Next question →",
+    "showResult": "See result",
+    "done": "Done! 🛼",
+    "final": "Your score is {score} out of {total}.",
+    "scoreLabel": "Your score",
+    "start": "Ready for the first jam?",
+    "startButton": "Start the quiz",
+    "restart": "New round",
+    "perfect": "All correct! You could referee this game.",
+    "good": "Well done, you know what you are watching.",
+    "retry": "Keep practising. Play a new round or read the explainer.",
+    "best": "Your best score: {score} out of {total}",
+    "rulesHint": "Still a bit confusing?",
+    "rulesLink": "Read the rules explainer",
+    "questions": {
+      "q1": {
+        "q": "What is the maximum length of a jam?",
+        "a1": "2 minutes",
+        "a2": "1 minute",
+        "a3": "5 minutes",
+        "a4": "Until someone scores",
+        "explain": "A jam lasts up to two minutes. The lead jammer can call it off earlier."
+      },
+      "q2": {
+        "q": "How many skaters per team are on the track during a jam?",
+        "a1": "5",
+        "a2": "4",
+        "a3": "6",
+        "a4": "8",
+        "explain": "One jammer and four blockers, one of whom can be the pivot."
+      },
+      "q3": {
+        "q": "How does a jammer score points?",
+        "a1": "By legally passing opponents",
+        "a2": "By tapping the pivot",
+        "a3": "By crossing the line first",
+        "a4": "By pushing an opponent off the track",
+        "explain": "From the second trip through the pack, the jammer earns a point for every opponent passed legally."
+      },
+      "q4": {
+        "q": "Does the first trip through the pack score points?",
+        "a1": "No, that is the initial pass",
+        "a2": "Yes, one point per opponent",
+        "a3": "Yes, but only for the lead jammer",
+        "a4": "Only in the last jam",
+        "explain": "The first trip only decides who becomes lead jammer. Points count from the second trip."
+      },
+      "q5": {
+        "q": "How many points can a jammer normally score in one scoring pass?",
+        "a1": "4",
+        "a2": "1",
+        "a3": "5",
+        "a4": "10",
+        "explain": "One point per opposing blocker, and a team has four blockers on the track."
+      },
+      "q6": {
+        "q": "Who becomes lead jammer?",
+        "a1": "The jammer who first gets legally through the pack",
+        "a2": "The fastest skater on the team",
+        "a3": "The jammer with the most points",
+        "a4": "Whoever the referee picks before the jam",
+        "explain": "The first jammer to legally exit the pack on the initial pass gets lead. The referee shows this with two short whistles and a point."
+      },
+      "q7": {
+        "q": "How does the lead jammer call off the jam?",
+        "a1": "By repeatedly tapping their hips",
+        "a2": "By taking off the helmet cover",
+        "a3": "By blowing a whistle",
+        "a4": "By raising an arm",
+        "explain": "As soon as the jammer taps their hips, the referee whistles the jam off. Handy for stopping before the other jammer can score."
+      },
+      "q8": {
+        "q": "What happens in a star pass?",
+        "a1": "The jammer hands the star helmet cover to the pivot",
+        "a2": "The jammer switches teams",
+        "a3": "The two jammers swap places",
+        "a4": "The pivot gets a penalty",
+        "explain": "After the star pass the pivot is the new jammer and can score points."
+      },
+      "q9": {
+        "q": "How long do you sit in the penalty box for one penalty?",
+        "a1": "30 seconds",
+        "a2": "10 seconds",
+        "a3": "1 minute",
+        "a4": "The rest of the jam",
+        "explain": "Your team plays a skater short for that time. If the jam ends, you serve the rest in the next jam."
+      },
+      "q10": {
+        "q": "What is a power jam?",
+        "a1": "A jam where one of the jammers is in the penalty box",
+        "a2": "A jam with only jammers",
+        "a3": "The last jam of a game",
+        "a4": "A four-minute jam",
+        "explain": "The other team can then score while their opponents cannot answer."
+      },
+      "q11": {
+        "q": "What is the pack?",
+        "a1": "The largest group of blockers from both teams close together",
+        "a2": "All skaters on the track",
+        "a3": "The bench with substitutes",
+        "a4": "The group of referees",
+        "explain": "Blockers may only block in and near the pack, in the so-called engagement zone."
+      },
+      "q12": {
+        "q": "Can a blocker far ahead of the pack still block a jammer?",
+        "a1": "No, that blocker is out of play",
+        "a2": "Yes, always",
+        "a3": "Only the pivot",
+        "a4": "Only in the last minute",
+        "explain": "Blocking is only allowed in the engagement zone: the pack plus about 6 metres (20 feet) in front and behind."
+      },
+      "q13": {
+        "q": "Which body part may you not block with?",
+        "a1": "Your head",
+        "a2": "Your shoulder",
+        "a3": "Your hip",
+        "a4": "Your upper leg",
+        "explain": "Blocking with your head, forearms, hands or legs below mid-thigh is not allowed. Shoulders, hips, chest and upper legs are fine."
+      },
+      "q14": {
+        "q": "Where may you not hit an opponent?",
+        "a1": "In the back",
+        "a2": "On the shoulder",
+        "a3": "On the hip",
+        "a4": "On the chest",
+        "explain": "The back, the head and the legs below mid-thigh are not legal places to hit."
+      },
+      "q15": {
+        "q": "What is cutting?",
+        "a1": "Passing opponents by going out of bounds",
+        "a2": "Tripping an opponent",
+        "a3": "Starting too early",
+        "a4": "Calling off the jam",
+        "explain": "Been out of bounds? Then you must come back in behind the opponents you passed out there, or you get a penalty."
+      },
+      "q16": {
+        "q": "Which direction do skaters go?",
+        "a1": "Counterclockwise",
+        "a2": "Clockwise",
+        "a3": "Each team chooses",
+        "a4": "It changes every jam",
+        "explain": "All skaters go counterclockwise around the oval track."
+      },
+      "q17": {
+        "q": "How does a jam start?",
+        "a1": "With one whistle",
+        "a2": "With four whistles",
+        "a3": "With a horn",
+        "a4": "With a countdown from the crowd",
+        "explain": "One whistle is the start. Four quick whistles mean the jam is over."
+      },
+      "q18": {
+        "q": "What does an NSO do?",
+        "a1": "Track score, time and penalties without skating",
+        "a2": "Stand in as a reserve jammer",
+        "a3": "Lead the warm-up",
+        "a4": "Sell merch",
+        "explain": "NSO stands for Non-Skating Official. No game without them!"
+      },
+      "q19": {
+        "q": "What is not allowed when blockers form a wall?",
+        "a1": "Grabbing each other's arms",
+        "a2": "Standing shoulder to shoulder",
+        "a3": "Braking together",
+        "a4": "Standing four abreast",
+        "explain": "Grabbing or linking to teammates is a multiplayer block and earns a penalty."
+      },
+      "q20": {
+        "q": "What is an apex jump?",
+        "a1": "A jump across the inside of the bend",
+        "a2": "A jump over a fallen skater",
+        "a3": "A jump at the start",
+        "a4": "A jump out of the penalty box",
+        "explain": "The jammer jumps across the inner edge of the bend and lands back in bounds. Spectacular and perfectly legal."
+      },
+      "q21": {
+        "q": "What is a whip?",
+        "a1": "A teammate slings the jammer forward",
+        "a2": "A push in the back",
+        "a3": "A quick substitution",
+        "a4": "A referee whistle",
+        "explain": "A blocker grabs the jammer and swings them forward. Helping your teammate is allowed."
+      },
+      "q22": {
+        "q": "Does a jammer also score for opponents sitting in the penalty box?",
+        "a1": "Yes",
+        "a2": "No",
+        "a3": "Only for the pivot",
+        "a4": "Only as lead jammer",
+        "explain": "An opponent in the penalty box also counts as passed in that trip."
+      },
+      "q23": {
+        "q": "What happens when the lead jammer gets a penalty?",
+        "a1": "The jammer can no longer call off the jam",
+        "a2": "The team loses all its points",
+        "a3": "The jam stops immediately",
+        "a4": "A star pass is required",
+        "explain": "The other team then has all the time it needs to score, so a penalty as lead jammer really hurts."
+      },
+      "q24": {
+        "q": "Where did modern roller derby start in the early 2000s?",
+        "a1": "Austin, Texas",
+        "a2": "London",
+        "a3": "Amsterdam",
+        "a4": "Sydney",
+        "explain": "That is where roller derby came back as a sport run by the skaters themselves. Today it is played all over the world."
+      },
+      "q25": {
+        "q": "What kind of skates is roller derby usually played on?",
+        "a1": "Quads: two wheels in front, two at the back",
+        "a2": "Inline skates",
+        "a3": "Ice skates",
+        "a4": "Skateboards",
+        "explain": "Quads are agile and stable, ideal for blocking and changing direction quickly."
+      },
+      "q26": {
+        "q": "Why do derby players often have special names?",
+        "a1": "A derby name is a tradition, often with a pun",
+        "a2": "The rules require it",
+        "a3": "So the referee can tell them apart",
+        "a4": "It is their real name",
+        "explain": "Officially the numbers count. The derby name is personal style. Make your own with the derby name generator!"
+      },
+      "q27": {
+        "q": "How long is a game at this tournament?",
+        "a1": "20 minutes",
+        "a2": "60 minutes",
+        "a3": "2 times 30 minutes",
+        "a4": "10 minutes",
+        "explain": "A regular game is 2 times 30 minutes. Here we play short 20-minute games with a running clock."
+      },
+      "q28": {
+        "q": "After how many penalties in one game is a skater fouled out at this tournament?",
+        "a1": "4",
+        "a2": "7",
+        "a3": "3",
+        "a4": "10",
+        "explain": "Normally the limit is 7, but because the games here are shorter it is 4."
+      },
+      "q29": {
+        "q": "How many skaters are on a team at this tournament?",
+        "a1": "8",
+        "a2": "15",
+        "a3": "5",
+        "a4": "20",
+        "explain": "A regular game roster has up to 15. With 8 skaters you are on the track a lot."
+      },
+      "q30": {
+        "q": "How many team timeouts does a team get per game at this tournament?",
+        "a1": "1",
+        "a2": "3",
+        "a3": "0",
+        "a4": "2",
+        "explain": "Normally it is three. Here it is one per game, and there are no official reviews."
+      }
+    }
   },
   "Nickname": {
     "title": "Derby name roller",
@@ -340,6 +592,8 @@
     "quizPerfect": "Perfect, you can follow the basics!",
     "quizGood": "Nice work, you've got the key terms down.",
     "quizRetry": "Read the explanation again and have another go.",
+    "quizMore": "Want more? The derby quiz has lots more questions.",
+    "quizMoreLink": "Go to the derby quiz",
     "sourceEyebrow": "10 • Official source",
     "sourceHeading": "Want to know more?",
     "sourceBody": "This explanation is deliberately simplified for new spectators. For official definitions, exceptions and the full rules, the current WFTDA rulebook applies.",
@@ -445,9 +699,9 @@
       "title": "Photos",
       "description": "Photos from the Small Teams Tournament — view and share the best moments."
     },
-    "mvp": {
-      "title": "MVP voting",
-      "description": "Vote for the MVP of each bout during the Small Teams Tournament."
+    "quiz": {
+      "title": "Derby quiz",
+      "description": "Test your roller derby knowledge with the Small Teams Tournament quiz."
     },
     "nickname": {
       "title": "Derby name generator",
@@ -562,13 +816,13 @@
     "whoHeading": "Who is responsible?",
     "whoBody": "The association Roadkill Rollers Nijmegen. Questions or a request? Email info@smallteamstournament.nl.",
     "whatHeading": "What data?",
-    "whatBody": "• Photos you upload, with your name if you enter it. We remove location data first.\n• From skaters and team staff: derby name, number, pronouns and headshot, as supplied by the team.\n• From volunteers: your name and the shifts you sign up for.\n• If you turn on notifications: a technical address of your device. No name or email address.\n• For MVP votes: an anonymous cookie, so you vote once per game.",
+    "whatBody": "• Photos you upload, with your name if you enter it. We remove location data first.\n• From skaters and team staff: derby name, number, pronouns and headshot, as supplied by the team.\n• From volunteers: your name and the shifts you sign up for.\n• If you turn on notifications: a technical address of your device. No name or email address.",
     "whyHeading": "What for?",
     "whyBody": "Only to organise and show the tournament: schedule, teams, volunteer rota, photo gallery and notifications on the day. No ads, and we never sell anything on.",
     "photosHeading": "Photos and AI check",
     "photosBody": "Every photo is checked automatically for inappropriate content by an AI model (Claude by Anthropic, via Vercel). The photo is only used for that check and not to train AI. The AI service does not store it. Borderline cases are reviewed by the organisers.\n\nWhen uploading, you choose whether others may download and share your photos. Are you in a photo and want it removed? Use the Request removal button on the photo or email us.",
     "cookiesHeading": "Cookies",
-    "cookiesBody": "We only use cookies the site needs to work, such as your language choice, your MVP vote and logging in for teams and organisers. No analytics, no trackers.",
+    "cookiesBody": "We only use cookies the site needs to work, such as your language choice and logging in for teams and organisers. No analytics, no trackers.",
     "sharingHeading": "Who do we share data with?",
     "sharingBody": "Only with the services the site runs on: Vercel (hosting and photo storage), Turso (database) and Anthropic (photo check). They only use the data for that task.",
     "retentionHeading": "How long do we keep it?",
