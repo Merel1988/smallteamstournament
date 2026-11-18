@@ -16,6 +16,7 @@ const items = [
   { href: "/admin/tombola", label: "Tombola" },
   { href: "/admin/push", label: "Push" },
   { href: "/admin/qr", label: "QR" },
+  { href: "/admin/printlijst", label: "Printlijst" },
 ];
 
 export default function AdminNav() {

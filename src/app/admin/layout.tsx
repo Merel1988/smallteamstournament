@@ -9,7 +9,11 @@ export default async function AdminLayout({
   const authed = await isAdmin();
   return (
     <div className="max-w-6xl mx-auto w-full px-4 py-6">
-      {authed && <AdminNav />}
+      {authed && (
+        <div className="print:hidden">
+          <AdminNav />
+        </div>
+      )}
       {children}
     </div>
   );
