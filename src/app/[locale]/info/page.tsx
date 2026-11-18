@@ -128,6 +128,14 @@ export default async function InfoPage({
   const officialNames = officials.map((o) => o.name).sort((a, b) => a.localeCompare(b, locale));
 
   const links = LINKS.filter((l) => !hidden.has(l.key));
+  const showTeamsInfo = hasText("teamsBody") || showShirts;
+  const jumpLinks = [
+    { id: "programma", label: t("programHeading"), show: true },
+    { id: "kleedkamers", label: t("lockerHeading"), show: lockerRooms.length > 0 },
+    { id: "kleuren", label: t("colorsHeading"), show: teamColors.length > 0 },
+    { id: "teams", label: t("teamsHeading"), show: showTeamsInfo },
+    { id: "officials", label: t("rosterHeading"), show: true },
+  ].filter((j) => j.show);
 
   return (
     <div className="space-y-10">
@@ -135,22 +143,15 @@ export default async function InfoPage({
         <h1 className="font-display text-5xl">{t("title")}</h1>
         {hasText("lead") && <p className="text-lg text-derby-ink/80 max-w-2xl">{t("lead")}</p>}
         <nav aria-label={t("jumpLabel")} className="flex flex-wrap gap-2 text-sm">
-          <a href="#programma" className="rounded-full bg-derby-ink text-white px-4 py-1.5 font-bold hover:bg-derby-accent transition">
-            {t("programHeading")}
-          </a>
-          {lockerRooms.length > 0 && (
-            <a href="#kleedkamers" className="rounded-full bg-derby-ink text-white px-4 py-1.5 font-bold hover:bg-derby-accent transition">
-              {t("lockerHeading")}
+          {jumpLinks.map((j) => (
+            <a
+              key={j.id}
+              href={`#${j.id}`}
+              className="rounded-full bg-derby-ink text-white px-4 py-1.5 font-bold hover:bg-derby-accent transition"
+            >
+              {j.label}
             </a>
-          )}
-          {teamColors.length > 0 && (
-            <a href="#kleuren" className="rounded-full bg-derby-ink text-white px-4 py-1.5 font-bold hover:bg-derby-accent transition">
-              {t("colorsHeading")}
-            </a>
-          )}
-          <a href="#officials" className="rounded-full bg-derby-ink text-white px-4 py-1.5 font-bold hover:bg-derby-accent transition">
-            {t("rosterHeading")}
-          </a>
+          ))}
         </nav>
       </header>
 
@@ -274,9 +275,11 @@ export default async function InfoPage({
         </section>
       )}
 
-      {(hasText("teamsBody") || showShirts) && (
-        <section className="bg-white rounded-2xl p-6 shadow space-y-4">
-          <h2 className="font-display text-3xl">{t("teamsHeading")}</h2>
+      {showTeamsInfo && (
+        <section id="teams" aria-labelledby="teams-heading" className="bg-white rounded-2xl p-6 shadow space-y-4 scroll-mt-32">
+          <h2 id="teams-heading" className="font-display text-3xl">
+            {t("teamsHeading")}
+          </h2>
           {hasText("teamsBody") && <p className="text-derby-ink/80 whitespace-pre-line">{t("teamsBody")}</p>}
           {showShirts && (
             <div className="space-y-4">
