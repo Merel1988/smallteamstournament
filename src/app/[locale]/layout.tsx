@@ -75,7 +75,6 @@ export default async function LocaleLayout({
   const funItems = [
     ...link("bingo", "/bingo", tNav("bingo")),
     ...link("nickname", "/nickname", tNav("nickname")),
-    ...link("fotos", "/fotos", tNav("photos")),
     ...link("mvp", "/mvp", tNav("mvp")),
     ...link("tombola", "/tombola", tNav("tombola")),
   ];
@@ -91,6 +90,7 @@ export default async function LocaleLayout({
     ...link("home", "/", tNav("home")),
     ...link("teams", "/teams", tNav("teams")),
     ...link("schema", "/schema", tNav("schema")),
+    ...link("fotos", "/fotos", tNav("photos")),
     ...group(tNav("infoGroup"), infoItems),
     ...group(tNav("fun"), funItems),
   ];
