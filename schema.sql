@@ -50,6 +50,8 @@ CREATE TABLE "Match" (
     "teamBId" TEXT NOT NULL,
     "teamALabel" TEXT,
     "teamBLabel" TEXT,
+    "shirtA" TEXT,
+    "shirtB" TEXT,
     "scoreA" INTEGER,
     "scoreB" INTEGER,
     "status" TEXT NOT NULL DEFAULT 'scheduled',
@@ -61,12 +63,28 @@ CREATE TABLE "Match" (
 );
 
 -- CreateTable
+CREATE TABLE "MatchSitOut" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "matchId" TEXT NOT NULL,
+    "playerId" TEXT NOT NULL,
+    CONSTRAINT "MatchSitOut_matchId_fkey" FOREIGN KEY ("matchId") REFERENCES "Match" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "MatchSitOut_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "Player" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
 CREATE TABLE "Photo" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "url" TEXT NOT NULL,
     "thumbUrl" TEXT,
+    "width" INTEGER,
+    "height" INTEGER,
     "uploaderName" TEXT,
     "caption" TEXT,
+    "shareable" BOOLEAN NOT NULL DEFAULT false,
+    "status" TEXT NOT NULL DEFAULT 'approved',
+    "moderationNote" TEXT,
+    "reportedAt" DATETIME,
+    "reportReason" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -85,6 +103,7 @@ CREATE TABLE "MvpVote" (
 CREATE TABLE "BingoPrompt" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "text" TEXT NOT NULL,
+    "textEn" TEXT,
     "category" TEXT,
     "active" BOOLEAN NOT NULL DEFAULT true
 );
@@ -214,6 +233,17 @@ CREATE TABLE "ProgramItem" (
 );
 
 -- CreateTable
+CREATE TABLE "LockerRoom" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "room" TEXT NOT NULL,
+    "labelNl" TEXT NOT NULL,
+    "labelEn" TEXT,
+    "sortOrder" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "OfficialAssignment" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "matchId" TEXT NOT NULL,
@@ -224,8 +254,32 @@ CREATE TABLE "OfficialAssignment" (
     CONSTRAINT "OfficialAssignment_matchId_fkey" FOREIGN KEY ("matchId") REFERENCES "Match" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- CreateTable
+CREATE TABLE "Official" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "sortOrder" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- CreateTable
+CREATE TABLE "TombolaPrize" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "ticket" TEXT NOT NULL,
+    "ticketKey" TEXT NOT NULL,
+    "prize" TEXT NOT NULL,
+    "claimedAt" DATETIME,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- CreateIndex
 CREATE INDEX "BenchStaff_teamId_idx" ON "BenchStaff"("teamId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "MatchSitOut_matchId_playerId_key" ON "MatchSitOut"("matchId", "playerId");
+
+-- CreateIndex
+CREATE INDEX "Photo_status_createdAt_idx" ON "Photo"("status", "createdAt");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MvpVote_voterHash_matchId_key" ON "MvpVote"("voterHash", "matchId");
@@ -241,4 +295,7 @@ CREATE UNIQUE INDEX "VolunteerSignup_shiftId_volunteerId_key" ON "VolunteerSignu
 
 -- CreateIndex
 CREATE INDEX "OfficialAssignment_matchId_idx" ON "OfficialAssignment"("matchId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "TombolaPrize_ticketKey_key" ON "TombolaPrize"("ticketKey");
 

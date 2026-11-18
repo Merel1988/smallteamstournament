@@ -43,6 +43,16 @@ export default async function SchemaPage({
         .flatMap((m) => [m.teamALabel ? "" : m.teamAId, m.teamBLabel ? "" : m.teamBId])
         .filter(Boolean)
     : [];
+  const liveIds = rows.filter((m) => m.status === "live").map((m) => m.id);
+  const sittingOut = new Set(
+    liveIds.length
+      ? (
+          await prisma.matchSitOut
+            .findMany({ where: { matchId: { in: liveIds } }, select: { playerId: true } })
+            .catch(() => [])
+        ).map((s) => s.playerId)
+      : [],
+  );
   const players = liveTeamIds.length
     ? await prisma.player
         .findMany({
@@ -55,7 +65,7 @@ export default async function SchemaPage({
   const rosterOf = (teamId: string) => {
     if (!liveTeamIds.includes(teamId)) return undefined;
     return players
-      .filter((p) => p.teamId === teamId)
+      .filter((p) => p.teamId === teamId && !sittingOut.has(p.id))
       .map(({ id, derbyName, number, headshotUrl }) => ({ id, derbyName, number, headshotUrl }));
   };
 

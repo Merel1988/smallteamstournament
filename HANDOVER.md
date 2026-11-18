@@ -7,6 +7,9 @@ Laatste update: **2026-11-18**:
 - **FB39 derby-quiz** `/quiz` onder Fun (aan/uit via Zichtbaarheid): 30 vragen in namespace `Quiz.questions` (antwoord `a1` is altijd goed, wordt gehusseld), 10 per ronde, uitleg per vraag, beste score in localStorage. De mini-quiz op `/regels` verwijst ernaar.
 - **Foto's** staat als los kopje in het menu.
 - **Push getest op een echt toestel** (FB2): komt aan.
+- **Tombola:** winnend nummer zonder prijs, snelle invoer van één nummer.
+- **Printlijst** `/admin/printlijst`: officials + vrijwilligers alfabetisch met afvinkvak.
+- **FB40 opstelling** `/admin/opstelling`: per wedstrijd spelers op "speelt niet" zetten (tabel `MatchSitOut`); het schema toont bij een live wedstrijd alleen wie meedoet. ⚠️ Prod-migratie: `node --env-file=.env.production.local scripts/migrate-sitout-prod.mjs` (Merel draait zelf; zonder migratie toont het schema gewoon iedereen).
 
 Update **2026-10-25**: alles hieronder is live.
 - **FB38 wedstrijden op de teampagina:** `/teams/[id]` toont de wedstrijden van het team (tijd, tegenstander, poule, live-score, uitslag gewonnen/verloren/gelijk).
