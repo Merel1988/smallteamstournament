@@ -847,6 +847,7 @@
     "hint": "Meerdere loten? Zet er een komma tussen (maximaal {max}).",
     "check": "Check mijn lot",
     "won": "Gewonnen: {prize}",
+    "wonPlain": "Gewonnen!",
     "claimed": "Deze prijs is al opgehaald.",
     "noPrize": "Helaas, geen prijs.",
     "collect": "Gefeliciteerd! Haal je prijs op bij de merch- en tombolatafel en neem je lot mee.",

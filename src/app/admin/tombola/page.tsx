@@ -30,21 +30,43 @@ export default async function AdminTombolaPage() {
       </header>
 
       <form action={addPrizes} className="bg-white rounded-2xl p-5 shadow space-y-3">
-        <h2 className="font-display text-2xl">Winnende nummers toevoegen</h2>
-        <p className="text-sm text-derby-ink/70">
-          Eén lot per regel, nummer en prijs gescheiden door een dubbele punt. Een nummer dat er al staat krijgt de
-          nieuwe prijs. Voorloopnullen, hoofdletters en spaties maken niet uit.
-        </p>
-        <textarea
-          name="lines"
-          rows={8}
-          placeholder={"42: Roadkill hoodie\n117: Bon voor de bar\nRood 7: Tas met merch"}
-          className="w-full border border-derby-ink/20 rounded-lg px-3 py-2 font-mono"
-        />
-        <SubmitButton type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold">
-          Toevoegen
-        </SubmitButton>
+        <label htmlFor="quick-ticket" className="block font-display text-2xl">
+          Winnend nummer toevoegen
+        </label>
+        <div className="flex gap-2">
+          <input
+            id="quick-ticket"
+            name="lines"
+            inputMode="numeric"
+            autoComplete="off"
+            required
+            placeholder="42"
+            className="min-w-0 flex-1 border border-derby-ink/20 rounded-lg px-3 py-2 text-lg tabular-nums"
+          />
+          <SubmitButton type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold">
+            Toevoegen
+          </SubmitButton>
+        </div>
       </form>
+
+      <details className="bg-white rounded-2xl p-5 shadow">
+        <summary className="cursor-pointer font-bold">Meerdere tegelijk of met prijs</summary>
+        <form action={addPrizes} className="mt-3 space-y-3">
+          <p className="text-sm text-derby-ink/70">
+            Eén lot per regel. Een prijs mag, maar hoeft niet: zet hem achter een dubbele punt. Een nummer dat er al staat
+            krijgt de nieuwe prijs. Voorloopnullen, hoofdletters en spaties maken niet uit.
+          </p>
+          <textarea
+            name="lines"
+            rows={8}
+            placeholder={"42\n117: Bon voor de bar\nRood 7: Tas met merch"}
+            className="w-full border border-derby-ink/20 rounded-lg px-3 py-2 font-mono"
+          />
+          <SubmitButton type="submit" className="bg-derby-ink text-white rounded-full px-4 py-2 font-bold">
+            Toevoegen
+          </SubmitButton>
+        </form>
+      </details>
 
       <section className="space-y-3">
         <h2 className="font-display text-2xl">
@@ -57,7 +79,9 @@ export default async function AdminTombolaPage() {
             {sorted.map((p) => (
               <li key={p.id} className="flex flex-wrap items-center gap-3 px-4 py-2">
                 <span className="font-bold tabular-nums w-24">{p.ticket}</span>
-                <span className={`flex-1 ${p.claimedAt ? "line-through text-derby-ink/50" : ""}`}>{p.prize}</span>
+                <span className={`flex-1 ${p.claimedAt ? "line-through text-derby-ink/50" : ""}`}>
+                  {p.prize || <span className="text-derby-ink/50">Gewonnen</span>}
+                </span>
                 <form className="flex gap-2">
                   <SubmitButton
                     type="submit"

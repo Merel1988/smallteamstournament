@@ -18,7 +18,7 @@ export async function addPrizes(formData: FormData) {
     await prisma.tombolaPrize.upsert({
       where: { ticketKey: key },
       create: { ticket, ticketKey: key, prize },
-      update: { ticket, prize },
+      update: prize ? { ticket, prize } : { ticket },
     });
   }
   refresh();

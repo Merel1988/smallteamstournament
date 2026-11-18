@@ -85,7 +85,7 @@ export default async function TombolaPage({
                     {prize ? (
                       <>
                         <span aria-hidden>🎉 </span>
-                        {t("won", { prize: prize.prize })}
+                        {prize.prize ? t("won", { prize: prize.prize }) : t("wonPlain")}
                         {prize.claimedAt && <span className="block font-normal text-sm">{t("claimed")}</span>}
                       </>
                     ) : (

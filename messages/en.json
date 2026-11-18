@@ -847,6 +847,7 @@
     "hint": "More than one ticket? Separate them with a comma (up to {max}).",
     "check": "Check my ticket",
     "won": "You won: {prize}",
+    "wonPlain": "You won!",
     "claimed": "This prize has already been collected.",
     "noPrize": "Sorry, no prize.",
     "collect": "Congratulations! Collect your prize at the merch and raffle table and bring your ticket.",
