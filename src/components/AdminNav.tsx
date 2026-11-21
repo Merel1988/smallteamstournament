@@ -20,10 +20,11 @@ const items = [
   { href: "/admin/printlijst", label: "Printlijst" },
 ];
 
-export default function AdminNav() {
+export default function AdminNav({ scorerOnly = false }: { scorerOnly?: boolean }) {
+  const visible = scorerOnly ? items.filter((it) => it.href === "/admin/live") : items;
   return (
     <nav className="bg-white rounded-xl p-2 shadow mb-6 flex flex-wrap gap-1">
-      {items.map((it) => (
+      {visible.map((it) => (
         <Link
           key={it.href}
           href={it.href}

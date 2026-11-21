@@ -1,17 +1,17 @@
 import AdminNav from "@/components/AdminNav";
-import { isAdmin } from "@/lib/admin-auth";
+import { getRole } from "@/lib/admin-auth";
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const authed = await isAdmin();
+  const role = await getRole();
   return (
     <div className="max-w-6xl mx-auto w-full px-4 py-6">
-      {authed && (
+      {role && (
         <div className="print:hidden">
-          <AdminNav />
+          <AdminNav scorerOnly={role === "scorer"} />
         </div>
       )}
       {children}

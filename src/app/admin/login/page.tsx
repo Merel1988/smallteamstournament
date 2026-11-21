@@ -16,7 +16,7 @@ export default async function AdminLoginPage({
       >
         <h1 className="font-display text-3xl">Admin login</h1>
         <p className="text-sm text-derby-ink/70">
-          Gedeeld wachtwoord voor organisatoren.
+          Wachtwoord voor organisatoren of scoreteam.
         </p>
 
         {next && <input type="hidden" name="next" value={next} />}

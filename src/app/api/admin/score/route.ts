@@ -1,6 +1,6 @@
 import { after, NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
-import { isAdmin } from "@/lib/admin-auth";
+import { canScore } from "@/lib/admin-auth";
 import { sideName } from "@/lib/match-teams";
 import { prisma } from "@/lib/prisma";
 import { sendToAll } from "@/lib/push";
@@ -22,7 +22,7 @@ function int(v: unknown, lo: number, hi: number): number | null {
 }
 
 export async function GET() {
-  if (!(await isAdmin())) return json({ error: "Niet ingelogd." }, 401);
+  if (!(await canScore())) return json({ error: "Niet ingelogd." }, 401);
   const matches: LiveScore[] = await prisma.match.findMany({ select: SELECT });
   return json({ matches });
 }
@@ -39,7 +39,7 @@ type Body = {
 };
 
 export async function POST(req: NextRequest) {
-  if (!(await isAdmin())) return json({ error: "Niet ingelogd." }, 401);
+  if (!(await canScore())) return json({ error: "Niet ingelogd." }, 401);
   let body: Body;
   try {
     body = (await req.json()) as Body;

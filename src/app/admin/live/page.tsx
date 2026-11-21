@@ -1,4 +1,4 @@
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireScorer } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { kindOf } from "@/lib/schedule";
 import { sideName } from "@/lib/match-teams";
@@ -8,7 +8,7 @@ import LiveScorer from "@/components/LiveScorerClient";
 export const dynamic = "force-dynamic";
 
 export default async function AdminLivePage() {
-  await requireAdmin();
+  await requireScorer();
   const rows = await prisma.match.findMany({
     orderBy: { startsAt: "asc" },
     include: { teamA: true, teamB: true },

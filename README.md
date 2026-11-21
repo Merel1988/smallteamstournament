@@ -28,6 +28,7 @@ Open http://localhost:3000.
 
 - `ADMIN_PASSWORD` — gedeeld wachtwoord voor organisatoren
 - `ADMIN_SECRET` — HMAC key voor de admin cookie (`openssl rand -base64 32`)
+- `SCORER_PASSWORD` (optioneel) — wachtwoord voor het scoreteam, geeft alleen toegang tot `/admin/live`
 
 Voor push notifications extra:
 

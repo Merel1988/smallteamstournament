@@ -16,6 +16,8 @@ export function sign(payload: string): string {
   return `${payload}.${hmac}`;
 }
 
+export type AdminRole = "admin" | "scorer";
+
 export function verify(token: string | undefined): boolean {
   if (!token) return false;
   const lastDot = token.lastIndexOf(".");
@@ -35,8 +37,13 @@ export function verify(token: string | undefined): boolean {
   }
 }
 
-export function checkPassword(input: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD;
+export function roleOf(token: string | undefined): AdminRole | null {
+  if (!token || !verify(token)) return null;
+  const prefix = token.slice(0, token.indexOf("."));
+  return prefix === "admin" || prefix === "scorer" ? prefix : null;
+}
+
+function matches(expected: string | undefined, input: string): boolean {
   if (!expected) return false;
   const a = Buffer.from(expected);
   const b = Buffer.from(input);
@@ -44,9 +51,21 @@ export function checkPassword(input: string): boolean {
   return timingSafeEqual(a, b);
 }
 
-export function createToken(): string {
+export function checkPassword(input: string): AdminRole | null {
+  if (matches(process.env.ADMIN_PASSWORD, input)) return "admin";
+  if (matches(process.env.SCORER_PASSWORD, input)) return "scorer";
+  return null;
+}
+
+export function createToken(role: AdminRole): string {
   const issuedAt = Date.now();
-  return sign(`admin.${issuedAt}`);
+  return sign(`${role}.${issuedAt}`);
+}
+
+export const SCORER_HOME = "/admin/live";
+
+export function scorerMayAccess(pathname: string): boolean {
+  return pathname === SCORER_HOME || pathname.startsWith(`${SCORER_HOME}/`);
 }
 
 export function cookieOptions() {
@@ -59,14 +78,27 @@ export function cookieOptions() {
   };
 }
 
-export async function isAdmin(): Promise<boolean> {
+export async function getRole(): Promise<AdminRole | null> {
   const store = await cookies();
-  const token = store.get(ADMIN_COOKIE)?.value;
-  return verify(token);
+  return roleOf(store.get(ADMIN_COOKIE)?.value);
+}
+
+export async function isAdmin(): Promise<boolean> {
+  return (await getRole()) === "admin";
+}
+
+export async function canScore(): Promise<boolean> {
+  return (await getRole()) !== null;
 }
 
 export async function requireAdmin(): Promise<void> {
   if (!(await isAdmin())) {
+    redirect("/admin/login");
+  }
+}
+
+export async function requireScorer(): Promise<void> {
+  if (!(await canScore())) {
     redirect("/admin/login");
   }
 }

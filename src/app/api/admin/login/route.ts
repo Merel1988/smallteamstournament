@@ -3,6 +3,8 @@ import {
   checkPassword,
   cookieOptions,
   createToken,
+  scorerMayAccess,
+  SCORER_HOME,
 } from "@/lib/admin-auth";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
@@ -12,7 +14,8 @@ export async function POST(request: NextRequest) {
   const password = String(form.get("password") || "");
   const next = String(form.get("next") || "/admin");
 
-  if (!checkPassword(password)) {
+  const role = checkPassword(password);
+  if (!role) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
     url.searchParams.set("error", "1");
@@ -21,10 +24,14 @@ export async function POST(request: NextRequest) {
   }
 
   const store = await cookies();
-  store.set(ADMIN_COOKIE, createToken(), cookieOptions());
+  store.set(ADMIN_COOKIE, createToken(role), cookieOptions());
 
   const redirectUrl = request.nextUrl.clone();
-  redirectUrl.pathname = next.startsWith("/admin") ? next : "/admin";
+  if (role === "scorer") {
+    redirectUrl.pathname = scorerMayAccess(next) ? next : SCORER_HOME;
+  } else {
+    redirectUrl.pathname = next.startsWith("/admin") ? next : "/admin";
+  }
   redirectUrl.search = "";
   return Response.redirect(redirectUrl, 303);
 }

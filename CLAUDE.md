@@ -36,7 +36,8 @@ To sync Turso (production DB) after schema changes: `npm run db:generate-sql && 
 Shared-password gate (organisers share one password), not per-user accounts.
 
 - `ADMIN_PASSWORD` (the shared secret) and `ADMIN_SECRET` (HMAC key for the signed cookie) are **required** — `getSecret()` throws if `ADMIN_SECRET` is missing.
-- `src/lib/admin-auth.ts` issues an HMAC-signed cookie `derby_admin` (12h). `verify()` uses `timingSafeEqual`. `requireAdmin()` is the server-side guard for admin pages; the proxy enforces it at the edge.
+- `src/lib/admin-auth.ts` issues an HMAC-signed cookie `derby_admin` (12h) whose payload starts with the role (`admin` or `scorer`). `verify()` uses `timingSafeEqual`. `requireAdmin()` is the server-side guard for admin pages; the proxy enforces it at the edge.
+- Optional `SCORER_PASSWORD` logs in with role `scorer`: only `/admin/live` and `/api/admin/score` (`requireScorer()` / `canScore()`); the proxy redirects scorers away from other admin pages. `isAdmin()` is true only for the `admin` role.
 
 ### Data layer
 
