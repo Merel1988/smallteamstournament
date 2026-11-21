@@ -77,6 +77,11 @@ export async function POST(req: NextRequest) {
       if (!STATUSES.has(status)) return json({ error: "Ongeldige status." }, 400);
       await prisma.match.update({ where: { id }, data: { status } });
       if (status === "live") {
+        // Only one bout is on track at a time, so starting one ends any other.
+        await prisma.match.updateMany({
+          where: { status: "live", id: { not: id } },
+          data: { status: "finished" },
+        });
         await prisma.match.updateMany({ where: { id, scoreA: null }, data: { scoreA: 0 } });
         await prisma.match.updateMany({ where: { id, scoreB: null }, data: { scoreB: 0 } });
       }
