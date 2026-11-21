@@ -65,7 +65,8 @@ export default async function HomePage({
           .catch(() => []),
   ]);
   const bouts = openMatches.filter((m) => kindOf(m.poule) === "match");
-  const liveMatch = bouts.find((m) => m.status === "live") ?? null;
+  // Prefer the most recently started bout in case an earlier one was never marked finished.
+  const liveMatch = bouts.findLast((m) => m.status === "live") ?? null;
   const upcoming = bouts
     .filter((m) => m.status === "scheduled" && m.startsAt >= now)
     .slice(0, liveMatch ? UPCOMING_COUNT - 1 : UPCOMING_COUNT);
