@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
+import AutoRefresh from "@/components/AutoRefresh";
 import ScheduleBoard from "@/components/ScheduleBoard";
 import { Link } from "@/i18n/navigation";
 import { pageMetadata } from "@/lib/seo";
@@ -8,6 +9,9 @@ import { prisma } from "@/lib/prisma";
 import { buildStandings, fitItemDurations, pouleStyles, toScheduleMatch, type PouleStanding } from "@/lib/schedule";
 
 export const dynamic = "force-dynamic";
+
+const LIVE_REFRESH_MS = 10_000;
+const IDLE_REFRESH_MS = 30_000;
 
 export async function generateMetadata({
   params,
@@ -82,8 +86,13 @@ export default async function SchemaPage({
   const styles = [...pouleStyles(matches, otherLabel)];
   const standings = buildStandings(matches, otherLabel);
 
+  const hasOpenMatches = rows.some((m) => m.status !== "finished");
+
   return (
     <div className="space-y-8">
+      {hasOpenMatches && (
+        <AutoRefresh intervalMs={liveIds.length ? LIVE_REFRESH_MS : IDLE_REFRESH_MS} />
+      )}
       <header>
         <h1 className="font-display text-5xl">{t("title")}</h1>
         <p className="text-derby-ink/70 mt-1">{t("subtitle")}</p>

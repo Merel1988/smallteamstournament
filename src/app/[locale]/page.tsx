@@ -16,6 +16,7 @@ import { kindOf } from "@/lib/schedule";
 
 const UPCOMING_COUNT = 3;
 const LIVE_REFRESH_MS = 10_000;
+const IDLE_REFRESH_MS = 30_000;
 
 export const dynamic = "force-dynamic";
 
@@ -95,7 +96,9 @@ export default async function HomePage({
   return (
     <div className="space-y-8">
       <EventJsonLd description={tEvent("description")} />
-      {liveMatch && <AutoRefresh intervalMs={LIVE_REFRESH_MS} />}
+      {bouts.length > 0 && (
+        <AutoRefresh intervalMs={liveMatch ? LIVE_REFRESH_MS : IDLE_REFRESH_MS} />
+      )}
       <section className="relative overflow-hidden bg-derby-ink text-white rounded-2xl p-6 pb-8 sm:p-10 sm:pb-12 shadow-lg">
         <div
           className="pointer-events-none absolute -right-16 -top-6 w-56 opacity-30 rotate-[-8deg] sm:w-80 lg:-right-10 lg:top-4 lg:opacity-100"
