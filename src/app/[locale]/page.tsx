@@ -12,7 +12,8 @@ import { pageMetadata } from "@/lib/seo";
 import { getHiddenPageKeys } from "@/lib/page-visibility";
 import { eventTimeFormatter } from "@/lib/time";
 import { sideName } from "@/lib/match-teams";
-import { kindOf } from "@/lib/schedule";
+import Standings from "@/components/Standings";
+import { buildStandings, kindOf, toScheduleMatch } from "@/lib/schedule";
 
 const UPCOMING_COUNT = 3;
 const LIVE_REFRESH_MS = 10_000;
@@ -48,11 +49,10 @@ export default async function HomePage({
   // The match blocks expose team names (teams page) and the schedule
   // (schema page), so only show them when both of those pages are visible.
   const showMatches = !hidden.has("teams") && !hidden.has("schema");
-  const [openMatches, teams] = await Promise.all([
+  const [allMatches, teams] = await Promise.all([
     showMatches
       ? prisma.match
           .findMany({
-            where: { status: { not: "finished" } },
             orderBy: { startsAt: "asc" },
             include: { teamA: true, teamB: true },
           })
@@ -64,7 +64,7 @@ export default async function HomePage({
           .findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, logoUrl: true } })
           .catch(() => []),
   ]);
-  const bouts = openMatches.filter((m) => kindOf(m.poule) === "match");
+  const bouts = allMatches.filter((m) => kindOf(m.poule) === "match" && m.status !== "finished");
   // Prefer the most recently started bout in case an earlier one was never marked finished.
   const liveMatch = bouts.findLast((m) => m.status === "live") ?? null;
   const upcoming = bouts
@@ -73,6 +73,21 @@ export default async function HomePage({
 
   const beforeEvent = EVENT.date.getTime() > now.getTime();
   const afterEvent = EVENT.endDate.getTime() <= now.getTime();
+  const tSchema = await getTranslations("Schema");
+  const standings = buildStandings(allMatches.map(toScheduleMatch), tSchema("otherPoule"));
+  const final = allMatches.findLast(
+    (m) =>
+      /final/i.test(m.poule ?? "") &&
+      m.status === "finished" &&
+      m.scoreA != null &&
+      m.scoreB != null &&
+      m.scoreA !== m.scoreB &&
+      !m.teamALabel?.trim() &&
+      !m.teamBLabel?.trim(),
+  );
+  const champion = final ? (final.scoreA! > final.scoreB! ? final.teamA : final.teamB) : null;
+  const showPhotoCall = afterEvent && !hidden.has("fotos");
+  const photoUploadOpen = !hidden.has("fotos-upload");
   const timeFormatter = eventTimeFormatter(locale);
   const side = (team: { id: string; name: string }, label: string | null) => ({
     name: sideName(team, label),
@@ -168,6 +183,68 @@ export default async function HomePage({
         </section>
       )}
 
+      {final && champion && (
+        <section
+          aria-labelledby="champion-heading"
+          className="relative overflow-hidden bg-white border-4 border-derby-accent rounded-2xl p-6 shadow-lg text-center"
+        >
+          <p className="text-xs uppercase tracking-wider text-derby-accent font-bold">{t("championLabel")}</p>
+          {champion.logoUrl && (
+            <Image
+              src={champion.logoUrl}
+              alt=""
+              width={112}
+              height={112}
+              className="mx-auto mt-3 w-28 h-28 rounded-lg object-contain"
+            />
+          )}
+          <h2 id="champion-heading" className="font-display text-4xl sm:text-5xl mt-2">
+            <span aria-hidden>🏆 </span>
+            {hidden.has("teams") ? (
+              champion.name
+            ) : (
+              <Link href={`/teams/${champion.id}`} className="hover:text-derby-accent">
+                {champion.name}
+              </Link>
+            )}
+          </h2>
+          <p className="mt-4 text-xs uppercase tracking-wider text-derby-ink/60 font-bold">{final.poule}</p>
+          <MatchRow
+            teamA={side(final.teamA, final.teamALabel)}
+            teamB={side(final.teamB, final.teamBLabel)}
+            scoreA={final.scoreA}
+            scoreB={final.scoreB}
+            vsLabel={t("vs")}
+            timeFormatter={timeFormatter}
+          />
+        </section>
+      )}
+
+      {showPhotoCall && (
+        <section aria-labelledby="photos-heading" className="bg-derby-ink text-white rounded-2xl p-6 shadow-lg">
+          <h2 id="photos-heading" className="font-display text-3xl text-white">
+            <span aria-hidden>📸 </span>
+            {t("photosHeading")}
+          </h2>
+          <p className="text-white/80 mt-1">{photoUploadOpen ? t("photosBody") : t("photosBodyClosed")}</p>
+          <Link
+            href="/fotos"
+            className="inline-block mt-4 rounded-full bg-derby-accent text-white px-5 py-2 font-bold hover:bg-white hover:text-derby-ink transition"
+          >
+            {photoUploadOpen ? t("photosCta") : t("photosCtaClosed")}
+          </Link>
+        </section>
+      )}
+
+      {standings.length > 0 && (
+        <div className="space-y-2">
+          <Standings standings={standings} t={tSchema} linkTeams={!hidden.has("teams")} />
+          <Link href="/schema" className="inline-block text-sm font-bold text-derby-accent hover:underline">
+            {t("allMatches")}
+          </Link>
+        </div>
+      )}
+
       {(liveMatch || upcoming.length > 0) && (
         <section aria-labelledby="matches-heading" className="space-y-3">
           <div className="flex items-baseline justify-between gap-4">
@@ -247,7 +324,7 @@ export default async function HomePage({
         </section>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className={afterEvent ? "" : "grid gap-4 md:grid-cols-2"}>
         {!hidden.has("regels") && (
           <section aria-labelledby="learn-heading" className="bg-derby-ink text-white rounded-2xl p-6 shadow-lg flex flex-col">
             <h2 id="learn-heading" className="font-display text-3xl text-white">
@@ -270,6 +347,7 @@ export default async function HomePage({
           </section>
         )}
 
+        {!afterEvent && (
         <section aria-labelledby="visit-heading" className="bg-white rounded-2xl p-6 shadow flex flex-col">
           <h2 id="visit-heading" className="font-display text-3xl">
             {t("visitHeading")}
@@ -304,9 +382,10 @@ export default async function HomePage({
             </Link>
           )}
         </section>
+        )}
       </div>
 
-      {funCards.length > 0 && (
+      {!afterEvent && funCards.length > 0 && (
         <section aria-labelledby="fun-heading" className="space-y-3">
           <h2 id="fun-heading" className="font-display text-3xl">
             {t("funHeading")}
