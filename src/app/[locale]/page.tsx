@@ -72,6 +72,7 @@ export default async function HomePage({
     .slice(0, liveMatch ? UPCOMING_COUNT - 1 : UPCOMING_COUNT);
 
   const beforeEvent = EVENT.date.getTime() > now.getTime();
+  const afterEvent = EVENT.endDate.getTime() <= now.getTime();
   const timeFormatter = eventTimeFormatter(locale);
   const side = (team: { id: string; name: string }, label: string | null) => ({
     name: sideName(team, label),
@@ -133,7 +134,9 @@ export default async function HomePage({
               </>
             ) : (
               <div className="bg-derby-accent rounded-xl p-4">
-                <p className="font-display text-3xl">{t("tournamentLive")}</p>
+                <p className="font-display text-3xl">
+                  {afterEvent ? t("tournamentOver") : t("tournamentLive")}
+                </p>
               </div>
             )}
           </div>
