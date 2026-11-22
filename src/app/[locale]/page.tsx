@@ -156,6 +156,7 @@ export default async function HomePage({
             )}
           </div>
 
+          {!afterEvent && (
           <div className="mt-6 flex flex-wrap gap-3">
             {!hidden.has("schema") && (
               <Link
@@ -174,6 +175,7 @@ export default async function HomePage({
               </Link>
             )}
           </div>
+          )}
         </div>
       </section>
 
