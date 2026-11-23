@@ -16,7 +16,8 @@
     "admin": "Admin",
     "fun": "Fun",
     "infoGroup": "Info",
-    "tombola": "Tombola"
+    "tombola": "Tombola",
+    "editions": "Vorige edities"
   },
   "Event": {
     "league": "Roadkill Rollers Nijmegen",
@@ -737,6 +738,10 @@
     "tombola": {
       "title": "Tombola",
       "description": "Check of je lot gewonnen heeft bij de tombola van het Small Teams Tournament."
+    },
+    "vorige-edities": {
+      "title": "Vorige edities",
+      "description": "Uitslagen, teams, rosters en stats van eerdere edities van het Small Teams Tournament."
     }
   },
   "Toernooi": {
@@ -859,5 +864,155 @@
     "noPrize": "Helaas, geen prijs.",
     "collect": "Gefeliciteerd! Haal je prijs op bij de merch- en tombolatafel en neem je lot mee.",
     "nextTime": "Helaas, dit keer niet. Bedankt voor het steunen van Roadkill Rollers!"
+  },
+  "Editions": {
+    "title": "Vorige edities",
+    "lead": "Terugblikken op eerdere edities van het Small Teams Tournament: uitslagen, teams en stats.",
+    "editionTitle": "Small Teams Tournament {year}",
+    "viewEdition": "Bekijk {year}",
+    "champion": "Kampioen",
+    "finalLine": "Won de finale met {score} van {opponent}",
+    "intro2026": "Op zaterdag 21 november 2026 speelden acht teams het Small Teams Tournament in Sportzaal De Horstacker in Nijmegen. Na twee poules en 13 wedstrijden van 20 minuten won Thunder & Lightning de finale met 67-55 van Roller Derby Breda.",
+    "jumpTo": "Op deze pagina",
+    "highlightsHeading": "Hoogtepunten",
+    "resultsHeading": "Uitslagen",
+    "resultsNote": "Officiële scores van het scoreboard.",
+    "finalHeading": "Finale",
+    "rostersHeading": "Teams & rosters",
+    "skaterCount": "{count} skaters",
+    "benchStaff": "Bench staff",
+    "statsHeading": "Stats",
+    "statsSource": "Alle cijfers komen uit de scoreboard-bestanden van de 13 wedstrijden. In de PDF staat alles, ook wat hier niet staat.",
+    "downloadPdf": "Download alle stats (PDF)",
+    "Stats": {
+      "tabOverview": "Overzicht",
+      "tabSkaters": "Skaters",
+      "tabTeams": "Teams",
+      "tabGames": "Wedstrijden",
+      "tabPenalties": "Penalty's & tijd",
+      "filterLabel": "Filter op team",
+      "allTeams": "Alle teams",
+      "games": "Wedstrijden",
+      "jams": "Jams",
+      "pointsPerGame": "Punten per wedstrijd",
+      "penaltiesPerGame": "Penalty's per wedstrijd",
+      "leadJammerPct": "Jams met lead jammer",
+      "starPasses": "Star passes",
+      "avgJam": "Gemiddelde jam",
+      "recordsHeading": "Records van de dag",
+      "recTopScorer": "Topscorer",
+      "recBiggestWin": "Grootste overwinning",
+      "recClosest": "Spannendste wedstrijd",
+      "recBestJam": "Beste jam",
+      "recFastest": "Snelste jammer naar lead",
+      "recCleanest": "Minste penalty's",
+      "pointsUnit": "{count} punten",
+      "perGameUnit": "{value} per wedstrijd",
+      "boards": {
+        "points": {
+          "title": "Meeste punten",
+          "note": "Punten als jammer, en als pivot na een star pass"
+        },
+        "pointsPerJam": {
+          "title": "Punten per jam",
+          "note": "Gemiddeld per jam als jammer, minimaal 6 jams"
+        },
+        "leadPct": {
+          "title": "Lead jammer %",
+          "note": "Jams als jammer waarin ze lead kregen, minimaal 6 jams"
+        },
+        "jammerPlusMinus": {
+          "title": "+/- als jammer",
+          "note": "Gemiddeld scoreverschil per jam als jammer, minimaal 6 jams"
+        },
+        "blockerPlusMinus": {
+          "title": "+/- als blocker",
+          "note": "Gemiddeld scoreverschil per jam als pivot of blocker, minimaal 12 jams"
+        },
+        "bestJam": {
+          "title": "Hoogste score in één jam",
+          "note": "Punten van een team in één jam"
+        },
+        "timeToLead": {
+          "title": "Snelst naar lead",
+          "note": "Gemiddelde tijd tot lead, minimaal 3 keer lead"
+        }
+      },
+      "pivotNote": "{count} als pivot",
+      "topListNote": "Per stat staat de top 10 hier. Kies een team om te zien wie van dat team erin staat.",
+      "noSkatersForTeam": "Niemand van dit team in deze top 10.",
+      "sortHint": "Tik op een kolom om te sorteren.",
+      "compareHeading": "Vergelijk teams",
+      "col": {
+        "team": "Team",
+        "games": "G",
+        "gamesLong": "Gespeeld",
+        "won": "W",
+        "wonLong": "Gewonnen",
+        "lost": "V",
+        "lostLong": "Verloren",
+        "pointsFor": "Voor",
+        "pointsAgainst": "Tegen",
+        "avgMargin": "Gem. marge",
+        "jams": "Jams",
+        "leadPct": "Lead %",
+        "pointsPerJam": "Ptn/jam",
+        "starPasses": "Star passes",
+        "penalties": "Penalty's",
+        "penaltiesPerGame": "Pen./wedstr.",
+        "timeToLead": "Tijd tot lead"
+      },
+      "sortLabel": "Sorteer op",
+      "sortOrder": "Volgorde",
+      "sortClosest": "Spannendst",
+      "sortMargin": "Grootste verschil",
+      "sortJams": "Meeste jams",
+      "sortPenalties": "Meeste penalty's",
+      "gameNumber": "Wedstrijd {n}",
+      "gameJams": "{count} jams",
+      "gamePenalties": "Penalty's",
+      "gameLeadChanges": "Wisselingen van leiding",
+      "gameComeback": "Comeback: {points} punten achterstand ingehaald",
+      "gameDuration": "Duur",
+      "gameAvgJam": "Gem. jam",
+      "gameAvgLineup": "Gem. line-up",
+      "gameTimeouts": "Time-outs",
+      "noGamesForTeam": "Geen wedstrijden voor dit team.",
+      "jamScoresHeading": "Meest voorkomende jamscores",
+      "jamScoresNote": "Hoogste score eerst",
+      "penaltyCodesHeading": "Penalty's per soort",
+      "penaltyCodes": {
+        "X": "Cut",
+        "M": "Multiplayer",
+        "D": "Direction of gameplay",
+        "F": "Forearms",
+        "B": "Back block",
+        "P": "Illegal position",
+        "C": "Illegal contact",
+        "I": "Illegal procedure",
+        "unknown": "Onbekend",
+        "A": "High block",
+        "G": "Misconduct",
+        "L": "Low block",
+        "H": "Head block"
+      },
+      "jamEndingsHeading": "Hoe jams eindigden",
+      "jamEndings": {
+        "calledOff": "Afgeroepen door lead jammer",
+        "clockRanOut": "Jamklok liep af",
+        "notRecorded": "Niet geregistreerd",
+        "injury": "Blessure"
+      },
+      "timingHeading": "Tijden",
+      "medianJam": "Mediaan jam",
+      "medianTimeToLead": "Mediaan tijd tot lead",
+      "avgLineup": "Tijd tussen jams",
+      "gameMinutes": "Wedstrijdduur",
+      "teamTimeouts": "Team time-outs",
+      "officialTimeouts": "Official time-outs",
+      "teamTimeToLeadHeading": "Teams: tijd tot lead",
+      "seconds": "{value} s",
+      "minutes": "{value} min"
+    }
   }
 }

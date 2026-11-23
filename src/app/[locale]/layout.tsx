@@ -12,6 +12,7 @@ import NavGroup from "@/components/NavGroup";
 import { isGroup, type NavEntry, type NavLink } from "@/lib/nav";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { getHiddenPageKeys } from "@/lib/page-visibility";
+import { EDITION_YEARS } from "@/lib/editions";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -84,6 +85,9 @@ export default async function LocaleLayout({
     ...link("regels", "/regels", tNav("rules")),
     ...link("venue", "/venue", tNav("venue")),
   ];
+  const editionItems = hidden.has("vorige-edities")
+    ? []
+    : EDITION_YEARS.map((year) => ({ href: `/vorige-edities/${year}`, label: String(year) }));
   const group = (label: string, children: NavLink[]) =>
     children.length > 0 ? [{ label, children }] : [];
   const navItems: NavEntry[] = [
@@ -93,6 +97,7 @@ export default async function LocaleLayout({
     ...link("fotos", "/fotos", tNav("photos")),
     ...group(tNav("infoGroup"), infoItems),
     ...group(tNav("fun"), funItems),
+    ...group(tNav("editions"), editionItems),
   ];
 
   return (

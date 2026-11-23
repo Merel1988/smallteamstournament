@@ -16,7 +16,8 @@
     "admin": "Admin",
     "fun": "Fun",
     "infoGroup": "Info",
-    "tombola": "Raffle"
+    "tombola": "Raffle",
+    "editions": "Previous editions"
   },
   "Event": {
     "league": "Roadkill Rollers Nijmegen",
@@ -737,6 +738,10 @@
     "tombola": {
       "title": "Raffle",
       "description": "Check whether your ticket won a prize in the Small Teams Tournament raffle."
+    },
+    "vorige-edities": {
+      "title": "Previous editions",
+      "description": "Results, teams, rosters and stats from earlier editions of the Small Teams Tournament."
     }
   },
   "Toernooi": {
@@ -859,5 +864,155 @@
     "noPrize": "Sorry, no prize.",
     "collect": "Congratulations! Collect your prize at the merch and raffle table and bring your ticket.",
     "nextTime": "Not this time. Thanks for supporting Roadkill Rollers!"
+  },
+  "Editions": {
+    "title": "Previous editions",
+    "lead": "Looking back at earlier editions of the Small Teams Tournament: results, teams and stats.",
+    "editionTitle": "Small Teams Tournament {year}",
+    "viewEdition": "View {year}",
+    "champion": "Champion",
+    "finalLine": "Won the final {score} against {opponent}",
+    "intro2026": "On Saturday 21 November 2026, eight teams played the Small Teams Tournament at Sportzaal De Horstacker in Nijmegen. After two pools and 13 games of 20 minutes, Thunder & Lightning won the final 67-55 against Roller Derby Breda.",
+    "jumpTo": "On this page",
+    "highlightsHeading": "Highlights",
+    "resultsHeading": "Results",
+    "resultsNote": "Official scores from the scoreboard.",
+    "finalHeading": "Final",
+    "rostersHeading": "Teams & rosters",
+    "skaterCount": "{count} skaters",
+    "benchStaff": "Bench staff",
+    "statsHeading": "Stats",
+    "statsSource": "All numbers come from the scoreboard files of the 13 games. The PDF has everything, including what isn't shown here.",
+    "downloadPdf": "Download all stats (PDF)",
+    "Stats": {
+      "tabOverview": "Overview",
+      "tabSkaters": "Skaters",
+      "tabTeams": "Teams",
+      "tabGames": "Games",
+      "tabPenalties": "Penalties & timing",
+      "filterLabel": "Filter by team",
+      "allTeams": "All teams",
+      "games": "Games",
+      "jams": "Jams",
+      "pointsPerGame": "Points per game",
+      "penaltiesPerGame": "Penalties per game",
+      "leadJammerPct": "Jams with a lead jammer",
+      "starPasses": "Star passes",
+      "avgJam": "Average jam",
+      "recordsHeading": "Records of the day",
+      "recTopScorer": "Top scorer",
+      "recBiggestWin": "Biggest win",
+      "recClosest": "Closest game",
+      "recBestJam": "Best jam",
+      "recFastest": "Fastest jammer to lead",
+      "recCleanest": "Fewest penalties",
+      "pointsUnit": "{count} points",
+      "perGameUnit": "{value} per game",
+      "boards": {
+        "points": {
+          "title": "Most points",
+          "note": "Points as jammer, and as pivot after a star pass"
+        },
+        "pointsPerJam": {
+          "title": "Points per jam",
+          "note": "Average per jam as jammer, at least 6 jams"
+        },
+        "leadPct": {
+          "title": "Lead jammer %",
+          "note": "Jams as jammer with lead, at least 6 jams"
+        },
+        "jammerPlusMinus": {
+          "title": "+/- as jammer",
+          "note": "Average score difference per jam as jammer, at least 6 jams"
+        },
+        "blockerPlusMinus": {
+          "title": "+/- as blocker",
+          "note": "Average score difference per jam as pivot or blocker, at least 12 jams"
+        },
+        "bestJam": {
+          "title": "Highest single-jam score",
+          "note": "A team's points in one jam"
+        },
+        "timeToLead": {
+          "title": "Fastest to lead",
+          "note": "Average time to lead, at least 3 leads"
+        }
+      },
+      "pivotNote": "{count} as pivot",
+      "topListNote": "Each stat shows the top 10. Pick a team to see who from that team made the list.",
+      "noSkatersForTeam": "Nobody from this team in this top 10.",
+      "sortHint": "Tap a column to sort.",
+      "compareHeading": "Compare teams",
+      "col": {
+        "team": "Team",
+        "games": "P",
+        "gamesLong": "Played",
+        "won": "W",
+        "wonLong": "Won",
+        "lost": "L",
+        "lostLong": "Lost",
+        "pointsFor": "For",
+        "pointsAgainst": "Against",
+        "avgMargin": "Avg margin",
+        "jams": "Jams",
+        "leadPct": "Lead %",
+        "pointsPerJam": "Pts/jam",
+        "starPasses": "Star passes",
+        "penalties": "Penalties",
+        "penaltiesPerGame": "Pen/game",
+        "timeToLead": "Time to lead"
+      },
+      "sortLabel": "Sort by",
+      "sortOrder": "Order",
+      "sortClosest": "Closest",
+      "sortMargin": "Biggest margin",
+      "sortJams": "Most jams",
+      "sortPenalties": "Most penalties",
+      "gameNumber": "Game {n}",
+      "gameJams": "{count} jams",
+      "gamePenalties": "Penalties",
+      "gameLeadChanges": "Lead changes",
+      "gameComeback": "Comeback: made up a {points} point deficit",
+      "gameDuration": "Duration",
+      "gameAvgJam": "Avg jam",
+      "gameAvgLineup": "Avg lineup",
+      "gameTimeouts": "Timeouts",
+      "noGamesForTeam": "No games for this team.",
+      "jamScoresHeading": "Most common jam scores",
+      "jamScoresNote": "Higher score first",
+      "penaltyCodesHeading": "Penalties by type",
+      "penaltyCodes": {
+        "X": "Cut",
+        "M": "Multiplayer",
+        "D": "Direction of gameplay",
+        "F": "Forearms",
+        "B": "Back block",
+        "P": "Illegal position",
+        "C": "Illegal contact",
+        "I": "Illegal procedure",
+        "unknown": "Unknown",
+        "A": "High block",
+        "G": "Misconduct",
+        "L": "Low block",
+        "H": "Head block"
+      },
+      "jamEndingsHeading": "How jams ended",
+      "jamEndings": {
+        "calledOff": "Called off by lead jammer",
+        "clockRanOut": "Jam clock ran out",
+        "notRecorded": "Not recorded",
+        "injury": "Injury"
+      },
+      "timingHeading": "Timing",
+      "medianJam": "Median jam",
+      "medianTimeToLead": "Median time to lead",
+      "avgLineup": "Time between jams",
+      "gameMinutes": "Game length",
+      "teamTimeouts": "Team timeouts",
+      "officialTimeouts": "Official timeouts",
+      "teamTimeToLeadHeading": "Teams: time to lead",
+      "seconds": "{value} s",
+      "minutes": "{value} min"
+    }
   }
 }

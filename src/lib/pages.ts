@@ -20,7 +20,8 @@ export type PageKey =
   | "regels"
   | "venue"
   | "nickname"
-  | "tombola";
+  | "tombola"
+  | "vorige-edities";
 
 export interface TogglablePage {
   key: PageKey;
@@ -42,4 +43,5 @@ export const TOGGLABLE_PAGES: TogglablePage[] = [
   { key: "venue", path: "venue", navKey: "venue", adminLabel: "Locatie" },
   { key: "nickname", path: "nickname", navKey: "nickname", adminLabel: "Bijnaam-generator" },
   { key: "tombola", path: "tombola", navKey: "tombola", adminLabel: "Tombola" },
+  { key: "vorige-edities", path: "vorige-edities", navKey: "editions", adminLabel: "Vorige edities" },
 ];

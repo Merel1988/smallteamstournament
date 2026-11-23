@@ -49,6 +49,16 @@ export async function listPublicPhotos(
   };
 }
 
+export async function listHighlightPhotos(year: number): Promise<PublicPhoto[]> {
+  const rows = await prisma.photo
+    .findMany({
+      where: { highlightYear: year, status: "approved", reportedAt: null },
+      orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+    })
+    .catch(() => [] as Photo[]);
+  return rows.map(toPublicPhoto);
+}
+
 export async function uploadsOpen(): Promise<boolean> {
   const row = await prisma.pageVisibility
     .findUnique({ where: { key: UPLOADS_SETTING_KEY } })

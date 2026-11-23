@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { SITE_URL, localizedPath, languageAlternates } from "@/lib/seo";
 import { getHiddenPageKeys } from "@/lib/page-visibility";
+import { EDITION_YEARS } from "@/lib/editions";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +22,7 @@ const STATIC_PATHS = [
   "tombola",
   "regels",
   "venue",
+  "vorige-edities",
   "privacy",
 ];
 
@@ -48,5 +50,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           .catch(() => [])
       ).map((t) => entry(`teams/${t.id}`, t.updatedAt));
 
-  return [...staticEntries, ...teamEntries];
+  const editionEntries = hidden.has("vorige-edities")
+    ? []
+    : EDITION_YEARS.map((year) => entry(`vorige-edities/${year}`));
+
+  return [...staticEntries, ...teamEntries, ...editionEntries];
 }

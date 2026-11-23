@@ -17,10 +17,12 @@ export default function PhotoGallery({
   initial,
   initialCursor,
   uploadsOpen,
+  showUpload = true,
 }: {
   initial: PublicPhoto[];
   initialCursor: string | null;
   uploadsOpen: boolean;
+  showUpload?: boolean;
 }) {
   const t = useTranslations("Photos");
   const tA11y = useTranslations("A11y");
@@ -136,7 +138,7 @@ export default function PhotoGallery({
 
   return (
     <div className="space-y-6">
-      <PhotoUpload open={uploadsOpen} onUploaded={reload} />
+      {showUpload && <PhotoUpload open={uploadsOpen} onUploaded={reload} />}
 
       {message && (
         <p role="status" className="text-sm bg-white rounded-lg px-4 py-2 shadow">

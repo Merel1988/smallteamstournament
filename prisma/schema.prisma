@@ -104,6 +104,8 @@ model Photo {
   moderationNote String?
   reportedAt     DateTime?
   reportReason   String?
+  // Edition year whose archive page shows this photo as a highlight.
+  highlightYear  Int?
   createdAt      DateTime  @default(now())
 
   @@index([status, createdAt])

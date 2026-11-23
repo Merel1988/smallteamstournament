@@ -7,13 +7,20 @@ import { prisma } from "@/lib/prisma";
 import { UPLOADS_SETTING_KEY, uploadsOpen } from "@/lib/photos";
 import type { Prisma } from "@/generated/prisma/client";
 import SubmitButton from "@/components/SubmitButton";
+import { EVENT } from "@/lib/event";
 
 export const dynamic = "force-dynamic";
+
+const HIGHLIGHT_YEAR = EVENT.date.getFullYear();
 
 const TABS = {
   review: { label: "Te beoordelen", where: { status: "pending" } },
   reports: { label: "Verwijderverzoeken", where: { reportedAt: { not: null } } },
   live: { label: "Zichtbaar", where: { status: "approved", reportedAt: null } },
+  highlights: {
+    label: `Hoogtepunten ${HIGHLIGHT_YEAR}`,
+    where: { status: "approved", reportedAt: null, highlightYear: HIGHLIGHT_YEAR },
+  },
 } satisfies Record<string, { label: string; where: Prisma.PhotoWhereInput }>;
 
 type TabKey = keyof typeof TABS;
@@ -22,6 +29,8 @@ function refresh() {
   revalidatePath("/admin/fotos");
   revalidatePath("/fotos");
   revalidatePath("/en/fotos");
+  revalidatePath(`/vorige-edities/${HIGHLIGHT_YEAR}`);
+  revalidatePath(`/en/vorige-edities/${HIGHLIGHT_YEAR}`);
 }
 
 async function deletePhotos(ids: string[]) {
@@ -55,6 +64,13 @@ async function approve(id: string) {
     where: { id },
     data: { status: "approved", reportedAt: null, reportReason: null },
   });
+  refresh();
+}
+
+async function setHighlight(id: string, on: boolean) {
+  "use server";
+  await requireAdmin();
+  await prisma.photo.update({ where: { id }, data: { highlightYear: on ? HIGHLIGHT_YEAR : null } });
   refresh();
 }
 
@@ -137,6 +153,12 @@ export default async function AdminFotosPage({
         </p>
       )}
 
+      {(tab === "live" || tab === "highlights") && (
+        <p className="text-derby-ink/70 text-sm">
+          Foto&apos;s met een ster staan als hoogtepunt op de pagina Vorige edities {HIGHLIGHT_YEAR}.
+        </p>
+      )}
+
       {photos.length === 0 ? (
         <p className="text-derby-ink/60">Niks te zien hier.</p>
       ) : (
@@ -171,6 +193,9 @@ export default async function AdminFotosPage({
                       {p.shareable ? "Mag gedeeld worden" : "Alleen bekijken"}
                     </span>
                   </div>
+                  {p.highlightYear === HIGHLIGHT_YEAR && (
+                    <div className="font-bold text-derby-accent">★ Hoogtepunt {HIGHLIGHT_YEAR}</div>
+                  )}
                   {p.uploaderName && <div className="italic">{p.uploaderName}</div>}
                   {tab === "review" && p.moderationNote && <div>AI: {p.moderationNote}</div>}
                   {p.reportedAt && (
@@ -183,7 +208,15 @@ export default async function AdminFotosPage({
                   </a>
                 </div>
                 <div className="mt-2 flex gap-2">
-                  {tab !== "live" && (
+                  {(tab === "live" || tab === "highlights") && (
+                    <SubmitButton
+                      formAction={setHighlight.bind(null, p.id, p.highlightYear !== HIGHLIGHT_YEAR)}
+                      className="flex-1 bg-white border border-derby-ink rounded-full px-3 py-1 text-sm font-bold"
+                    >
+                      {p.highlightYear === HIGHLIGHT_YEAR ? "Geen hoogtepunt" : "★ Hoogtepunt"}
+                    </SubmitButton>
+                  )}
+                  {tab !== "live" && tab !== "highlights" && (
                     <SubmitButton
                       formAction={approve.bind(null, p.id)}
                       className="flex-1 bg-derby-ink text-white rounded-full px-3 py-1 text-sm font-bold"

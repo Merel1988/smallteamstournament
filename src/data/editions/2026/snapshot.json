@@ -1,0 +1,711 @@
+{
+  "year": 2026,
+  "takenAt": "2026-11-23T12:19:25.246Z",
+  "teams": [
+    {
+      "key": "amsterdam-roller-derby",
+      "name": "Amsterdam Roller Derby",
+      "color": null,
+      "logoUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/teams/1793020476289-ard-white-fBEBlaHosmwtlxrGtVShDJPx6y19VY.png",
+      "descriptionNl": null,
+      "descriptionEn": "Amsterdam Roller Derby was founded in 2009, the first league in the Netherlands. We are a group of strong people from all walks of life with a passion for playing roller derby. ARD is an all-gender league focused on growing and adapting to the principles of the roller derby community. We aim to support the growth of this amazing sport by encouraging teamwork, athleticism, inclusion and equality.",
+      "players": [
+        {
+          "number": "79",
+          "derbyName": "Assault N Pepper",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/signal-2026-11-01-17-50-39-782_006-sBspFLksGeXb65QPJ4j5PJUMWfQveD.jpg"
+        },
+        {
+          "number": "77",
+          "derbyName": "Curse",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/RainbowUnicornKitty-hZhorFxPWpuVyBPE9kA9VM35O0IkgU.jpg"
+        },
+        {
+          "number": "508",
+          "derbyName": "Dash N Crash",
+          "pronouns": "She/They",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/RainbowUnicornKitty-745YjjDqX4PmvAJEKBhHXUlmozt6rV.jpg"
+        },
+        {
+          "number": "24",
+          "derbyName": "Diego",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/RainbowUnicornKitty-qstHNdHT3AglobS3Ete1LKGecbweNu.jpg"
+        },
+        {
+          "number": "831",
+          "derbyName": "Hella Nora",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/RainbowUnicornKitty-pJZbbQtv9iK0YbxR5GX4FMUHOn6m0d.jpg"
+        },
+        {
+          "number": "314",
+          "derbyName": "Mae Day",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/RainbowUnicornKitty-5Pey7ulE0a0ihQ6ELGuDeR1aLeieeb.jpg"
+        },
+        {
+          "number": "7",
+          "derbyName": "Moira Rollse",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/RainbowUnicornKitty-gH0AJhNOHfvALhM8PBAn8zm7qFxEyT.jpg"
+        },
+        {
+          "number": "17",
+          "derbyName": "Punch Judy",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/RainbowUnicornKitty-LLhUzKu8qOpwADzYDdEZLYY78DmU2q.jpg"
+        },
+        {
+          "number": "1312",
+          "derbyName": "faq",
+          "pronouns": "They/He",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/RainbowUnicornKitty-j8EE3q686VJirTWo02tpqFwIlnHfv9.jpg"
+        },
+        {
+          "number": "95",
+          "derbyName": "number nine-five",
+          "pronouns": "They/them",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypsqxr000004lb4jcv4gsp/RainbowUnicornKitty-yTlsCH9yKYuPosarji52Ch3D9oXtYb.jpg"
+        }
+      ],
+      "benchStaff": [
+        {
+          "name": "Chairman Mouse",
+          "role": "Coach",
+          "pronouns": "She/They"
+        },
+        {
+          "name": "Kimmi",
+          "role": "Line Up Manager",
+          "pronouns": null
+        }
+      ]
+    },
+    {
+      "key": "arnhem-fallen-angels",
+      "name": "Arnhem Fallen Angels",
+      "color": null,
+      "logoUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/teams/1789212904712-logo-highres-def-color-WHITE-dYChpnQxnwFvzZq9gi9Qb6lTWGuEzm.png",
+      "descriptionNl": null,
+      "descriptionEn": "It's been a while, but bitches are back!",
+      "players": [
+        {
+          "number": "811",
+          "derbyName": "Assassin",
+          "pronouns": "She/her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb620r000004jhto8hb0bn/Assassin_cropped-wwngZbbF4lJe6cwM9Dy3c4mFZyWn4V.png"
+        },
+        {
+          "number": "2222",
+          "derbyName": "Booty Bumper",
+          "pronouns": "She/they",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb620r000004jhto8hb0bn/BootyBumper_cropped-U0tZ40RVsNXBVVLPq7walc4GH4eVtw.png"
+        },
+        {
+          "number": "282",
+          "derbyName": "Bumble Beef",
+          "pronouns": "She/they",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb620r000004jhto8hb0bn/BumbleBeef_cropped-sXqyAemTHfQ37GN89STBRC7Za90xJm.png"
+        },
+        {
+          "number": "52",
+          "derbyName": "Dirty Weasel",
+          "pronouns": "She/her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb620r000004jhto8hb0bn/DirtyWeasel_cropped-debpEjdMZfXzOL7daFyg5ZcXYZiWPu.png"
+        },
+        {
+          "number": "750",
+          "derbyName": "Hazard of Djoek",
+          "pronouns": "She/they",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb620r000004jhto8hb0bn/750_Hazard_of_Djoek_1_-1vUyofcRmrTJsxnZclGm6KsVgYDCwG.webp"
+        },
+        {
+          "number": "508",
+          "derbyName": "Pixie Punch",
+          "pronouns": "She/her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb620r000004jhto8hb0bn/PixiePunch_cropped-BxbxBJGPiuemqjQyccA2reTwgLUKGt.png"
+        },
+        {
+          "number": "5",
+          "derbyName": "Red",
+          "pronouns": "He/him",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb620r000004jhto8hb0bn/Red_cropped-Jukpd3uQhauNWW9T9fCtPa2MX5wn4d.png"
+        },
+        {
+          "number": "728",
+          "derbyName": "Taco Mori",
+          "pronouns": "He/him",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb620r000004jhto8hb0bn/TacoMori_cropped-xaWKjxvbMNUABGH7hh5Tdls4LDUPeb.png"
+        },
+        {
+          "number": "13",
+          "derbyName": "Untoestoppable",
+          "pronouns": "She/her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb620r000004jhto8hb0bn/Untoestoppable_cropped-TLnQboPLhZrzTVDuw12MRiO0L6Gvp9.png"
+        }
+      ],
+      "benchStaff": [
+        {
+          "name": "Miss November Rain",
+          "role": "Coach",
+          "pronouns": "She/her"
+        },
+        {
+          "name": "Breena Bout-a-Licious",
+          "role": "LUM",
+          "pronouns": "She/her"
+        }
+      ]
+    },
+    {
+      "key": "black-sheep-honey-rollers",
+      "name": "Black Sheep Honey Rollers",
+      "color": null,
+      "logoUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/teams/1789212864767-images-44NTZgVPyCI2Pvmp7Gb5TD3wkU5Sa6.jpg",
+      "descriptionNl": "De Black Sheep Honey Rollers is de enige roller derby club in Zeeland en heeft dus ook leden uit die regio. Variërend in leeftijd van begin 20 tot in de 50 staan we twee avonden per week op skates om onze skills te verbeteren en vooral veel lol te maken. We doen mee om weer eens roller derby te spelen!",
+      "descriptionEn": "The Black Sheep Honey Rollers is the only roller derby club in Zeeland and mainly has members from that region. Ranging in age from early 20s to early 50s, we are on skates two times a week to build our skills and have a lot of fun. We're in it to.. play some derby!",
+      "players": [
+        {
+          "number": "03",
+          "derbyName": "Captain Bunda",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_10-kEviX9PVa5lhklcfbICYWE6PAdqp27.png"
+        },
+        {
+          "number": "12",
+          "derbyName": "Daisy Cutter",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_7-qZciYcLCnL4orwAXOFPnf6sAMwhZF8.png"
+        },
+        {
+          "number": "69",
+          "derbyName": "Free de Mer",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_15-RKSfh6SfGWj5Xyj2oqLEXBS9D3m091.png"
+        },
+        {
+          "number": "77",
+          "derbyName": "Ionne Anaconda",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_14-34QpdnivbwrqWqbJUg6WnCUEClhOoJ.png"
+        },
+        {
+          "number": "38",
+          "derbyName": "MeginSane",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_16-kehDSy4JaWZt8JvToIxWaLFKqCyA9L.png"
+        },
+        {
+          "number": "111",
+          "derbyName": "Mordor she rode",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_11-Qn4Ub6vGHw28SgvUP9nDs8K4j9ys4w.png"
+        },
+        {
+          "number": "42",
+          "derbyName": "Pandamonium",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_6-6btnHW1KnFraofX9hRNmbVuB5MpKFj.png"
+        },
+        {
+          "number": "91",
+          "derbyName": "Tini Tunder",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_8-UilV0GBclvOdlcqSLisiWwBbj68C6d.png"
+        },
+        {
+          "number": "155",
+          "derbyName": "Veer Va Voom",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_9-FEXFzheihTMdxpVkua6AcMxeUuCh69.png"
+        },
+        {
+          "number": "18",
+          "derbyName": "Velucytea",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyb56f3000004la350wv25v/Asset_13-VPL87j5vOdHNmRQfnyqYTCB5UHrHh1.png"
+        }
+      ],
+      "benchStaff": [
+        {
+          "name": "VEX",
+          "role": "Coach / LUM",
+          "pronouns": null
+        },
+        {
+          "name": "Rollin' RedempJEN",
+          "role": "Coach / LUM",
+          "pronouns": null
+        }
+      ]
+    },
+    {
+      "key": "pink-peril",
+      "name": "Pink Peril",
+      "color": null,
+      "logoUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/teams/1789237042341-images-cxxBSSJMXfkL1iP69HWgB3iZLNFJ5Z.jpg",
+      "descriptionNl": null,
+      "descriptionEn": null,
+      "players": [
+        {
+          "number": "248",
+          "derbyName": "Adrenaline",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/Aline_-_248-nTWEoqZzgj3Jp7uRd6Kq4fAENNmhIH.jpg"
+        },
+        {
+          "number": "780",
+          "derbyName": "Goose",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/Priscilla_Goose_780_002-28ej15YKAqJvtiI5D7Me5cb7WADPx3.jpg"
+        },
+        {
+          "number": "1331",
+          "derbyName": "Green Goblin",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/Anniek_Green_Goblin_1331_001-ajRCjjOkEEtFhLV7QPys3iMQSy1Ioj.jpg"
+        },
+        {
+          "number": "24",
+          "derbyName": "Hammer",
+          "pronouns": "He/Him",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/The_Hammer_-_24-ko1yh9TlOv5bviaKjnLvfQn7pVhsub.jpg"
+        },
+        {
+          "number": "13",
+          "derbyName": "Kneuk",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/Kneuk_-_13-upfT2176Tq36DzOYmr8dWHCmA4nRnV.jpg"
+        },
+        {
+          "number": "11",
+          "derbyName": "Leggs",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/Leggs_-_11-x7tllZgM7E1CQUnWL0BKy2yLTVkacv.jpg"
+        },
+        {
+          "number": "3",
+          "derbyName": "Off Leash Fifi",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/Off_Leash_Fifi_-_3-QitowQ6JWREGyzxubf7RMfx5ZesEaF.jpg"
+        },
+        {
+          "number": "26",
+          "derbyName": "Skimlime",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/Patricia_Skimlime_26_001-t8pwwblZTP64J4brgOYKnrP3vA0kgO.jpg"
+        },
+        {
+          "number": "8008",
+          "derbyName": "Sloopwafel",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/Sloopwafel_-_8008-QUbE3kwmjbAU2eyLHqtyXnZbcHK2Dp.jpg"
+        },
+        {
+          "number": "917",
+          "derbyName": "Teckel Tackle",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypje42000004l9dhe3tt2b/Teckle_Tackle_-_917-lXtwD5YM5xGP5NXZYYo8xmnvEwUkmF.jpg"
+        }
+      ],
+      "benchStaff": [
+        {
+          "name": "Pure Chaos",
+          "role": "Bench Coach",
+          "pronouns": "She/Her"
+        },
+        {
+          "name": "Bulldozer",
+          "role": "Bench Manager",
+          "pronouns": "She/Her"
+        }
+      ]
+    },
+    {
+      "key": "roadkill-rollers-nijmegen",
+      "name": "Roadkill Rollers Nijmegen",
+      "color": null,
+      "logoUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/teams/1789212091580-unnamed-x6gXft2avv021tCqfsfZdFsP56WpXt.jpg",
+      "descriptionNl": "Welkom op onze home track! Wij zijn met trots de host league van het Small Teams Tournament en al 10 jaar de roller derby vereniging van Nijmegen. We kijken ernaar uit om onze passie voor de sport te delen en er samen met jullie een geweldige dag van te maken.",
+      "descriptionEn": "Welcome to our home track! We are incredibly proud to be the host league for the Small Teams Tournament. For 10 years, we have been the roller derby league in Nijmegen, and we can't wait to share our love for the sport with you. Let's make it a fantastic day on the track together!",
+      "players": [
+        {
+          "number": "29",
+          "derbyName": "Barbie the Barbarian",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/1791400562044-1-Barbie-the-Barbarian-29-dy55nVsThrd3IT6nhZq4yjO3aCG30L.jpg"
+        },
+        {
+          "number": "71",
+          "derbyName": "Blackbird",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyaolvv000004jvin89uiua/IMG_5381-2-oL1PXH9Cxrk4ElTxrXkmp49Ir7yIMT.jpg"
+        },
+        {
+          "number": "1234",
+          "derbyName": "Evil-Lyn",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/1791400342067-Evil-Lyn-1234-683x1024-QEDHANzdNYMJkiOuSQVwJAI80D1lir.jpg"
+        },
+        {
+          "number": "416",
+          "derbyName": "Fleetwood Smack",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/1791400202421-Fleetwood-Smack-416-683x1024-iHaDwDxDlF5HtLt4ueL7aSJkmCXyrL.jpg"
+        },
+        {
+          "number": "333",
+          "derbyName": "Half Evil",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/1791400592403-333-Half-Evil-tzcjERWx6nHqkrYwPHymxqnVdZcoFl.jpeg"
+        },
+        {
+          "number": "32",
+          "derbyName": "Iggy Tzardust",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/1791400035912-6-Iggy-Tzardust-23-qU4AqP4BUOkvvEKKj4TTZ4e9SB274c.jpg"
+        },
+        {
+          "number": "276",
+          "derbyName": "Kleine Beer",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/1791399954662-Kleine-Beer-768x1024-Jsj4QcVpmmgqeyTDmwxkXr0LIKzoVf.jpg"
+        },
+        {
+          "number": "81",
+          "derbyName": "Scrawny Brawny",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/1791400430201-81-Scrawny-Brawny-768x1024-Nr0m2V9LkIOjnwImbg0dsJECpRIuGc.jpeg"
+        },
+        {
+          "number": "969",
+          "derbyName": "Shiny Charmageddon",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/1793456675237-Shiny-Charmageddon-755x1024-qhkFr43MFUcvIX5v60C0FBofLYoEbl.jpg"
+        },
+        {
+          "number": "44",
+          "derbyName": "Tokkie",
+          "pronouns": null,
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/1791400373313-1-Tokkie-44-5ycPw6Rw1IiGQixt7kU5yrjrQa7mKh.jpeg"
+        }
+      ],
+      "benchStaff": []
+    },
+    {
+      "key": "rock-city-rollers",
+      "name": "Rock City Rollers",
+      "color": null,
+      "logoUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/teams/1789237198449-RCR_logo-fDn8ugmiQDiU6rpdtUz98L1afG3jLG.png",
+      "descriptionNl": null,
+      "descriptionEn": null,
+      "players": [
+        {
+          "number": "400",
+          "derbyName": "Bad Request",
+          "pronouns": "He/ him",
+          "headshotUrl": null
+        },
+        {
+          "number": "805",
+          "derbyName": "Death Valley",
+          "pronouns": "She her",
+          "headshotUrl": null
+        },
+        {
+          "number": "44",
+          "derbyName": "Dreadful Discordia",
+          "pronouns": "She/ her",
+          "headshotUrl": null
+        },
+        {
+          "number": "99",
+          "derbyName": "Freeky Frankee",
+          "pronouns": "She",
+          "headshotUrl": null
+        },
+        {
+          "number": "89",
+          "derbyName": "Monster Jam",
+          "pronouns": null,
+          "headshotUrl": null
+        },
+        {
+          "number": "74",
+          "derbyName": "Rosie Galore",
+          "pronouns": "She/ her",
+          "headshotUrl": null
+        },
+        {
+          "number": "7734",
+          "derbyName": "Rough Floorplay",
+          "pronouns": "She/her",
+          "headshotUrl": null
+        },
+        {
+          "number": "808",
+          "derbyName": "Sk8er Boi",
+          "pronouns": "He/ him",
+          "headshotUrl": null
+        },
+        {
+          "number": "1006",
+          "derbyName": "Stellar Fury",
+          "pronouns": "She/ her",
+          "headshotUrl": null
+        },
+        {
+          "number": "32",
+          "derbyName": "Thunder Thighs",
+          "pronouns": "She/ her",
+          "headshotUrl": null
+        }
+      ],
+      "benchStaff": []
+    },
+    {
+      "key": "roller-derby-breda",
+      "name": "Roller Derby Breda",
+      "color": null,
+      "logoUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/teams/1789237391972-images-0HHmqMInrgkCMzS9a2Zhlw7xnySvsN.jpg",
+      "descriptionNl": null,
+      "descriptionEn": "We are Roller Derby Breda, a fun team of skaters aged 30 to 50. Twice a week, we lace up our skates, hit the track and do what we enjoy most: playing roller derby together!\r\n\r\nFor us, derby is all about teamwork, challenging ourselves and, above all, having fun! We might be small team, but we're bringing plenty of energy and Pearl City spirit to Nijmegen!",
+      "players": [
+        {
+          "number": "0183",
+          "derbyName": "Angiety Attack",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypqvqp000004iarc67wu98/1000059857-M8MZF4CuiJWp654ONvGGsq0awkijJ2.jpg"
+        },
+        {
+          "number": "360",
+          "derbyName": "Backfire Bartol",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypqvqp000004iarc67wu98/1000059855-TUdToPcOSXhhT8sHzunmTQE6fXVSKx.jpg"
+        },
+        {
+          "number": "112",
+          "derbyName": "Doctor Devious",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypqvqp000004iarc67wu98/1000059853-HkTkDtpY8NxGJ6lAsgDYK0tIzDjjhy.jpg"
+        },
+        {
+          "number": "26",
+          "derbyName": "Dolly Demolition",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypqvqp000004iarc67wu98/1000059854-8eGfbilsRUhZcKup5lyD0JG81zNtmm.jpg"
+        },
+        {
+          "number": "47",
+          "derbyName": "Flogging Collie",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypqvqp000004iarc67wu98/1000060637-dP3MfGrXVyfjZyfmTC3p90GMBKMixh.png"
+        },
+        {
+          "number": "36",
+          "derbyName": "Molly Molotov",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypqvqp000004iarc67wu98/1000060637-3z9uIDnSP0yiHmA5jk10DarClzz0I1.png"
+        },
+        {
+          "number": "2580",
+          "derbyName": "Mrs. EEK (INHTH)",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypqvqp000004iarc67wu98/1000060638-bTqziTC0yyDLRpHzBHETW2Ddk8CUBy.jpg"
+        },
+        {
+          "number": "923",
+          "derbyName": "NaOise",
+          "pronouns": "She/Her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtypqvqp000004iarc67wu98/1000059856-hVbsbIDsC6ujhOq1YBknSrq27ch6GY.jpg"
+        }
+      ],
+      "benchStaff": [
+        {
+          "name": "EEK",
+          "role": "Coach",
+          "pronouns": "He/Him"
+        }
+      ]
+    },
+    {
+      "key": "thunder-lightning",
+      "name": "Thunder & Lightning",
+      "color": null,
+      "logoUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/teams/1789213098747-images-5TZCwRolPNW0jFc0tqq9SUpQjXcuMd.jpg",
+      "descriptionNl": "Er gaat niets boven Groningen! Roller Derby Groningen traint en speelt sinds 2011 op eenzame hoogte in het hoge noorden. Dat mag de pret niet drukken, want we zijn overal; onze skaters reizen stad en land af om te spelen, trainen, reffen en announcen (mits de trein rijdt).\r\n\r\nKlaar voor een dikke bak mit beuk'n?",
+      "descriptionEn": "There’s nothing above Groningen! Since 2011, Roller Derby Groningen has been training and playing, all on their own because it's lonely at the top (of the country). But that doesn’t dampen our spirits; we’re everywhere! Our skaters travel far and wide to play, train, officiate, and announce (provided the trains are running).\r\n\r\nAre you ready for a dikke bak mit beuk'n?",
+      "players": [
+        {
+          "number": "545",
+          "derbyName": "Cosmoss",
+          "pronouns": "she/her",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyba736000004l87521yw8q/545_-_Cossmoss-aphXbWk3qfT0hPlYQe81kW6FEYyvhM.jpg"
+        },
+        {
+          "number": "37",
+          "derbyName": "Final Smasher",
+          "pronouns": "he/him",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyba736000004l87521yw8q/37_-_Final_Smasher-n75SZ2p4fH4M9OP1L8aaJsjzUpUVQs.jpg"
+        },
+        {
+          "number": "669",
+          "derbyName": "Grinder",
+          "pronouns": "she/they",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyba736000004l87521yw8q/669_-_Grinder_1_-7KVzH0vP2l0Po8XfpXb8DsXUEt8g4d.jpg"
+        },
+        {
+          "number": "080",
+          "derbyName": "HaemoGoblin",
+          "pronouns": "he/him",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyba736000004l87521yw8q/080_-_HaemoGoblin_1_-4trjerJCOMJt9JKGlNXM6LXswZr0tx.jpg"
+        },
+        {
+          "number": "112",
+          "derbyName": "Harm's Way",
+          "pronouns": "he/him",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyba736000004l87521yw8q/112_-_Harm_s_Way_1_-F1qk1k2530LZHHQPhwdVhegrvIQ5I0.jpg"
+        },
+        {
+          "number": "12",
+          "derbyName": "Knock Out",
+          "pronouns": "they/them",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyba736000004l87521yw8q/12_-_Knock_Out-4FXzY7Jgdj5DkMGCBleY373NVmBAMa.jpg"
+        },
+        {
+          "number": "131",
+          "derbyName": "Pingu",
+          "pronouns": "she/they",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyba736000004l87521yw8q/131_-_Pingu_1_-WsJu6atsN9njya7qYgwJuBqj5gcv0G.jpg"
+        },
+        {
+          "number": "422",
+          "derbyName": "Prismatic",
+          "pronouns": "any/all",
+          "headshotUrl": "https://umlwg6ttfvxhvfcb.public.blob.vercel-storage.com/players/cmtyba736000004l87521yw8q/422_-_Prismatic-XaUfa2baYLG8QbxnaMzpJNqLBtALly.jpg"
+        }
+      ],
+      "benchStaff": [
+        {
+          "name": "Major Impact",
+          "role": "Line-up manager",
+          "pronouns": "she/they"
+        },
+        {
+          "name": "Fluffy",
+          "role": "Bench Coach",
+          "pronouns": "she/they"
+        }
+      ]
+    }
+  ],
+  "matches": [
+    {
+      "startsAt": "2026-11-21T11:00:00.000Z",
+      "poule": "Poule A",
+      "teamA": "roadkill-rollers-nijmegen",
+      "teamB": "black-sheep-honey-rollers",
+      "scoreA": 79,
+      "scoreB": 21
+    },
+    {
+      "startsAt": "2026-11-21T11:25:00.000Z",
+      "poule": "Poule B",
+      "teamA": "arnhem-fallen-angels",
+      "teamB": "amsterdam-roller-derby",
+      "scoreA": 48,
+      "scoreB": 35
+    },
+    {
+      "startsAt": "2026-11-21T11:50:00.000Z",
+      "poule": "Poule A",
+      "teamA": "thunder-lightning",
+      "teamB": "rock-city-rollers",
+      "scoreA": 69,
+      "scoreB": 19
+    },
+    {
+      "startsAt": "2026-11-21T12:15:00.000Z",
+      "poule": "Poule B",
+      "teamA": "roller-derby-breda",
+      "teamB": "pink-peril",
+      "scoreA": 55,
+      "scoreB": 35
+    },
+    {
+      "startsAt": "2026-11-21T12:40:00.000Z",
+      "poule": "Poule A",
+      "teamA": "roadkill-rollers-nijmegen",
+      "teamB": "thunder-lightning",
+      "scoreA": 25,
+      "scoreB": 93
+    },
+    {
+      "startsAt": "2026-11-21T13:05:00.000Z",
+      "poule": "Poule B",
+      "teamA": "arnhem-fallen-angels",
+      "teamB": "roller-derby-breda",
+      "scoreA": 48,
+      "scoreB": 59
+    },
+    {
+      "startsAt": "2026-11-21T13:55:00.000Z",
+      "poule": "Poule A",
+      "teamA": "black-sheep-honey-rollers",
+      "teamB": "rock-city-rollers",
+      "scoreA": 11,
+      "scoreB": 75
+    },
+    {
+      "startsAt": "2026-11-21T14:20:00.000Z",
+      "poule": "Poule B",
+      "teamA": "amsterdam-roller-derby",
+      "teamB": "pink-peril",
+      "scoreA": 16,
+      "scoreB": 82
+    },
+    {
+      "startsAt": "2026-11-21T14:45:00.000Z",
+      "poule": "Poule A",
+      "teamA": "roadkill-rollers-nijmegen",
+      "teamB": "rock-city-rollers",
+      "scoreA": 28,
+      "scoreB": 48
+    },
+    {
+      "startsAt": "2026-11-21T15:10:00.000Z",
+      "poule": "Poule B",
+      "teamA": "arnhem-fallen-angels",
+      "teamB": "pink-peril",
+      "scoreA": 10,
+      "scoreB": 69
+    },
+    {
+      "startsAt": "2026-11-21T15:35:00.000Z",
+      "poule": "Poule A",
+      "teamA": "black-sheep-honey-rollers",
+      "teamB": "thunder-lightning",
+      "scoreA": 11,
+      "scoreB": 95
+    },
+    {
+      "startsAt": "2026-11-21T16:00:00.000Z",
+      "poule": "Poule B",
+      "teamA": "amsterdam-roller-derby",
+      "teamB": "roller-derby-breda",
+      "scoreA": 13,
+      "scoreB": 69
+    },
+    {
+      "startsAt": "2026-11-21T16:45:00.000Z",
+      "poule": "Finale",
+      "teamA": "thunder-lightning",
+      "teamB": "roller-derby-breda",
+      "scoreA": 67,
+      "scoreB": 55
+    }
+  ]
+}
