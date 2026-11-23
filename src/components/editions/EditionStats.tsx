@@ -270,7 +270,12 @@ export default function EditionStats({
   }
 
   function renderTeams() {
-    const sorted = [...stats.teams].sort((a, b) => (sort.desc ? b[sort.col] - a[sort.col] : a[sort.col] - b[sort.col]));
+    const sorted = [...stats.teams].sort(
+      (a, b) =>
+        (sort.desc ? b[sort.col] - a[sort.col] : a[sort.col] - b[sort.col]) ||
+        b.won - a.won ||
+        b.avgMargin - a.avgMargin,
+    );
     const toggle = (col: TeamCol) =>
       setSort((s) => (s.col === col ? { col, desc: !s.desc } : { col, desc: !ASCENDING_IS_BETTER.includes(col) }));
     const compareOptions: CompareKey[] = ["avgMargin", "leadPct", "pointsPerJam", "penaltiesPerGame", "timeToLead"];
