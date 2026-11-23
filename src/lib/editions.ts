@@ -1,10 +1,11 @@
 import type { Edition, EditionSnapshot } from "@/lib/edition-types";
 import snapshot2026 from "@/data/editions/2026/snapshot.json";
 import { stats2026 } from "@/data/editions/2026/stats";
+import { PHOTOGRAPHER } from "@/lib/event";
 
 // Newest first. Add a year with scripts/snapshot-edition.mjs and, when available, a stats file.
 const EDITIONS: Record<number, Edition> = {
-  2026: { snapshot: snapshot2026 as EditionSnapshot, stats: stats2026 },
+  2026: { snapshot: snapshot2026 as EditionSnapshot, stats: stats2026, photographer: PHOTOGRAPHER },
 };
 
 export const EDITION_YEARS = Object.keys(EDITIONS)

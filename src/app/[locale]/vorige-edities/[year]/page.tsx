@@ -10,6 +10,7 @@ import { listHighlightPhotos } from "@/lib/photos";
 import { buildStandings, toScheduleMatch } from "@/lib/schedule";
 import Standings from "@/components/Standings";
 import PhotoGallery from "@/components/PhotoGallery";
+import PhotographerAlbum from "@/components/PhotographerAlbum";
 import EditionStats from "@/components/editions/EditionStats";
 
 export const dynamic = "force-dynamic";
@@ -31,7 +32,7 @@ export default async function EditionPage({ params }: { params: Params }) {
   if (!edition) notFound();
   setRequestLocale(locale);
 
-  const { snapshot, stats } = edition;
+  const { snapshot, stats, photographer } = edition;
   const year = snapshot.year;
   const t = await getTranslations("Editions");
   const tSchema = await getTranslations("Schema");
@@ -44,7 +45,7 @@ export default async function EditionPage({ params }: { params: Params }) {
   const intro = t.has(introKey) ? String(t.raw(introKey) ?? "").trim() : "";
 
   const sections = [
-    photos.length > 0 && { id: "highlights", label: t("highlightsHeading") },
+    (photos.length > 0 || photographer) && { id: "highlights", label: t("highlightsHeading") },
     { id: "results", label: t("resultsHeading") },
     { id: "teams", label: t("rostersHeading") },
     stats && { id: "stats", label: t("statsHeading") },
@@ -90,12 +91,15 @@ export default async function EditionPage({ params }: { params: Params }) {
         </nav>
       </header>
 
-      {photos.length > 0 && (
+      {(photos.length > 0 || photographer) && (
         <section id="highlights" aria-labelledby="highlights-heading" className="space-y-4 scroll-mt-24">
           <h2 id="highlights-heading" className="font-display text-4xl">
             {t("highlightsHeading")}
           </h2>
-          <PhotoGallery initial={photos} initialCursor={null} uploadsOpen={false} showUpload={false} />
+          {photographer && <PhotographerAlbum photographer={photographer} />}
+          {photos.length > 0 && (
+            <PhotoGallery initial={photos} initialCursor={null} uploadsOpen={false} showUpload={false} />
+          )}
         </section>
       )}
 

@@ -1,3 +1,5 @@
+import type { Photographer } from "@/lib/event";
+
 // Shapes of an archived edition. No Prisma import, so client components can use these.
 
 export type EditionPlayer = {
@@ -117,4 +119,8 @@ export type EditionStats = {
   };
 };
 
-export type Edition = { snapshot: EditionSnapshot; stats: EditionStats | null };
+export type Edition = {
+  snapshot: EditionSnapshot;
+  stats: EditionStats | null;
+  photographer?: Photographer;
+};

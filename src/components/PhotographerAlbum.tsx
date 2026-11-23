@@ -1,7 +1,11 @@
 import { getTranslations } from "next-intl/server";
-import { PHOTOGRAPHER } from "@/lib/event";
+import { PHOTOGRAPHER, type Photographer } from "@/lib/event";
 
-export default async function PhotographerAlbum() {
+export default async function PhotographerAlbum({
+  photographer = PHOTOGRAPHER,
+}: {
+  photographer?: Photographer;
+}) {
   const t = await getTranslations("PhotographerAlbum");
 
   return (
@@ -11,15 +15,15 @@ export default async function PhotographerAlbum() {
     >
       <h2 id="photographer-album-heading" className="font-display text-3xl">
         <span aria-hidden>📷 </span>
-        {t("heading", { name: PHOTOGRAPHER.name })}
+        {t("heading", { name: photographer.name })}
       </h2>
-      <p className="text-derby-ink/80 mt-1">{t("body", { name: PHOTOGRAPHER.name })}</p>
+      <p className="text-derby-ink/80 mt-1">{t("body", { name: photographer.name })}</p>
       <p className="text-derby-ink/80 mt-2">
         {t.rich("credit", {
-          instagram: PHOTOGRAPHER.instagram,
+          instagram: photographer.instagram,
           ig: (chunks) => (
             <a
-              href={PHOTOGRAPHER.instagramUrl}
+              href={photographer.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="font-bold text-derby-accent underline"
@@ -30,7 +34,7 @@ export default async function PhotographerAlbum() {
         })}
       </p>
       <a
-        href={PHOTOGRAPHER.albumUrl}
+        href={photographer.albumUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-block mt-4 rounded-full bg-derby-accent text-white px-5 py-2 font-bold hover:bg-derby-ink transition"
