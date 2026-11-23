@@ -18,3 +18,10 @@ export const EVENT = {
   description:
     "Max 8 teams van 8 spelers (co-ed mogelijk). Korte intensieve bouts van 20 minuten. Voorrang voor kleinere leagues — dit is een leertoernooi.",
 } as const;
+
+export const PHOTOGRAPHER = {
+  name: "Rod Doucet",
+  instagram: "roddoucetphotographics",
+  instagramUrl: "https://www.instagram.com/roddoucetphotographics/",
+  albumUrl: "https://drive.proton.me/urls/AN2JDX00E4#UlyWxqlZ0H8P",
+} as const;

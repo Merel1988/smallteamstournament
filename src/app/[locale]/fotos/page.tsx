@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import PhotoGallery from "@/components/PhotoGallery";
+import PhotographerAlbum from "@/components/PhotographerAlbum";
 import { assertPageVisible } from "@/lib/page-visibility";
 import { listPublicPhotos, uploadsOpen } from "@/lib/photos";
 
@@ -38,6 +39,7 @@ export default async function FotosPage({
         <h1 className="font-display text-5xl">{t("title")}</h1>
         <p className="text-derby-ink/70 mt-1">{t("subtitle")}</p>
       </header>
+      <PhotographerAlbum />
       <PhotoGallery initial={photos} initialCursor={nextCursor} uploadsOpen={open} />
     </div>
   );

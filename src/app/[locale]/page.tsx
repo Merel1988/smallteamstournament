@@ -6,6 +6,7 @@ import AutoRefresh from "@/components/AutoRefresh";
 import Countdown from "@/components/Countdown";
 import RoadkillLogo from "@/components/RoadkillLogo";
 import EventJsonLd from "@/components/EventJsonLd";
+import PhotographerAlbum from "@/components/PhotographerAlbum";
 import { EVENT } from "@/lib/event";
 import { prisma } from "@/lib/prisma";
 import { pageMetadata } from "@/lib/seo";
@@ -237,6 +238,8 @@ export default async function HomePage({
           </Link>
         </section>
       )}
+
+      {showPhotoCall && <PhotographerAlbum />}
 
       {standings.length > 0 && (
         <div className="space-y-2">

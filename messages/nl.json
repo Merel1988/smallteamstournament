@@ -176,6 +176,12 @@
       "preparing": "Je telefoon zet de foto's klaar. Bij veel foto's kan dit even duren…"
     }
   },
+  "PhotographerAlbum": {
+    "heading": "Foto's van {name}",
+    "body": "Fotograaf {name} heeft het hele toernooi vastgelegd en ons heel veel prachtige foto's gestuurd. Daar zijn we ontzettend dankbaar voor, bedankt Rod! Het zijn er zo veel dat ze niet allemaal op deze site passen, dus je vindt ze in een los album.",
+    "credit": "Gebruik je een van deze foto's, bijvoorbeeld op social media? Noem of tag dan de fotograaf: <ig>@{instagram}</ig> op Instagram. Dat wordt heel erg gewaardeerd!",
+    "cta": "Bekijk het album"
+  },
   "Quiz": {
     "title": "🧠 Derby-quiz",
     "lead": "Hoe goed ken jij roller derby? Elke ronde krijg je {count} willekeurige vragen uit {total}, dus speel gerust nog een keer.",

@@ -176,6 +176,12 @@
       "preparing": "Your phone is getting the photos ready. With lots of photos this can take a moment…"
     }
   },
+  "PhotographerAlbum": {
+    "heading": "Photos by {name}",
+    "body": "Photographer {name} captured the whole tournament and sent us loads of beautiful photos. We're really grateful, thank you Rod! There are so many that they don't all fit on this site, so you'll find them in a separate album.",
+    "credit": "Using one of these photos, for example on social media? Please credit or tag the photographer: <ig>@{instagram}</ig> on Instagram. It's very much appreciated!",
+    "cta": "View the album"
+  },
   "Quiz": {
     "title": "🧠 Derby quiz",
     "lead": "How well do you know roller derby? Each round gives you {count} random questions out of {total}, so feel free to play again.",
