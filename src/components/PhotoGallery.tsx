@@ -19,12 +19,14 @@ export default function PhotoGallery({
   uploadsOpen,
   showUpload = true,
   afterUpload,
+  heading,
 }: {
   initial: PublicPhoto[];
   initialCursor: string | null;
   uploadsOpen: boolean;
   showUpload?: boolean;
   afterUpload?: React.ReactNode;
+  heading?: string;
 }) {
   const t = useTranslations("Photos");
   const tA11y = useTranslations("A11y");
@@ -149,28 +151,31 @@ export default function PhotoGallery({
         </p>
       )}
 
-      {photos.length === 0 ? (
-        <p className="text-derby-ink/60">{t("empty")}</p>
-      ) : (
-        <>
-          {shareableCount > 0 && (
-            <div className="flex flex-wrap items-center gap-2">
+      {(heading || shareableCount > 0) && (
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            {heading && <h2 className="font-display text-3xl">{heading}</h2>}
+            {shareableCount > 0 && (
               <button
                 type="button"
                 onClick={() => {
                   setSelecting((s) => !s);
                   setSelected(new Set());
                 }}
-                className="border border-derby-ink/30 rounded-full px-4 py-1.5 text-sm font-bold bg-white"
+                className="ml-auto border border-derby-ink/30 rounded-full px-4 py-1.5 text-sm font-bold bg-white"
               >
                 {selecting ? t("selectCancel") : t("selectStart")}
               </button>
-              {selecting && (
-                <span className="text-sm text-derby-ink/70">{t("selectHint")}</span>
-              )}
-            </div>
-          )}
+            )}
+          </div>
+          {selecting && <p className="text-sm text-derby-ink/70">{t("selectHint")}</p>}
+        </div>
+      )}
 
+      {photos.length === 0 ? (
+        <p className="text-derby-ink/60">{t("empty")}</p>
+      ) : (
+        <>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
             {photos.map((p, index) => {
               const isSelected = selected.has(p.id);

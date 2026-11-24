@@ -137,6 +137,7 @@
   },
   "Photos": {
     "title": "Photos",
+    "submittedHeading": "Submitted photos",
     "subtitle": "Share your best derby moments. Photos are checked automatically and then appear in the gallery.",
     "empty": "No photos yet. Send in the first one!",
     "altFallback": "Derby photo",

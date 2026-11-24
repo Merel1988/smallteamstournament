@@ -44,6 +44,7 @@ export default async function FotosPage({
         initialCursor={nextCursor}
         uploadsOpen={open}
         afterUpload={<PhotographerAlbum />}
+        heading={t("submittedHeading")}
       />
     </div>
   );

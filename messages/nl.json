@@ -137,6 +137,7 @@
   },
   "Photos": {
     "title": "Foto's",
+    "submittedHeading": "Ingezonden foto's",
     "subtitle": "Deel je leukste derby-momenten. Foto's worden automatisch gecontroleerd en verschijnen daarna in de galerij.",
     "empty": "Nog geen foto's. Stuur de eerste in!",
     "altFallback": "Derby foto",
