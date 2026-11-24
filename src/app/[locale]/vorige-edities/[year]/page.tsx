@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { pageMetadata } from "@/lib/seo";
-import { assertPageVisible } from "@/lib/page-visibility";
+import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
+import { Link } from "@/i18n/navigation";
 import { editionFinal, getEdition } from "@/lib/editions";
 import type { EditionSnapshot, EditionTeam } from "@/lib/edition-types";
 import { listHighlightPhotos } from "@/lib/photos";
@@ -37,7 +38,8 @@ export default async function EditionPage({ params }: { params: Params }) {
   const year = snapshot.year;
   const t = await getTranslations("Editions");
   const tSchema = await getTranslations("Schema");
-  const photos = await listHighlightPhotos(year);
+  const [photos, hiddenPages] = await Promise.all([listHighlightPhotos(year), getHiddenPageKeys()]);
+  const showPhotosLink = !hiddenPages.has("fotos");
 
   const teamByKey = new Map(snapshot.teams.map((team) => [team.key, team]));
   const final = editionFinal(snapshot);
@@ -150,6 +152,14 @@ export default async function EditionPage({ params }: { params: Params }) {
             {photographer && <PhotographerAlbum photographer={photographer} />}
             {photos.length > 0 && (
               <PhotoGallery initial={photos} initialCursor={null} uploadsOpen={false} showUpload={false} />
+            )}
+            {showPhotosLink && (
+              <Link
+                href="/fotos"
+                className="inline-flex items-center gap-2 rounded-full bg-derby-accent text-white px-5 py-2.5 font-bold hover:bg-derby-accent-dark transition"
+              >
+                {t("allSubmittedPhotos")} <span aria-hidden>→</span>
+              </Link>
             )}
           </section>
         )}
