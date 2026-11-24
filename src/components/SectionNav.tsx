@@ -5,16 +5,18 @@ import { useEffect, useRef, useState } from "react";
 type Item = { id: string; label: string };
 
 /**
- * Sticky, centred in-page menu. Sticks right below the (sticky) site
+ * Sticky in-page menu. Sticks right below the (sticky) site
  * header, whose height varies with the viewport, so it is measured. The section
  * currently in view is highlighted.
  */
 export function SectionNav({
   items,
   label,
+  align = "center",
 }: {
   items: Item[];
   label: string;
+  align?: "center" | "start";
 }) {
   const [top, setTop] = useState(0);
   const [active, setActive] = useState<string | null>(null);
@@ -66,7 +68,7 @@ export function SectionNav({
     <nav
       aria-label={label}
       style={{ top: top + 8 }}
-      className="sticky z-30 flex justify-center"
+      className={`sticky z-30 flex ${align === "start" ? "justify-start" : "justify-center"}`}
     >
       <ul
         ref={listRef}

@@ -57,7 +57,7 @@ export default async function EditionPage({ params }: { params: Params }) {
       <header className="space-y-4">
         <p className="text-xs uppercase tracking-wider text-derby-accent font-bold">{t("title")}</p>
         <h1 className="font-display text-5xl">{t("editionTitle", { year })}</h1>
-        <SectionNav items={sections} label={t("jumpTo")} />
+        <SectionNav items={sections} label={t("jumpTo")} align="start" />
         {intro && <p className="text-lg text-derby-ink/80 max-w-2xl whitespace-pre-line">{intro}</p>}
         {final && champion && (
           <div className="bg-derby-ink text-white rounded-2xl p-5 flex items-center gap-4 max-w-xl">
