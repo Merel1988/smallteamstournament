@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
-import { RulesSectionNav } from "@/components/RulesSectionNav";
+import { SectionNav } from "@/components/SectionNav";
 import { Quiz, type QuizQuestion } from "@/components/Quiz";
 import { Link } from "@/i18n/navigation";
 
@@ -92,7 +92,7 @@ export default async function RegelsPage({
         </div>
       </section>
 
-      <RulesSectionNav items={navItems} label={tA11y("navLabel")} />
+      <SectionNav items={navItems} label={tA11y("navLabel")} />
 
       {/* 01 Rollen */}
       <Section
@@ -403,7 +403,7 @@ function Section({
   return (
     <section
       id={id}
-      className="py-7 scroll-mt-[calc(var(--rules-sticky-top,100px)+4rem)]"
+      className="py-7 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]"
     >
       <p className={EYEBROW}>{eyebrow}</p>
       <h2 className={H2}>{heading}</h2>

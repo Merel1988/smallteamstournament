@@ -12,6 +12,7 @@ import Standings from "@/components/Standings";
 import PhotoGallery from "@/components/PhotoGallery";
 import PhotographerAlbum from "@/components/PhotographerAlbum";
 import EditionStats from "@/components/editions/EditionStats";
+import { SectionNav } from "@/components/SectionNav";
 
 export const dynamic = "force-dynamic";
 
@@ -45,10 +46,10 @@ export default async function EditionPage({ params }: { params: Params }) {
   const intro = t.has(introKey) ? String(t.raw(introKey) ?? "").trim() : "";
 
   const sections = [
-    (photos.length > 0 || photographer) && { id: "highlights", label: t("highlightsHeading") },
     { id: "results", label: t("resultsHeading") },
-    { id: "teams", label: t("rostersHeading") },
     stats && { id: "stats", label: t("statsHeading") },
+    { id: "teams", label: t("rostersHeading") },
+    (photos.length > 0 || photographer) && { id: "photos", label: t("photosHeading") },
   ].filter((s): s is { id: string; label: string } => Boolean(s));
 
   return (
@@ -56,6 +57,7 @@ export default async function EditionPage({ params }: { params: Params }) {
       <header className="space-y-4">
         <p className="text-xs uppercase tracking-wider text-derby-accent font-bold">{t("title")}</p>
         <h1 className="font-display text-5xl">{t("editionTitle", { year })}</h1>
+        <SectionNav items={sections} label={t("jumpTo")} />
         {intro && <p className="text-lg text-derby-ink/80 max-w-2xl whitespace-pre-line">{intro}</p>}
         {final && champion && (
           <div className="bg-derby-ink text-white rounded-2xl p-5 flex items-center gap-4 max-w-xl">
@@ -82,28 +84,9 @@ export default async function EditionPage({ params }: { params: Params }) {
             </div>
           </div>
         )}
-        <nav aria-label={t("jumpTo")} className="flex flex-wrap gap-2">
-          {sections.map((s) => (
-            <a key={s.id} href={`#${s.id}`} className="rounded-full bg-white shadow px-4 py-1.5 text-sm font-bold hover:bg-derby-accent hover:text-white transition">
-              {s.label}
-            </a>
-          ))}
-        </nav>
       </header>
 
-      {(photos.length > 0 || photographer) && (
-        <section id="highlights" aria-labelledby="highlights-heading" className="space-y-4 scroll-mt-24">
-          <h2 id="highlights-heading" className="font-display text-4xl">
-            {t("highlightsHeading")}
-          </h2>
-          {photographer && <PhotographerAlbum photographer={photographer} />}
-          {photos.length > 0 && (
-            <PhotoGallery initial={photos} initialCursor={null} uploadsOpen={false} showUpload={false} />
-          )}
-        </section>
-      )}
-
-      <section id="results" aria-labelledby="results-heading" className="space-y-6 scroll-mt-24">
+      <section id="results" aria-labelledby="results-heading" className="space-y-6 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
         <div>
           <h2 id="results-heading" className="font-display text-4xl">
             {t("resultsHeading")}
@@ -114,21 +97,8 @@ export default async function EditionPage({ params }: { params: Params }) {
         <Standings standings={standingsOf(snapshot, tSchema("otherPoule"))} t={tSchema} linkTeams={false} />
       </section>
 
-      <section id="teams" aria-labelledby="teams-heading" className="space-y-4 scroll-mt-24">
-        <h2 id="teams-heading" className="font-display text-4xl">
-          {t("rostersHeading")}
-        </h2>
-        <ul className="grid gap-4 sm:grid-cols-2">
-          {snapshot.teams.map((team) => (
-            <li key={team.key}>
-              <RosterCard team={team} countLabel={t("skaterCount", { count: team.players.length })} staffLabel={t("benchStaff")} />
-            </li>
-          ))}
-        </ul>
-      </section>
-
       {stats && (
-        <section id="stats" aria-labelledby="stats-heading" className="space-y-4 scroll-mt-24">
+        <section id="stats" aria-labelledby="stats-heading" className="space-y-4 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 id="stats-heading" className="font-display text-4xl">
@@ -153,6 +123,31 @@ export default async function EditionPage({ params }: { params: Params }) {
               )}
             />
           </div>
+        </section>
+      )}
+
+      <section id="teams" aria-labelledby="teams-heading" className="space-y-4 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
+        <h2 id="teams-heading" className="font-display text-4xl">
+          {t("rostersHeading")}
+        </h2>
+        <ul className="grid gap-4 sm:grid-cols-2">
+          {snapshot.teams.map((team) => (
+            <li key={team.key}>
+              <RosterCard team={team} countLabel={t("skaterCount", { count: team.players.length })} staffLabel={t("benchStaff")} />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {(photos.length > 0 || photographer) && (
+        <section id="photos" aria-labelledby="photos-heading" className="space-y-4 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
+          <h2 id="photos-heading" className="font-display text-4xl">
+            {t("photosHeading")}
+          </h2>
+          {photographer && <PhotographerAlbum photographer={photographer} />}
+          {photos.length > 0 && (
+            <PhotoGallery initial={photos} initialCursor={null} uploadsOpen={false} showUpload={false} />
+          )}
         </section>
       )}
     </div>

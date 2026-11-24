@@ -39,8 +39,12 @@ export default async function FotosPage({
         <h1 className="font-display text-5xl">{t("title")}</h1>
         <p className="text-derby-ink/70 mt-1">{t("subtitle")}</p>
       </header>
-      <PhotographerAlbum />
-      <PhotoGallery initial={photos} initialCursor={nextCursor} uploadsOpen={open} />
+      <PhotoGallery
+        initial={photos}
+        initialCursor={nextCursor}
+        uploadsOpen={open}
+        afterUpload={<PhotographerAlbum />}
+      />
     </div>
   );
 }

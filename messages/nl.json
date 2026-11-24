@@ -179,7 +179,7 @@
   "PhotographerAlbum": {
     "heading": "Foto's van {name}",
     "body": "Fotograaf {name} heeft het hele toernooi vastgelegd en ons heel veel prachtige foto's gestuurd. Daar zijn we ontzettend dankbaar voor, bedankt Rod! Het zijn er zo veel dat ze niet allemaal op deze site passen, dus je vindt ze in een los album.",
-    "credit": "Gebruik je een van deze foto's, bijvoorbeeld op social media? Noem of tag dan de fotograaf: <ig>@{instagram}</ig> op Instagram. Dat wordt heel erg gewaardeerd!",
+    "credit": "Gebruik je een van deze foto's, bijvoorbeeld op social media? De fotograaf noemen hoeft niet, maar een tag naar <ig>@{instagram}</ig> op Instagram wordt natuurlijk wel gewaardeerd!",
     "cta": "Bekijk het album"
   },
   "Quiz": {
@@ -880,7 +880,7 @@
     "finalLine": "Won de finale met {score} van {opponent}",
     "intro2026": "Op zaterdag 21 november 2026 speelden acht teams het Small Teams Tournament in Sportzaal De Horstacker in Nijmegen. Na twee poules en 13 wedstrijden van 20 minuten won Thunder & Lightning de finale met 67-55 van Roller Derby Breda.",
     "jumpTo": "Op deze pagina",
-    "highlightsHeading": "Hoogtepunten",
+    "photosHeading": "Foto's",
     "resultsHeading": "Uitslagen",
     "resultsNote": "Officiële scores van het scoreboard.",
     "finalHeading": "Finale",

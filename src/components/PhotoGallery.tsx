@@ -18,11 +18,13 @@ export default function PhotoGallery({
   initialCursor,
   uploadsOpen,
   showUpload = true,
+  afterUpload,
 }: {
   initial: PublicPhoto[];
   initialCursor: string | null;
   uploadsOpen: boolean;
   showUpload?: boolean;
+  afterUpload?: React.ReactNode;
 }) {
   const t = useTranslations("Photos");
   const tA11y = useTranslations("A11y");
@@ -139,6 +141,7 @@ export default function PhotoGallery({
   return (
     <div className="space-y-6">
       {showUpload && <PhotoUpload open={uploadsOpen} onUploaded={reload} />}
+      {afterUpload}
 
       {message && (
         <p role="status" className="text-sm bg-white rounded-lg px-4 py-2 shadow">

@@ -5,11 +5,11 @@ import { useEffect, useRef, useState } from "react";
 type Item = { id: string; label: string };
 
 /**
- * Sticky, centred in-page menu for /regels. Sticks right below the (sticky) site
+ * Sticky, centred in-page menu. Sticks right below the (sticky) site
  * header, whose height varies with the viewport, so it is measured. The section
  * currently in view is highlighted.
  */
-export function RulesSectionNav({
+export function SectionNav({
   items,
   label,
 }: {
@@ -37,7 +37,7 @@ export function RulesSectionNav({
     const update = () => {
       const h = header.getBoundingClientRect().height;
       setTop(h);
-      document.documentElement.style.setProperty("--rules-sticky-top", `${h}px`);
+      document.documentElement.style.setProperty("--section-nav-top", `${h}px`);
     };
     update();
     const ro = new ResizeObserver(update);
