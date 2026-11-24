@@ -53,103 +53,107 @@ export default async function EditionPage({ params }: { params: Params }) {
   ].filter((s): s is { id: string; label: string } => Boolean(s));
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-4">
       <header className="space-y-4">
         <p className="text-xs uppercase tracking-wider text-derby-accent font-bold">{t("title")}</p>
         <h1 className="font-display text-5xl">{t("editionTitle", { year })}</h1>
-        <SectionNav items={sections} label={t("jumpTo")} align="start" />
-        {intro && <p className="text-lg text-derby-ink/80 max-w-2xl whitespace-pre-line">{intro}</p>}
-        {final && champion && (
-          <div className="bg-derby-ink text-white rounded-2xl p-5 flex items-center gap-4 max-w-xl">
-            {champion.logoUrl && (
-              <Image
-                src={champion.logoUrl}
-                alt=""
-                width={72}
-                height={72}
-                className="w-18 h-18 rounded-lg object-contain bg-white p-1 shrink-0"
-              />
-            )}
-            <div className="min-w-0">
-              <p className="text-xs uppercase tracking-wider text-derby-accent font-bold">
-                {t("champion")} <span aria-hidden>👑</span>
-              </p>
-              <p className="font-display text-3xl">{champion.name}</p>
-              <p className="text-sm text-white/80">
-                {t("finalLine", {
-                  score: `${Math.max(final.match.scoreA, final.match.scoreB)}-${Math.min(final.match.scoreA, final.match.scoreB)}`,
-                  opponent: teamByKey.get(final.runnerUp)?.name ?? "",
-                })}
-              </p>
-            </div>
-          </div>
-        )}
       </header>
-
-      <section id="results" aria-labelledby="results-heading" className="space-y-6 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
-        <div>
-          <h2 id="results-heading" className="font-display text-4xl">
-            {t("resultsHeading")}
-          </h2>
-          <p className="text-sm text-derby-ink/60">{t("resultsNote")}</p>
-        </div>
-        <Results snapshot={snapshot} teamByKey={teamByKey} otherLabel={tSchema("otherPoule")} finalLabel={t("finalHeading")} />
-        <Standings standings={standingsOf(snapshot, tSchema("otherPoule"))} t={tSchema} linkTeams={false} />
-      </section>
-
-      {stats && (
-        <section id="stats" aria-labelledby="stats-heading" className="space-y-4 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h2 id="stats-heading" className="font-display text-4xl">
-                {t("statsHeading")}
-              </h2>
-              <p className="text-sm text-derby-ink/60 max-w-2xl">{t("statsSource")}</p>
-            </div>
-            <a
-              href={stats.pdfUrl}
-              download
-              className="inline-flex items-center gap-2 rounded-full bg-derby-accent text-white px-5 py-2.5 font-bold hover:bg-derby-accent-dark transition"
-            >
-              <span aria-hidden>⬇</span> {t("downloadPdf")}
-            </a>
-          </div>
-          <div className="bg-white rounded-2xl shadow p-4 sm:p-6">
-            <EditionStats
-              stats={stats}
-              teams={snapshot.teams.map((team) => ({ key: team.key, name: team.name }))}
-              playerNames={Object.fromEntries(
-                snapshot.teams.flatMap((team) => team.players.map((p) => [`${team.key}:${p.number}`, p.derbyName])),
+      <SectionNav items={sections} label={t("jumpTo")} align="start" />
+      <div className="space-y-10">
+        <div className="space-y-4">
+          {intro && <p className="text-lg text-derby-ink/80 max-w-2xl whitespace-pre-line">{intro}</p>}
+          {final && champion && (
+            <div className="bg-derby-ink text-white rounded-2xl p-5 flex items-center gap-4 max-w-xl">
+              {champion.logoUrl && (
+                <Image
+                  src={champion.logoUrl}
+                  alt=""
+                  width={72}
+                  height={72}
+                  className="w-18 h-18 rounded-lg object-contain bg-white p-1 shrink-0"
+                />
               )}
-            />
-          </div>
-        </section>
-      )}
-
-      <section id="teams" aria-labelledby="teams-heading" className="space-y-4 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
-        <h2 id="teams-heading" className="font-display text-4xl">
-          {t("rostersHeading")}
-        </h2>
-        <ul className="grid gap-4 sm:grid-cols-2">
-          {snapshot.teams.map((team) => (
-            <li key={team.key}>
-              <RosterCard team={team} countLabel={t("skaterCount", { count: team.players.length })} staffLabel={t("benchStaff")} />
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {(photos.length > 0 || photographer) && (
-        <section id="photos" aria-labelledby="photos-heading" className="space-y-4 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
-          <h2 id="photos-heading" className="font-display text-4xl">
-            {t("photosHeading")}
-          </h2>
-          {photographer && <PhotographerAlbum photographer={photographer} />}
-          {photos.length > 0 && (
-            <PhotoGallery initial={photos} initialCursor={null} uploadsOpen={false} showUpload={false} />
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-wider text-derby-accent font-bold">
+                  {t("champion")} <span aria-hidden>👑</span>
+                </p>
+                <p className="font-display text-3xl">{champion.name}</p>
+                <p className="text-sm text-white/80">
+                  {t("finalLine", {
+                    score: `${Math.max(final.match.scoreA, final.match.scoreB)}-${Math.min(final.match.scoreA, final.match.scoreB)}`,
+                    opponent: teamByKey.get(final.runnerUp)?.name ?? "",
+                  })}
+                </p>
+              </div>
+            </div>
           )}
+        </div>
+
+        <section id="results" aria-labelledby="results-heading" className="space-y-6 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
+          <div>
+            <h2 id="results-heading" className="font-display text-4xl">
+              {t("resultsHeading")}
+            </h2>
+            <p className="text-sm text-derby-ink/60">{t("resultsNote")}</p>
+          </div>
+          <Results snapshot={snapshot} teamByKey={teamByKey} otherLabel={tSchema("otherPoule")} finalLabel={t("finalHeading")} />
+          <Standings standings={standingsOf(snapshot, tSchema("otherPoule"))} t={tSchema} linkTeams={false} />
         </section>
-      )}
+
+        {stats && (
+          <section id="stats" aria-labelledby="stats-heading" className="space-y-4 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <h2 id="stats-heading" className="font-display text-4xl">
+                  {t("statsHeading")}
+                </h2>
+                <p className="text-sm text-derby-ink/60 max-w-2xl">{t("statsSource")}</p>
+              </div>
+              <a
+                href={stats.pdfUrl}
+                download
+                className="inline-flex items-center gap-2 rounded-full bg-derby-accent text-white px-5 py-2.5 font-bold hover:bg-derby-accent-dark transition"
+              >
+                <span aria-hidden>⬇</span> {t("downloadPdf")}
+              </a>
+            </div>
+            <div className="bg-white rounded-2xl shadow p-4 sm:p-6">
+              <EditionStats
+                stats={stats}
+                teams={snapshot.teams.map((team) => ({ key: team.key, name: team.name }))}
+                playerNames={Object.fromEntries(
+                  snapshot.teams.flatMap((team) => team.players.map((p) => [`${team.key}:${p.number}`, p.derbyName])),
+                )}
+              />
+            </div>
+          </section>
+        )}
+
+        <section id="teams" aria-labelledby="teams-heading" className="space-y-4 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
+          <h2 id="teams-heading" className="font-display text-4xl">
+            {t("rostersHeading")}
+          </h2>
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {snapshot.teams.map((team) => (
+              <li key={team.key}>
+                <RosterCard team={team} countLabel={t("skaterCount", { count: team.players.length })} staffLabel={t("benchStaff")} />
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {(photos.length > 0 || photographer) && (
+          <section id="photos" aria-labelledby="photos-heading" className="space-y-4 scroll-mt-[calc(var(--section-nav-top,100px)+4rem)]">
+            <h2 id="photos-heading" className="font-display text-4xl">
+              {t("photosHeading")}
+            </h2>
+            {photographer && <PhotographerAlbum photographer={photographer} />}
+            {photos.length > 0 && (
+              <PhotoGallery initial={photos} initialCursor={null} uploadsOpen={false} showUpload={false} />
+            )}
+          </section>
+        )}
+      </div>
     </div>
   );
 }
