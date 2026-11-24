@@ -3,6 +3,7 @@ import type { Photo } from "@/generated/prisma/client";
 
 export const PHOTO_PAGE_SIZE = 24;
 export const UPLOADS_SETTING_KEY = "fotos-upload";
+export const ALBUM_SETTING_KEY = "fotograaf-album";
 
 export type PhotoStatus = "approved" | "pending";
 
@@ -59,9 +60,16 @@ export async function listHighlightPhotos(year: number): Promise<PublicPhoto[]> 
   return rows.map(toPublicPhoto);
 }
 
-export async function uploadsOpen(): Promise<boolean> {
-  const row = await prisma.pageVisibility
-    .findUnique({ where: { key: UPLOADS_SETTING_KEY } })
-    .catch(() => null);
-  return row?.visible ?? true;
+async function settingOn(key: string, fallback: boolean): Promise<boolean> {
+  const row = await prisma.pageVisibility.findUnique({ where: { key } }).catch(() => null);
+  return row?.visible ?? fallback;
+}
+
+export function uploadsOpen(): Promise<boolean> {
+  return settingOn(UPLOADS_SETTING_KEY, true);
+}
+
+// Off until an organiser turns it on in /admin/fotos.
+export function photographerAlbumVisible(): Promise<boolean> {
+  return settingOn(ALBUM_SETTING_KEY, false);
 }

@@ -7,7 +7,7 @@ import { assertPageVisible, getHiddenPageKeys } from "@/lib/page-visibility";
 import { Link } from "@/i18n/navigation";
 import { editionFinal, getEdition } from "@/lib/editions";
 import type { EditionSnapshot, EditionTeam } from "@/lib/edition-types";
-import { listHighlightPhotos } from "@/lib/photos";
+import { listHighlightPhotos, photographerAlbumVisible } from "@/lib/photos";
 import { buildStandings, toScheduleMatch } from "@/lib/schedule";
 import Standings from "@/components/Standings";
 import PhotoGallery from "@/components/PhotoGallery";
@@ -34,11 +34,16 @@ export default async function EditionPage({ params }: { params: Params }) {
   if (!edition) notFound();
   setRequestLocale(locale);
 
-  const { snapshot, stats, photographer } = edition;
+  const { snapshot, stats } = edition;
   const year = snapshot.year;
   const t = await getTranslations("Editions");
   const tSchema = await getTranslations("Schema");
-  const [photos, hiddenPages] = await Promise.all([listHighlightPhotos(year), getHiddenPageKeys()]);
+  const [photos, hiddenPages, albumVisible] = await Promise.all([
+    listHighlightPhotos(year),
+    getHiddenPageKeys(),
+    photographerAlbumVisible(),
+  ]);
+  const photographer = albumVisible ? edition.photographer : undefined;
   const showPhotosLink = !hiddenPages.has("fotos");
 
   const teamByKey = new Map(snapshot.teams.map((team) => [team.key, team]));

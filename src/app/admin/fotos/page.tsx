@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin-auth";
 import { deleteFromBlob } from "@/lib/blob";
 import { prisma } from "@/lib/prisma";
-import { UPLOADS_SETTING_KEY, uploadsOpen } from "@/lib/photos";
+import { ALBUM_SETTING_KEY, UPLOADS_SETTING_KEY, photographerAlbumVisible, uploadsOpen } from "@/lib/photos";
 import type { Prisma } from "@/generated/prisma/client";
 import SubmitButton from "@/components/SubmitButton";
 import { EVENT } from "@/lib/event";
@@ -27,6 +27,8 @@ type TabKey = keyof typeof TABS;
 
 function refresh() {
   revalidatePath("/admin/fotos");
+  revalidatePath("/");
+  revalidatePath("/en");
   revalidatePath("/fotos");
   revalidatePath("/en/fotos");
   revalidatePath(`/vorige-edities/${HIGHLIGHT_YEAR}`);
@@ -74,13 +76,16 @@ async function setHighlight(id: string, on: boolean) {
   refresh();
 }
 
-async function setUploads(open: boolean) {
+const SETTING_KEYS = [UPLOADS_SETTING_KEY, ALBUM_SETTING_KEY];
+
+async function setSetting(key: string, on: boolean) {
   "use server";
   await requireAdmin();
+  if (!SETTING_KEYS.includes(key)) return;
   await prisma.pageVisibility.upsert({
-    where: { key: UPLOADS_SETTING_KEY },
-    create: { key: UPLOADS_SETTING_KEY, visible: open },
-    update: { visible: open },
+    where: { key },
+    create: { key, visible: on },
+    update: { visible: on },
   });
   refresh();
 }
@@ -94,7 +99,7 @@ export default async function AdminFotosPage({
   const { tab: rawTab } = await searchParams;
   const tab: TabKey = rawTab && rawTab in TABS ? (rawTab as TabKey) : "review";
 
-  const [photos, counts, open] = await Promise.all([
+  const [photos, counts, open, albumVisible] = await Promise.all([
     prisma.photo
       .findMany({ where: TABS[tab].where, orderBy: { createdAt: "desc" } })
       .catch(() => []),
@@ -104,6 +109,7 @@ export default async function AdminFotosPage({
       ),
     ),
     uploadsOpen(),
+    photographerAlbumVisible(),
   ]);
 
   return (
@@ -115,13 +121,29 @@ export default async function AdminFotosPage({
           Uploaden staat <b>{open ? "open" : "dicht"}</b>.
           {!open && " Bezoekers zien een melding dat uploaden gesloten is."}
         </p>
-        <form action={setUploads.bind(null, !open)}>
+        <form action={setSetting.bind(null, UPLOADS_SETTING_KEY, !open)}>
           <SubmitButton
             className={`rounded-full px-4 py-1.5 text-sm font-bold ${
               open ? "border border-derby-accent text-derby-accent bg-white" : "bg-derby-accent text-white"
             }`}
           >
             {open ? "Uploaden sluiten" : "Uploaden openen"}
+          </SubmitButton>
+        </form>
+      </div>
+
+      <div className="bg-white rounded-xl p-4 shadow flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm">
+          Het album van de fotograaf is <b>{albumVisible ? "zichtbaar" : "verborgen"}</b>.
+          {!albumVisible && " De link en de tekst over de fotograaf staan nergens op de site."}
+        </p>
+        <form action={setSetting.bind(null, ALBUM_SETTING_KEY, !albumVisible)}>
+          <SubmitButton
+            className={`rounded-full px-4 py-1.5 text-sm font-bold ${
+              albumVisible ? "border border-derby-accent text-derby-accent bg-white" : "bg-derby-accent text-white"
+            }`}
+          >
+            {albumVisible ? "Album verbergen" : "Album tonen"}
           </SubmitButton>
         </form>
       </div>

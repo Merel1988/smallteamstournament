@@ -1,11 +1,13 @@
 import { getTranslations } from "next-intl/server";
 import { PHOTOGRAPHER, type Photographer } from "@/lib/event";
+import { photographerAlbumVisible } from "@/lib/photos";
 
 export default async function PhotographerAlbum({
   photographer = PHOTOGRAPHER,
 }: {
   photographer?: Photographer;
 }) {
+  if (!(await photographerAlbumVisible())) return null;
   const t = await getTranslations("PhotographerAlbum");
 
   return (
