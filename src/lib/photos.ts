@@ -69,7 +69,6 @@ export function uploadsOpen(): Promise<boolean> {
   return settingOn(UPLOADS_SETTING_KEY, true);
 }
 
-// Off until an organiser turns it on in /admin/fotos.
 export function photographerAlbumVisible(): Promise<boolean> {
-  return settingOn(ALBUM_SETTING_KEY, false);
+  return settingOn(ALBUM_SETTING_KEY, true);
 }
